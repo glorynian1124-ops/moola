@@ -508,12 +508,6 @@ function pressKey(k) {
     return;
   } else if (k === '.') {
     if (!state.moneyStr.includes('.')) state.moneyStr += '.';
-  } else if (k === '00') {
-    // 快速输入两个 0（整百金额）：当前为 0 时不变，否则受 9 位限制追加
-    if (state.moneyStr !== '0') {
-      const room = 9 - state.moneyStr.replace('.', '').replace('-', '').length;
-      if (room > 0) state.moneyStr += '0'.repeat(Math.min(2, room));
-    }
   } else {
     if (state.moneyStr === '0') state.moneyStr = k;
     else if (state.moneyStr.replace('.', '').replace('-', '').length < 9) state.moneyStr += k;
