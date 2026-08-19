@@ -101,6 +101,8 @@ const state = {
   searchMode: 'bill', searchSort: 'time', searchText: '',
   selectedBook: 0,
 };
+let acctYM = '2026-08';      // 明细页当前显示的年月
+let wheelYear = 2026, wheelMonth = 8; // 年/月滚轮当前选择值
 
 /* ================= 设置项（全局生效） ================= */
 const settings = {
@@ -175,7 +177,7 @@ function weekDayCN(dateStr) {
 
 function renderTxList() {
   const list = $('#tx-list');
-  const groups = sortedTx().map(g => {
+  const groups = sortedTx().filter(g => g.date.startsWith(acctYM)).map(g => {
     const spend = -g.items.filter(i => i.money < 0).reduce((s, i) => s + i.money, 0);
     const income = g.items.filter(i => i.money > 0).reduce((s, i) => s + i.money, 0);
     const [y, m, d] = g.date.split('-');
@@ -209,7 +211,7 @@ function emptyHtml() {
 }
 
 function updateOverview() {
-  const nowMonth = '2026-08';
+  const nowMonth = acctYM;
   const monthTx = tx.filter(g => g.date.startsWith(nowMonth)).flatMap(g => g.items);
   const expense = -monthTx.filter(i => i.money < 0).reduce((s, i) => s + i.money, 0);
   const income = monthTx.filter(i => i.money > 0).reduce((s, i) => s + i.money, 0);
@@ -1970,6 +1972,46 @@ $$('#mode-sheet .mode-opt').forEach(opt => {
 });
 $('#mode-cancel').addEventListener('click', () => $('#mode-sheet').classList.remove('show'));
 
+/* ================= 年/月滚轮选择器（明细页） ================= */
+function makeWheel(el, values, suffix, onChange) {
+  const itemH = 46;
+  el.innerHTML = values.map(v => `<div class="wheel-item" data-v="${v}">${v}${suffix}</div>`).join('');
+  let selected = 0;
+  const sync = (i) => {
+    selected = Math.max(0, Math.min(values.length - 1, i));
+    el.querySelectorAll('.wheel-item').forEach((it, idx) => it.classList.toggle('selected', idx === selected));
+    onChange(values[selected]);
+  };
+  el.addEventListener('scroll', () => {
+    const i = Math.round(el.scrollTop / itemH);
+    if (i !== selected) sync(i);
+  }, { passive: true });
+  return {
+    select: (idx) => { el.scrollTop = idx * itemH; sync(idx); },
+    value: () => values[selected],
+  };
+}
+
+const wheelYears = []; for (let y = 2026; y >= 2018; y--) wheelYears.push(y);
+const wheelMonths = Array.from({ length: 12 }, (_, i) => i + 1);
+const wYear = makeWheel($('#wheel-year'), wheelYears, '年', v => { wheelYear = Number(v); });
+const wMonth = makeWheel($('#wheel-month'), wheelMonths, '月', v => { wheelMonth = Number(v); });
+wYear.select(wheelYears.indexOf(2026));
+wMonth.select(wheelMonths.indexOf(8));
+
+$('#btn-month').addEventListener('click', () => {
+  $('#ym-sheet').classList.add('show');
+  wYear.select(wheelYears.indexOf(wheelYear));
+  wMonth.select(wheelMonths.indexOf(wheelMonth));
+});
+$('#ym-ok').addEventListener('click', () => {
+  acctYM = `${wheelYear}-${String(wheelMonth).padStart(2, '0')}`;
+  $('#month-label').textContent = `${wheelYear}年${wheelMonth}月`;
+  $('#ym-sheet').classList.remove('show');
+  renderTxList();
+});
+$('#ym-cancel').addEventListener('click', () => $('#ym-sheet').classList.remove('show'));
+
 /* ================= 图片来源 ================= */
 $$('#pic-sheet .mode-opt').forEach(opt => {
   opt.addEventListener('click', () => {
@@ -2010,9 +2052,6 @@ $('#ov-bottom').addEventListener('click', (e) => {
     openOverlay('page-balance');
   }
 });
-
-// 月份按钮 → 切换账单周期弹窗
-$('#btn-month').addEventListener('click', openMode);
 
 // 图表页区域按钮 → 自定义区间弹窗
 $('#chart-region-btn').addEventListener('click', openCustomRange);
