@@ -135,7 +135,10 @@ function sortedTx() {
 /* ================= 页面切换 ================= */
 function showPage(id) {
   $$('.page').forEach(p => p.classList.remove('active'));
-  $('#' + id).classList.add('active');
+  const target = $('#' + id);
+  target.classList.add('active');
+  // 覆盖页全屏时隐藏底部导航，避免遮挡内容（如记账键盘的 0/发送键）
+  $$('nav.tabbar').forEach(t => { t.style.display = target.classList.contains('overlay') ? 'none' : 'flex'; });
   if (id === 'page-stat') renderStat();
   if (id === 'page-calendar') renderCalendar();
 }
