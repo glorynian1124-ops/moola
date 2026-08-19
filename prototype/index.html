@@ -50,7 +50,6 @@
       <span class="period" data-p="month">月</span>
       <span class="period" data-p="year">年</span>
     </div>
-    <div class="periods-bar" id="periods-bar"></div>
     <div class="stat-body" id="stat-body">
       <div class="chart-block" id="trend-chart"></div>
       <div class="sec-title" id="pie-title">消费结构</div>
@@ -146,7 +145,9 @@
   <div class="page overlay" id="page-calendar">
     <div class="sub-topbar">
       <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <button class="icon-btn dark" id="cal-prev" title="上一月">‹</button>
       <button class="month-btn dark" id="cal-month-btn"><span id="cal-month-label">2026年8月</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
+      <button class="icon-btn dark" id="cal-next" title="下一月">›</button>
       <div class="spacer"></div>
       <button class="text-btn dark" id="cal-today">今</button>
       <button class="icon-btn dark" id="cal-add"><i class="ic ic20" style="--mask:url(assets/icons/ic_add.png)"></i></button>
@@ -828,18 +829,6 @@
       <button class="btn-cancel" id="msg-cancel" style="border-radius:6px">取消</button>
       <button class="btn-primary" id="msg-ok" style="border-radius:6px">确定</button>
     </div>
-  </div>
-
-  <!-- ============ 弹窗：日期选择（记账页） ============ -->
-  <div class="sheet" id="date-sheet">
-    <div class="sheet-title">选择日期</div>
-    <div class="date-opts">
-      <div class="date-opt" data-d="today"><span>今天</span><span class="date-opt-sub" id="date-today"></span></div>
-      <div class="date-opt" data-d="yesterday"><span>昨天</span><span class="date-opt-sub" id="date-yesterday"></span></div>
-      <div class="date-opt" data-d="dbefore"><span>前天</span><span class="date-opt-sub" id="date-dbefore"></span></div>
-      <div class="date-opt" data-d="custom"><span>自定义日期</span><span class="cell-arrow">›</span></div>
-    </div>
-    <button class="btn-cancel" id="date-cancel" style="border:none;border-radius:0">取消</button>
   </div>
 
   <!-- ============ 底部 Tab ============ -->

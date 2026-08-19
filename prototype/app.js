@@ -135,7 +135,10 @@ function sortedTx() {
 /* ================= 页面切换 ================= */
 function showPage(id) {
   $$('.page').forEach(p => p.classList.remove('active'));
-  $('#' + id).classList.add('active');
+  const target = $('#' + id);
+  target.classList.add('active');
+  // 覆盖页全屏时隐藏底部导航，避免遮挡内容（如记账键盘的 0/发送键）
+  $$('nav.tabbar').forEach(t => { t.style.display = target.classList.contains('overlay') ? 'none' : 'flex'; });
   if (id === 'page-stat') renderStat();
   if (id === 'page-calendar') renderCalendar();
 }
@@ -149,7 +152,12 @@ $$('.tabbar .tab').forEach(tab => {
 });
 
 function openOverlay(id) { showPage(id); }
-function closeOverlay() { showPage(state.tab); }
+function closeOverlay() {
+  // 记账日期选择模式：返回记账页而非底部 Tab
+  if (calPickMode) { calPickMode = false; showPage('page-newaccount'); return; }
+  showPage(state.tab);
+}
+let calPickMode = false; // 从记账页进入日历选日期的模式标志
 
 $$('[data-back]').forEach(btn => btn.addEventListener('click', closeOverlay));
 
@@ -184,6 +192,7 @@ function renderTxList() {
               <div class="tx-type">${it.type}</div>
               <div class="tx-remark">${it.remark}</div>
             </div>
+            ${it.pic ? `<div class="tx-thumb"><i class="ic ic14" style="--mask:url(assets/icons/ic_photo.png)"></i></div>` : ''}
             <div class="tx-money ${moneyClass(it.money)}">${it.money > 0 ? '+' : '-'}${fmt(Math.abs(it.money))}</div>
           </div>`).join('')}
       </div>`;
@@ -231,17 +240,6 @@ function statData() {
   const items = tx.flatMap(g => g.items.map(it => ({ ...it, date: g.date })))
     .filter(i => Math.sign(i.money) === sign);
   return items;
-}
-
-function renderPeriodsBar() {
-  const bar = $('#periods-bar');
-  const labels = state.statPeriod === 'week'
-    ? ['08-12', '08-13', '08-14', '08-15', '08-16', '08-17', '08-18']
-    : state.statPeriod === 'month'
-      ? ['8月', '9月', '10月', '11月', '12月', '1月']
-      : ['2026', '2025', '2024'];
-  bar.innerHTML = labels.map((l, i) =>
-    `<span class="pb-item ${i === 0 ? 'active' : ''}" data-i="${i}">${l}</span>`).join('');
 }
 
 function renderBarChart() {
@@ -440,7 +438,6 @@ function renderPie() {
 }
 
 function renderStat() {
-  renderPeriodsBar();
   renderBarChart();
   renderPie();
   // 空状态切换（原版：无数据才显示「暂无数据」）
@@ -465,13 +462,6 @@ $('#period-group').addEventListener('click', (e) => {
   p.classList.add('active');
   state.statPeriod = p.dataset.p;
   renderStat();
-});
-
-$('#periods-bar').addEventListener('click', (e) => {
-  const item = e.target.closest('.pb-item');
-  if (!item) return;
-  $$('#periods-bar .pb-item').forEach(t => t.classList.remove('active'));
-  item.classList.add('active');
 });
 
 $('#btn-charttype').addEventListener('click', () => openBillStat());
@@ -537,7 +527,7 @@ function addTx(again = false) {
   const remark = $('#note-input').value.trim() || state.naType;
   let group = tx.find(g => g.date === txDate);
   if (!group) { group = { date: txDate, items: [] }; tx.unshift(group); }
-  group.items.push({ type: state.naType, remark, money: money * sign });
+  group.items.push({ type: state.naType, remark, money: money * sign, pic: hasPic });
   $('#note-input').value = '';
   calcAcc = 0; calcOp = null; hasPic = false;
   $('#pic-added').hidden = true;
@@ -576,33 +566,11 @@ $$('.numpad .np-key').forEach(key => {
 });
 
 $('#btn-date').addEventListener('click', () => {
-  // 日期选择弹窗（今天/昨天/前天/自定义）
-  const fmtDate = (offset) => {
-    const d = new Date(2026, 7, 18 - offset);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  };
-  $('#date-today').textContent = fmtDate(0);
-  $('#date-yesterday').textContent = fmtDate(1);
-  $('#date-dbefore').textContent = fmtDate(2);
-  $('#date-sheet').classList.add('show');
+  // 点「今天」→ 进入日历，自由选择记账日期
+  calPickMode = true;
+  state.calYear = 2026; state.calMonth = 8;
+  openOverlay('page-calendar');
 });
-
-$$('#date-sheet .date-opt').forEach(opt => {
-  opt.addEventListener('click', () => {
-    const kind = opt.dataset.d;
-    if (kind === 'custom') {
-      $('#date-sheet').classList.remove('show');
-      openOverlay('page-calendar');
-      return;
-    }
-    const offset = kind === 'today' ? 0 : kind === 'yesterday' ? 1 : 2;
-    const d = new Date(2026, 7, 18 - offset);
-    txDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    $('#date-label').textContent = kind === 'today' ? '今天' : kind === 'yesterday' ? '昨天' : '前天';
-    $('#date-sheet').classList.remove('show');
-  });
-});
-$('#date-cancel').addEventListener('click', () => $('#date-sheet').classList.remove('show'));
 
 // 图片选择后标记
 $$('#pic-sheet .mode-opt').forEach(opt => {
@@ -716,10 +684,31 @@ function renderCalList(day) {
 
 $('#cal-grid').addEventListener('click', (e) => {
   const day = e.target.closest('.cal-day');
-  if (!day || day.dataset.d === undefined) return;
+  if (!day || day.dataset.d === undefined || day.classList.contains('other')) return;
+  const d = Number(day.dataset.d);
+  // 记账日期选择模式：把选中日期带回记账页
+  if (calPickMode) {
+    const y = state.calYear, m = state.calMonth;
+    txDate = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    $('#date-label').textContent = `${m}月${d}日`;
+    calPickMode = false;
+    showPage('page-newaccount');
+    return;
+  }
   $$('#cal-grid .cal-day').forEach(c => c.classList.remove('selected'));
   day.classList.add('selected');
-  renderCalList(Number(day.dataset.d));
+  renderCalList(d);
+});
+
+$('#cal-prev').addEventListener('click', () => {
+  state.calMonth--;
+  if (state.calMonth < 1) { state.calMonth = 12; state.calYear--; }
+  renderCalendar();
+});
+$('#cal-next').addEventListener('click', () => {
+  state.calMonth++;
+  if (state.calMonth > 12) { state.calMonth = 1; state.calYear++; }
+  renderCalendar();
 });
 
 $('#cal-today').addEventListener('click', () => {

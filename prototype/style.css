@@ -175,6 +175,11 @@ body {
   color: var(--ink-4);
 }
 .tx-mid { flex: 1; min-width: 0; }
+.tx-thumb {
+  width: 30px; height: 30px; border-radius: 6px; flex-shrink: 0;
+  background: #f0f0f5; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-8);
+}
 .tx-type { font-size: 16px; color: var(--ink-4); }
 .tx-remark {
   font-size: 14px; color: var(--ink-8); margin-top: 2px;
@@ -368,6 +373,8 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 17px; color: var(--ink-4); cursor: pointer;
   position: relative; padding: 0 4px;
+  white-space: nowrap; /* 防止 Tab 文字被压缩成竖排 */
+  flex-shrink: 0;
 }
 .na-tab.active { color: var(--text-primary); font-weight: 600; }
 .na-tab.active::after {
@@ -1085,16 +1092,6 @@ body {
 .pic-added {
   margin-left: 6px; font-size: 12px; color: #067d17; font-weight: 700;
 }
-
-/* ============ 日期选择弹窗 ============ */
-.date-opts { padding: 0 15px 10px; }
-.date-opt {
-  display: flex; align-items: center; min-height: 50px;
-  font-size: 17px; color: var(--ink-4); cursor: pointer;
-  border-bottom: 1px solid var(--sep);
-}
-.date-opt:last-child { border-bottom: none; }
-.date-opt-sub { margin-left: auto; font-size: 14px; color: var(--ink-9); }
 
 /* ============ 类型格子右上角标 ============ */
 .type-cell { position: relative; }
