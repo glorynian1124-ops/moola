@@ -15,6 +15,11 @@ import os
 import sys
 from pathlib import Path
 
+# Windows GBK 控制台兼容：强制 UTF-8 输出，避免 emoji（⚠️✅）打印崩溃
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 # 保证从项目根目录运行时能 import app 包
 BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
@@ -22,6 +27,7 @@ if str(BASE_DIR) not in sys.path:
 
 from app import db, models  # noqa: E402
 from app.parser.wechat_csv import parse_wechat_csv  # noqa: E402
+from app.parser.wechat_xlsx import parse_wechat_xlsx  # noqa: E402
 
 
 def _seed_rules() -> int:
@@ -49,7 +55,9 @@ def cmd_init(_args) -> None:
 
 
 def _detect_source(path: Path) -> str:
-    """根据文件头部内容自动判断 wechat / alipay。"""
+    """根据扩展名/文件头部内容自动判断 wechat / alipay / xlsx。"""
+    if path.suffix.lower() == ".xlsx":
+        return "xlsx_wechat"  # 微信导出的 Excel 账单
     raw = path.read_bytes()[:2000]
     head = ""
     for enc in ("utf-8-sig", "gbk", "utf-8"):
@@ -73,7 +81,9 @@ def cmd_import(args) -> None:
         source = _detect_source(path)
         print(f"自动识别来源：{source}")
     print(f"正在解析：{path.name}（来源 {source}）...")
-    if source == "alipay":
+    if path.suffix.lower() == ".xlsx":
+        records = parse_wechat_xlsx(path)  # 微信 Excel 账单
+    elif source == "alipay":
         from app.parser.alipay_csv import parse_alipay_csv
         records = parse_alipay_csv(path)
     else:
