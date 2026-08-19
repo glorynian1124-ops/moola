@@ -373,6 +373,8 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 17px; color: var(--ink-4); cursor: pointer;
   position: relative; padding: 0 4px;
+  white-space: nowrap; /* 防止 Tab 文字被压缩成竖排 */
+  flex-shrink: 0;
 }
 .na-tab.active { color: var(--text-primary); font-weight: 600; }
 .na-tab.active::after {
