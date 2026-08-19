@@ -669,7 +669,7 @@ $('#cal-grid').addEventListener('click', (e) => {
 });
 
 function renderCalList(day) {
-  const dateStr = `2026-08-${String(day).padStart(2, '0')}`;
+  const dateStr = `${state.calYear}-${String(state.calMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const group = tx.find(g => g.date === dateStr);
   const list = $('#cal-list');
   if (!group) { list.innerHTML = emptyHtml(); return; }
@@ -702,15 +702,16 @@ $('#cal-grid').addEventListener('click', (e) => {
   renderCalList(d);
 });
 
-$('#cal-prev').addEventListener('click', () => {
-  state.calMonth--;
-  if (state.calMonth < 1) { state.calMonth = 12; state.calYear--; }
-  renderCalendar();
-});
-$('#cal-next').addEventListener('click', () => {
-  state.calMonth++;
-  if (state.calMonth > 12) { state.calMonth = 1; state.calYear++; }
-  renderCalendar();
+$('#cal-month-btn').addEventListener('click', () => {
+  $('#ym-sheet').classList.add('show');
+  wYear.select(wheelYears.indexOf(state.calYear));
+  wMonth.select(wheelMonths.indexOf(state.calMonth));
+  // 日历：确定后切换到所选年月并刷新
+  ymOnOk = () => {
+    state.calYear = wheelYear;
+    state.calMonth = wheelMonth;
+    renderCalendar();
+  };
 });
 
 $('#cal-today').addEventListener('click', () => {
@@ -2003,14 +2004,20 @@ $('#btn-month').addEventListener('click', () => {
   $('#ym-sheet').classList.add('show');
   wYear.select(wheelYears.indexOf(wheelYear));
   wMonth.select(wheelMonths.indexOf(wheelMonth));
+  // 明细页：确定后切换到所选年月并过滤账单
+  ymOnOk = () => {
+    acctYM = `${wheelYear}-${String(wheelMonth).padStart(2, '0')}`;
+    $('#month-label').textContent = `${wheelYear}年${wheelMonth}月`;
+    renderTxList();
+  };
 });
+let ymOnOk = null; // 年/月滚轮确定回调（明细页 / 日历共用）
 $('#ym-ok').addEventListener('click', () => {
-  acctYM = `${wheelYear}-${String(wheelMonth).padStart(2, '0')}`;
-  $('#month-label').textContent = `${wheelYear}年${wheelMonth}月`;
+  if (ymOnOk) ymOnOk();
+  ymOnOk = null;
   $('#ym-sheet').classList.remove('show');
-  renderTxList();
 });
-$('#ym-cancel').addEventListener('click', () => $('#ym-sheet').classList.remove('show'));
+$('#ym-cancel').addEventListener('click', () => { ymOnOk = null; $('#ym-sheet').classList.remove('show'); });
 
 /* ================= 图片来源 ================= */
 $$('#pic-sheet .mode-opt').forEach(opt => {
