@@ -9,7 +9,13 @@
 <body>
   <header class="topbar">
     <h1>Moola</h1>
-    <span class="month">{{ month }}</span>
+    <form class="month-switch" method="get" action="/">
+      <select name="month" class="month" onchange="this.form.submit()" aria-label="切换月份">
+        {% for m in months %}
+        <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}</option>
+        {% endfor %}
+      </select>
+    </form>
   </header>
 
   <main>

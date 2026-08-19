@@ -18,3 +18,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.suo
+
+# local data / privacy (do NOT upload personal bills)
+data/moola.db
+data/*.bak
+data/llm_usage.json

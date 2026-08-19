@@ -34,11 +34,13 @@ CREATE TABLE IF NOT EXISTS transactions (
     note TEXT DEFAULT '',                   -- 备注
     trans_time TEXT,                        -- 交易时间 ISO 格式
     source TEXT DEFAULT 'manual',           -- csv_wechat | csv_alipay | screenshot | manual
+    raw_data TEXT,                          -- 原始 CSV 行（去重审计 + AI 学习）
     dedup_key TEXT UNIQUE,                  -- 去重键：md5(时间+金额+商户)，多源导入防重复
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 CREATE INDEX IF NOT EXISTS idx_trans_time ON transactions(trans_time);
 CREATE INDEX IF NOT EXISTS idx_trans_category ON transactions(category);
+CREATE INDEX IF NOT EXISTS idx_trans_merchant ON transactions(merchant);
 
 -- 预算（分类 × 月份 → 限额）
 CREATE TABLE IF NOT EXISTS budgets (
@@ -47,6 +49,40 @@ CREATE TABLE IF NOT EXISTS budgets (
     month TEXT NOT NULL,                    -- 'YYYY-MM'
     limit_amount REAL NOT NULL,
     UNIQUE(category, month)
+);
+
+-- 自动分类规则（AI 学习引擎：用户手设 / AI 学习 / 导入模板）
+CREATE TABLE IF NOT EXISTS category_rules (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    keyword    TEXT,                        -- 关键词（命中即归类）
+    category   TEXT NOT NULL,
+    source     TEXT NOT NULL DEFAULT 'user', -- user | ai | import
+    confidence REAL NOT NULL DEFAULT 1.0,    -- AI 置信度
+    hit_count  INTEGER NOT NULL DEFAULT 0,   -- 命中次数 = 学习权重
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+);
+CREATE INDEX IF NOT EXISTS idx_rules_category ON category_rules(category);
+
+-- 用户画像标签（AI 从交易流水推导 + 显式）
+CREATE TABLE IF NOT EXISTS user_interests (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    tag        TEXT NOT NULL,                    -- 兴趣/特征标签
+    weight     REAL NOT NULL DEFAULT 1.0,        -- 权重（信号越强越高）
+    source     TEXT NOT NULL DEFAULT 'from_finance', -- from_finance | from_reads | explicit
+    updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    UNIQUE(tag, source)
+);
+
+-- AI 分析报告存档（可回溯、可对比）
+CREATE TABLE IF NOT EXISTS analysis_reports (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    period       TEXT,                   -- YYYY-MM
+    kind         TEXT,                   -- monthly | health_score | insight
+    summary      TEXT,                   -- AI 摘要（自然语言）
+    insights     TEXT,                   -- JSON 洞察列表
+    health_score REAL,                   -- 收支健康分 0-100
+    metrics      TEXT,                   -- JSON 指标快照（结余率/固定支出占比等）
+    created_at   TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
 -- 订阅源（Feedly 模式，Phase 4）
@@ -102,10 +138,16 @@ def _seed_ledger(conn: sqlite3.Connection) -> None:
 def _seed_categories(conn: sqlite3.Connection) -> None:
     """写入默认分类（已存在则跳过）。"""
     defaults = [
+        # 支出
         ("餐饮", "expense"), ("交通", "expense"), ("购物", "expense"),
         ("居住", "expense"), ("娱乐", "expense"), ("医疗", "expense"),
-        ("教育", "expense"), ("转账", "expense"), ("其他支出", "expense"),
-        ("收入", "income"),
+        ("教育", "expense"), ("转账", "expense"), ("水果", "expense"),
+        ("零食", "expense"), ("服饰", "expense"), ("日用", "expense"),
+        ("通讯", "expense"), ("其他支出", "expense"),
+        # 收入
+        ("工资", "income"), ("奖金", "income"), ("红包", "income"),
+        ("退款", "income"), ("报销", "income"), ("理财", "income"),
+        ("兼职", "income"), ("其他收入", "income"),
     ]
     for name, kind in defaults:
         conn.execute(

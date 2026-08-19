@@ -91,6 +91,7 @@ def parse_wechat_csv(path: str | Path) -> list[dict]:
             "note": full_note,
             "trans_time": _norm_time(row[idx["time"]].strip()),
             "source": "csv_wechat",
+            "raw_data": ",".join(row).strip(),
         })
     return records
 

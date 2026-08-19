@@ -29,7 +29,23 @@ body {
   padding: 12px 4px 16px;
 }
 .topbar h1 { font-size: 24px; letter-spacing: -0.5px; }
-.month { color: var(--muted); font-size: 14px; }
+.month-switch { display: flex; align-items: baseline; }
+.month {
+  color: var(--muted);
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 20px 4px 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a919e'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+}
+.month:hover { color: var(--ink); }
 
 .card {
   background: var(--card);
