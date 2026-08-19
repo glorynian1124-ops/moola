@@ -72,9 +72,34 @@
     try {
       const cur = currentMonth();
       await Promise.all([loadMonth(cur), loadMonth(prevMonth(cur))]);
+      // 默认显示「最近有数据的月份」（当前月可能还没有账单），并同步顶部月份按钮与滚轮
+      const dates = tx.map(g => g.date).filter(Boolean).sort();
+      if (dates.length) {
+        const latest = dates[dates.length - 1].slice(0, 7);
+        if (latest !== acctYM) {
+          acctYM = latest;
+          const [yy, mm] = latest.split('-').map(Number);
+          wheelYear = yy; wheelMonth = mm;
+          const label = $('#month-label');
+          if (label) label.textContent = `${yy}年${mm}月`;
+        }
+      }
       renderTxList();
     } catch (e) {
-      console.warn('[api.js] 后端连接失败，保持本地演示数据：', e);
+      // 不用假数据：清空内存演示数据，明确提示后端未连接
+      console.warn('[api.js] 后端连接失败：', e);
+      tx = [];
+      renderTxList();
+      const hint = document.createElement('div');
+      hint.style.cssText = 'margin:12px;padding:10px 14px;border-radius:8px;background:#fff3f3;' +
+        'color:#c00;font-size:13px;line-height:1.6;';
+      hint.innerHTML = '⚠️ 后端未连接，无法加载真实账单。<br>' +
+        '请先启动 <code>python main.py web</code>（端口 5001）后刷新页面。';
+      const list = $('#tx-list');
+      if (list && list.parentNode) {
+        list.insertAdjacentElement('beforebegin', hint);
+        setTimeout(() => hint.remove(), 8000);
+      }
     }
   }
   initBackend();
@@ -191,28 +216,7 @@
       </div>`).join('');
   };
 
-  /* ---------- 首页概览：动态取「最近有数据的月份」 ---------- */
-  window.updateOverview = function updateOverview() {
-    const dates = tx.map(g => g.date).filter(Boolean).sort();
-    const nowMonth = dates.length ? dates[dates.length - 1].slice(0, 7) : currentMonth();
-    const monthTx = tx.filter(g => g.date.startsWith(nowMonth)).flatMap(g => g.items);
-    const expense = -monthTx.filter(i => i.money < 0).reduce((s, i) => s + i.money, 0);
-    const income = monthTx.filter(i => i.money > 0).reduce((s, i) => s + i.money, 0);
-    const balance = income - expense;
-
-    const big = settings.bigDisplay;
-    const bigVal = big === 'expense' ? expense : big === 'income' ? income : balance;
-    const bigLabel = big === 'expense' ? '本月支出' : big === 'income' ? '本月收入' : '本月结余';
-    $('#ov-label').textContent = bigLabel;
-    $('#ov-expense-amt').textContent = fmt(bigVal);
-    const bottom = big === 'expense'
-      ? [['收入', income], ['结余', balance]]
-      : big === 'income'
-        ? [['支出', expense], ['结余', balance]]
-        : [['支出', expense], ['收入', income]];
-    $('#ov-bottom').innerHTML = bottom.map(([label, val]) => `
-      <div class="ov-col"><span class="ov-label-sm">${label}</span><span class="ov-val">¥${fmt(val)}</span></div>`).join('');
-  };
+  /* ---------- 首页概览：由 app.js 的 updateOverview 处理（基于 acctYM） ---------- */
 
   /* ---------- 详情页删除/编辑：捕获阶段先删后端旧记录 ---------- */
   function detailItem() {
