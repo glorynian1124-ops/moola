@@ -233,17 +233,6 @@ function statData() {
   return items;
 }
 
-function renderPeriodsBar() {
-  const bar = $('#periods-bar');
-  const labels = state.statPeriod === 'week'
-    ? ['08-12', '08-13', '08-14', '08-15', '08-16', '08-17', '08-18']
-    : state.statPeriod === 'month'
-      ? ['8月', '9月', '10月', '11月', '12月', '1月']
-      : ['2026', '2025', '2024'];
-  bar.innerHTML = labels.map((l, i) =>
-    `<span class="pb-item ${i === 0 ? 'active' : ''}" data-i="${i}">${l}</span>`).join('');
-}
-
 function renderBarChart() {
   const data = statData();
   const box = $('#trend-chart');
@@ -440,7 +429,6 @@ function renderPie() {
 }
 
 function renderStat() {
-  renderPeriodsBar();
   renderBarChart();
   renderPie();
   // 空状态切换（原版：无数据才显示「暂无数据」）
@@ -465,13 +453,6 @@ $('#period-group').addEventListener('click', (e) => {
   p.classList.add('active');
   state.statPeriod = p.dataset.p;
   renderStat();
-});
-
-$('#periods-bar').addEventListener('click', (e) => {
-  const item = e.target.closest('.pb-item');
-  if (!item) return;
-  $$('#periods-bar .pb-item').forEach(t => t.classList.remove('active'));
-  item.classList.add('active');
 });
 
 $('#btn-charttype').addEventListener('click', () => openBillStat());
