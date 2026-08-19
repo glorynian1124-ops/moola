@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+      <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901E4" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="10.000000dip">
+        <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F09023E" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="8.000000dip"/>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080095" android:scaleType="3" android:tint="?7F0402DF"/>
+      </LinearLayout>
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+      <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F090243" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:text="今" android:layout_marginEnd="5.000000dip"/>
+      <ImageView android:id="@7F09009A" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F080061" android:scaleType="3" android:tint="?7F0402DF" android:layout_marginEnd="5.000000dip"/>
+    </LinearLayout>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <androidx.core.widget.NestedScrollView android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+        <com.haibin.calendarview.CalendarView android:id="@7F090070" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="-2" app:calendar_height="80.000000dip" app:calendar_show_mode="2" app:current_day_lunar_text_color="?7F0402DF" app:current_day_text_color="?7F0402DF" app:current_month_lunar_text_color="#FFAAAAAA" app:current_month_text_color="#FF333333" app:day_text_size="14.000000sp" app:lunar_text_size="12.000000sp" app:month_view="com.yhqx.account.widget.MyMonthView" app:month_view_auto_select_day="2" app:month_view_show_mode="2" app:other_month_lunar_text_color="#FFDDDDDD" app:other_month_text_color="#FFE1E1E1" app:scheme_text="假" app:scheme_text_color="#FF333333" app:scheme_theme_color="#FF128C4B" app:selected_lunar_text_color="#FFCFCFCF" app:selected_text_color="#FF333333" app:selected_theme_color="#FF108CD4" app:week_background="#FFEEEEEE" app:week_bar_height="35.000000dip" app:week_start_with="2" app:week_text_color="?7F04010D" app:week_text_size="14.000000sp"/>
+        <TextView android:textSize="14.000000sp" android:textColor="?7F04010D" android:gravity="0x00000010" android:id="@7F09005F" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="28.000000dip" android:text="账单列表" android:paddingStart="7.000000dip"/>
+        <androidx.recyclerview.widget.RecyclerView android:id="@7F090033" android:background="?7F0401EF" android:layout_width="-1" android:layout_height="-2" android:overScrollMode="2" android:nestedScrollingEnabled="false"/>
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <View android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+  </LinearLayout>
+</RelativeLayout>

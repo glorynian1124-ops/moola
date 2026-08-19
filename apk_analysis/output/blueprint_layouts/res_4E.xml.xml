@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?android:01010031" android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:orientation="1" android:background="[attr:colorPrimary=#ff303f9f]" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="[attr:colorPrimary=#ff303f9f]" android:layout_width="match_parent" android:layout_height="50.000000dip">
+      <ImageView android:id="@id/back" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:back_arrow=res/0Z.png]" android:scaleType="3" android:tint="[attr:lightfclr=#ffffffff]"/>
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@id/selyear" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip">
+        <TextView android:textSize="18.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/year" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="8.000000dip"/>
+        <ImageView android:id="@id/dropdown" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="[drawable:dropdown=res/yU.png]" android:scaleType="3"/>
+      </LinearLayout>
+      <ImageView android:id="@id/erase" android:padding="15.500001dip" android:visibility="2" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:eraser=res/ng.png]" android:scaleType="3" android:tint="[attr:lightfclr=#ffffffff]"/>
+    </LinearLayout>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="140.000000dip">
+      <TextView android:textSize="14.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/ybmoneytxt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.000000dip" android:text="年度结余" android:layout_marginStart="20.000000dip"/>
+      <TextView android:textSize="19.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/cnyflag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.000000dip" android:text="¥" android:layout_below="@id/ybmoneytxt" android:layout_marginStart="23.000000dip"/>
+      <TextView android:textSize="36.000000sp" android:textStyle="0x00000001" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/ybmoney" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignBottom="@id/cnyflag" android:layout_marginStart="15.000000dip" android:layout_toEndOf="@id/cnyflag"/>
+      <LinearLayout android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="15.000000dip" android:layout_alignParentBottom="true">
+        <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:layout_weight="1.000000">
+          <TextView android:textSize="14.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/ybintxt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="年度收入" android:layout_marginStart="20.000000dip"/>
+          <TextView android:textSize="21.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/ybin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8.000000dip"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:layout_weight="1.000000" android:paddingStart="5.000000dip">
+          <TextView android:textSize="14.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/ybouttxt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="年度支出" android:layout_marginStart="10.000000dip"/>
+          <TextView android:textSize="21.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:id="@id/ybout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+    </RelativeLayout>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="30.000000dip">
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00800005" android:id="@id/month" android:layout_width="38.000000dip" android:layout_height="wrap_content" android:text="月份" android:singleLine="true" android:layout_marginStart="8.000000dip"/>
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:text="收入" android:singleLine="true" android:layout_weight="1.000000"/>
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:text="支出" android:singleLine="true" android:layout_weight="1.000000"/>
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:text="结余" android:singleLine="true" android:layout_weight="1.300000" android:paddingEnd="28.000000dip"/>
+  </LinearLayout>
+  <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+  <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@id/empty" android:visibility="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
+      <ImageView android:id="@id/empty0" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="[drawable:empty=res/8e.png]" android:tint="[attr:widgetcolor=#ff303f9f]" android:alpha="0.150000"/>
+      <LinearLayout android:gravity="0x00000001" android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8.000000dip">
+        <TextView android:textSize="15.000000sp" android:textColor="[attr:widgetcolor=#ff303f9f]" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="暂无数据" android:alpha="0.200000"/>
+      </LinearLayout>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/statisticlist" android:layout_width="match_parent" android:layout_height="match_parent" android:overScrollMode="2"/>
+  </RelativeLayout>
+</LinearLayout>

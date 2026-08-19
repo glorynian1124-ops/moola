@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="@7F0A000E" android:layout_width="-2" android:layout_height="-1">
+  <include layout="@7F0C0093"/>
+  <LinearLayout android:orientation="1" android:id="@7F090150" android:layout_width="-2" android:layout_height="-1">
+    <FrameLayout android:id="@7F09014F" android:paddingLeft="@7F0700C7" android:paddingRight="@7F0700C7" android:paddingBottom="@7F0700C6" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:paddingStart="@7F0700C7" android:paddingEnd="@7F0700C7"/>
+    <include android:layout_width="-1" android:layout_height="@7F0700C4" layout="@7F0C0090"/>
+  </LinearLayout>
+</LinearLayout>

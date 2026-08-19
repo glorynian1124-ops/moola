@@ -1,0 +1,724 @@
+[
+  {
+    "file": "res_B8.xml.xml",
+    "size": 11711,
+    "root": "LinearLayout",
+    "controls": {
+      "View": 23,
+      "TextView": 18,
+      "ImageView": 5,
+      "androidx.recyclerview.widget.RecyclerView": 2,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "EditText": 1,
+      "RelativeLayout": 1
+    },
+    "texts": [
+      "今天",
+      "图片",
+      "7",
+      "8",
+      "9",
+      "4",
+      "5",
+      "6",
+      "+",
+      "1",
+      "2",
+      "3",
+      "-",
+      "再记",
+      "0"
+    ],
+    "hints": [
+      "添加备注...",
+      "0"
+    ]
+  },
+  {
+    "file": "res_tZ.xml.xml",
+    "size": 6721,
+    "root": "RelativeLayout",
+    "controls": {
+      "View": 11,
+      "TextView": 11,
+      "ImageView": 2,
+      "RelativeLayout": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "当前设备未登录！",
+      "图像",
+      "昵称",
+      "会员状态",
+      "手机号",
+      "微信",
+      "手机号、微信仅用于账号登录"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_nK.xml.xml",
+    "size": 6650,
+    "root": "RelativeLayout",
+    "controls": {
+      "TextView": 9,
+      "ImageView": 6,
+      "RelativeLayout": 2,
+      "View": 1,
+      "com.aspsine.swipetoloadlayout.SwipeToLoadLayout": 1,
+      "com.yhqx.account.widget.RefreshHeaderView": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1,
+      "com.yhqx.account.widget.LoadMoreFooterView": 1,
+      "com.google.android.material.floatingactionbutton.FloatingActionButton": 1
+    },
+    "texts": [
+      "报表统计",
+      "¥"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_4E.xml.xml",
+    "size": 6550,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 13,
+      "ImageView": 4,
+      "RelativeLayout": 2,
+      "View": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "年度结余",
+      "¥",
+      "年度收入",
+      "年度支出",
+      "月份",
+      "收入",
+      "支出",
+      "结余",
+      "暂无数据"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_kI1.xml.xml",
+    "size": 5313,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 4,
+      "ImageView": 3,
+      "RadioButton": 3,
+      "FrameLayout": 2,
+      "com.google.android.material.tabs.TabLayout": 2,
+      "RadioGroup": 1,
+      "androidx.core.widget.NestedScrollView": 1,
+      "com.yhqx.account.widget.VerticalBarView": 1,
+      "com.yhqx.account.widget.PieStatisticView": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1,
+      "View": 1
+    },
+    "texts": [
+      "周",
+      "月",
+      "年",
+      "支持手指旋转查看，小于2%不会显示",
+      "暂无数据"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_z9.xml.xml",
+    "size": 4277,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 4,
+      "RadioButton": 3,
+      "ImageView": 2,
+      "FrameLayout": 1,
+      "RadioGroup": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "com.yhqx.account.widget.VerticalBarView": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "周",
+      "月",
+      "年",
+      "账单列表",
+      "暂无数据"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_7V.xml.xml",
+    "size": 4079,
+    "root": "RelativeLayout",
+    "controls": {
+      "ImageView": 3,
+      "TextView": 3,
+      "View": 3,
+      "RelativeLayout": 1,
+      "androidx.core.widget.NestedScrollView": 1,
+      "com.haibin.calendarview.CalendarView": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "今",
+      "账单列表"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_92.xml.xml",
+    "size": 4035,
+    "root": "LinearLayout",
+    "controls": {
+      "View": 3,
+      "TextView": 3,
+      "RadioButton": 2,
+      "ImageView": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "EditText": 1,
+      "RadioGroup": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "搜索",
+      "搜索结果",
+      "按时间",
+      "按金额"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_lC.xml.xml",
+    "size": 3466,
+    "root": "LinearLayout",
+    "controls": {
+      "ImageView": 3,
+      "TextView": 3,
+      "View": 2,
+      "com.yhqx.account.widget.HorizontalBarView": 1,
+      "FrameLayout": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "androidx.core.widget.NestedScrollView": 1,
+      "com.yhqx.account.widget.PieStatisticView": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "支持手指旋转查看，小于2%不会显示"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_16.xml.xml",
+    "size": 3387,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 6,
+      "View": 2,
+      "androidx.recyclerview.widget.RecyclerView": 2,
+      "ImageView": 1
+    },
+    "texts": [
+      "@7F1000CC",
+      "@7F1000CE",
+      "解锁权限:",
+      "注意事项:"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_sC.xml.xml",
+    "size": 3225,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 4,
+      "ImageView": 1,
+      "com.yhqx.account.widget.HorizontalBarView": 1,
+      "FrameLayout": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "androidx.core.widget.NestedScrollView": 1,
+      "com.yhqx.account.widget.VerticalBarView": 1,
+      "com.yhqx.account.widget.PieStatisticView": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1,
+      "View": 1
+    },
+    "texts": [
+      "支持手指旋转查看，小于2%不会显示"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_e1.xml.xml",
+    "size": 3064,
+    "root": "LinearLayout",
+    "controls": {
+      "ImageView": 5,
+      "TextView": 1,
+      "view": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_f7.xml.xml",
+    "size": 3060,
+    "root": "RelativeLayout",
+    "controls": {
+      "View": 6,
+      "TextView": 3,
+      "RelativeLayout": 1,
+      "ImageView": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "全选",
+      "重置",
+      "导入选中类别"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_0Y.xml.xml",
+    "size": 2946,
+    "root": "RelativeLayout",
+    "controls": {
+      "ImageView": 3,
+      "TextView": 3,
+      "View": 3,
+      "RelativeLayout": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "管理账本",
+      "合并",
+      "取消"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_sJ.xml.xml",
+    "size": 2618,
+    "root": "RelativeLayout",
+    "controls": {
+      "View": 4,
+      "ImageView": 2,
+      "TextView": 2,
+      "RelativeLayout": 1,
+      "com.google.android.material.tabs.TabLayout": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "导入",
+      "新增类别"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_Ms.xml.xml",
+    "size": 2278,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 4,
+      "ImageView": 1,
+      "View": 1,
+      "EditText": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "保存",
+      "账本名称",
+      "账本类型"
+    ],
+    "hints": [
+      "点此输入..."
+    ]
+  },
+  {
+    "file": "res_bD.xml.xml",
+    "size": 2224,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 3,
+      "ImageView": 2,
+      "View": 1,
+      "EditText": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "保存",
+      "选择图标"
+    ],
+    "hints": [
+      "输入类别名称"
+    ]
+  },
+  {
+    "file": "res_AK.xml.xml",
+    "size": 1929,
+    "root": "androidx.appcompat.widget.AlertDialogLayout",
+    "controls": {
+      "FrameLayout": 3,
+      "include": 2,
+      "View": 2,
+      "android.widget.Space": 2,
+      "androidx.appcompat.widget.AlertDialogLayout": 1,
+      "androidx.core.widget.NestedScrollView": 1,
+      "TextView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_M6.xml.xml",
+    "size": 1929,
+    "root": "androidx.appcompat.widget.AlertDialogLayout",
+    "controls": {
+      "FrameLayout": 3,
+      "include": 2,
+      "View": 2,
+      "android.widget.Space": 2,
+      "androidx.appcompat.widget.AlertDialogLayout": 1,
+      "androidx.core.widget.NestedScrollView": 1,
+      "TextView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_XS.xml.xml",
+    "size": 1612,
+    "root": "androidx.appcompat.view.menu.ListMenuItemView",
+    "controls": {
+      "ImageView": 2,
+      "TextView": 2,
+      "androidx.appcompat.view.menu.ListMenuItemView": 1,
+      "RelativeLayout": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_mJ.xml.xml",
+    "size": 1546,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 2,
+      "ImageView": 1,
+      "View": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_75.xml.xml",
+    "size": 1445,
+    "root": "androidx.appcompat.view.menu.ListMenuItemView",
+    "controls": {
+      "ImageView": 2,
+      "TextView": 2,
+      "androidx.appcompat.view.menu.ListMenuItemView": 1,
+      "Space": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_vH.xml.xml",
+    "size": 1432,
+    "root": "view",
+    "controls": {
+      "FrameLayout": 2,
+      "ImageView": 2,
+      "view": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_68.xml.xml",
+    "size": 1353,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 3,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "每月账单起始日",
+      "@7F100097",
+      "@7F100021"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_Os.xml.xml",
+    "size": 1283,
+    "root": "ScrollView",
+    "controls": {
+      "Button": 3,
+      "ScrollView": 1,
+      "androidx.appcompat.widget.ButtonBarLayout": 1,
+      "android.widget.Space": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_Mv.xml.xml",
+    "size": 1174,
+    "root": "LinearLayout",
+    "controls": {
+      "ImageView": 1,
+      "TextView": 1,
+      "View": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [
+      "更多作品"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_vM.xml.xml",
+    "size": 1167,
+    "root": "ScrollView",
+    "controls": {
+      "Button": 3,
+      "ScrollView": 1,
+      "androidx.appcompat.widget.ButtonBarLayout": 1,
+      "android.widget.Space": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_Y-.xml.xml",
+    "size": 1139,
+    "root": "ScrollView",
+    "controls": {
+      "Button": 3,
+      "ScrollView": 1,
+      "androidx.appcompat.widget.ButtonBarLayout": 1,
+      "android.widget.Space": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_vD.xml.xml",
+    "size": 1101,
+    "root": "ScrollView",
+    "controls": {
+      "Button": 3,
+      "ScrollView": 1,
+      "androidx.appcompat.widget.ButtonBarLayout": 1,
+      "android.widget.Space": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_ng.xml.xml",
+    "size": 1090,
+    "root": "LinearLayout",
+    "controls": {
+      "TextView": 2,
+      "androidx.recyclerview.widget.RecyclerView": 1,
+      "RelativeLayout": 1
+    },
+    "texts": [
+      "@7F1000BD",
+      "@7F100021"
+    ],
+    "hints": []
+  },
+  {
+    "file": "res_-Y.xml.xml",
+    "size": 1085,
+    "root": "androidx.appcompat.view.menu.ListMenuItemView",
+    "controls": {
+      "TextView": 2,
+      "androidx.appcompat.view.menu.ListMenuItemView": 1,
+      "RelativeLayout": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_kB.xml.xml",
+    "size": 1070,
+    "root": "androidx.appcompat.widget.ActionBarOverlayLayout",
+    "controls": {
+      "androidx.appcompat.widget.ActionBarOverlayLayout": 1,
+      "include": 1,
+      "androidx.appcompat.widget.ActionBarContainer": 1,
+      "androidx.appcompat.widget.Toolbar": 1,
+      "androidx.appcompat.widget.ActionBarContextView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_Ey.xml.xml",
+    "size": 1029,
+    "root": "androidx.appcompat.widget.ActionBarOverlayLayout",
+    "controls": {
+      "androidx.appcompat.widget.ActionBarOverlayLayout": 1,
+      "include": 1,
+      "androidx.appcompat.widget.ActionBarContainer": 1,
+      "androidx.appcompat.widget.Toolbar": 1,
+      "androidx.appcompat.widget.ActionBarContextView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_LN.xml.xml",
+    "size": 886,
+    "root": "androidx.appcompat.widget.ButtonBarLayout",
+    "controls": {
+      "Button": 3,
+      "androidx.appcompat.widget.ButtonBarLayout": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_38.xml.xml",
+    "size": 814,
+    "root": "FrameLayout",
+    "controls": {
+      "FrameLayout": 2,
+      "androidx.coordinatorlayout.widget.CoordinatorLayout": 1,
+      "View": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_6J.xml.xml",
+    "size": 712,
+    "root": "LinearLayout",
+    "controls": {
+      "include": 3,
+      "FrameLayout": 1,
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_zH.xml.xml",
+    "size": 712,
+    "root": "androidx.appcompat.widget.FitWindowsLinearLayout",
+    "controls": {
+      "androidx.appcompat.widget.FitWindowsLinearLayout": 1,
+      "TextView": 1,
+      "include": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_b91.xml.xml",
+    "size": 595,
+    "root": "view",
+    "controls": {
+      "view": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_va.xml.xml",
+    "size": 550,
+    "root": "LinearLayout",
+    "controls": {
+      "ImageView": 1,
+      "androidx.appcompat.widget.DialogTitle": 1,
+      "android.widget.Space": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_jw.xml.xml",
+    "size": 507,
+    "root": "androidx.appcompat.widget.FitWindowsLinearLayout",
+    "controls": {
+      "androidx.appcompat.widget.FitWindowsLinearLayout": 1,
+      "androidx.appcompat.widget.ViewStubCompat": 1,
+      "include": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_NU.xml.xml",
+    "size": 481,
+    "root": "androidx.appcompat.widget.FitWindowsFrameLayout",
+    "controls": {
+      "androidx.appcompat.widget.FitWindowsFrameLayout": 1,
+      "include": 1,
+      "androidx.appcompat.widget.ViewStubCompat": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_Rq.xml.xml",
+    "size": 295,
+    "root": "androidx.appcompat.widget.ActionMenuView",
+    "controls": {
+      "androidx.appcompat.widget.ActionMenuView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_8s.xml.xml",
+    "size": 280,
+    "root": "merge",
+    "controls": {
+      "merge": 1,
+      "androidx.appcompat.widget.ContentFrameLayout": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_jI.xml.xml",
+    "size": 229,
+    "root": "androidx.appcompat.widget.ActionBarContextView",
+    "controls": {
+      "androidx.appcompat.widget.ActionBarContextView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res__d.xml.xml",
+    "size": 221,
+    "root": "androidx.recyclerview.widget.RecyclerView",
+    "controls": {
+      "androidx.recyclerview.widget.RecyclerView": 1
+    },
+    "texts": [],
+    "hints": []
+  },
+  {
+    "file": "res_43.xml.xml",
+    "size": 191,
+    "root": "androidx.appcompat.view.menu.ExpandedMenuView",
+    "controls": {
+      "androidx.appcompat.view.menu.ExpandedMenuView": 1
+    },
+    "texts": [],
+    "hints": []
+  }
+]

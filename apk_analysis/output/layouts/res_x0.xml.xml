@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?7F040121" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:textSize="20.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="60.000000dip" android:text="金额颜色"/>
+  <RadioGroup android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginStart="12.000000dip" android:layout_marginEnd="12.000000dip">
+    <RadioButton android:textSize="16.000000sp" android:textColor="?7F04010D" android:id="@7F09008B" android:layout_width="-2" android:layout_height="32.000000dip" android:checked="true" android:text="支出红色，收入绿色"/>
+    <RadioButton android:textSize="16.000000sp" android:textColor="?7F04010D" android:id="@7F09008C" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginTop="5.000000dip" android:text="支出绿色，收入红色"/>
+  </RadioGroup>
+  <LinearLayout android:gravity="0x00800015" android:orientation="0" android:layout_width="-1" android:layout_height="50.000000dip">
+    <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F090174" android:layout_width="-2" android:layout_height="-2" android:text="@7F100097" android:layout_marginEnd="20.000000dip"/>
+    <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F090073" android:layout_width="-2" android:layout_height="-2" android:text="@7F100021" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

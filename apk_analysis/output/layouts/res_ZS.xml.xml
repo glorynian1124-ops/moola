@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090242" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+    <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F09023E" android:layout_width="0.000000dip" android:layout_height="-2" android:text="关于" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip"/>
+  </LinearLayout>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <LinearLayout android:orientation="1" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="-1" android:layout_height="-2">
+    <LinearLayout android:orientation="1" android:id="@7F09000E" android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:orientation="1" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090080" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:padding="1.000000dip" android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F080124" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="检查更新" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="15.000000sp" android:textColor="?7F04010F" android:id="@7F090262" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+      <LinearLayout android:orientation="1" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F09020B" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F080116" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <LinearLayout android:orientation="1" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+            <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="-1" android:layout_height="-2" android:text="好评支持" android:layout_marginStart="15.000000dip"/>
+            <TextView android:textSize="11.000000sp" android:textColor="?7F04016F" android:layout_width="-1" android:layout_height="-2" android:text="给简约记账一个好评，鼓励开发者" android:layout_marginStart="15.000000dip"/>
+          </LinearLayout>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+        <View android:background="?7F040277" android:visibility="2" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginStart="15.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901F2" android:visibility="2" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F080111" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="推荐给好友" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+      <LinearLayout android:orientation="1" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901A4" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:padding="0.500000dip" android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F08010C" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="隐私政策" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+        <View android:background="?7F040277" android:visibility="2" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginStart="15.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901AA" android:visibility="2" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F0800F3" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="用户协议" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+        <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginStart="15.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090261" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F080125" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="个人信息收集清单" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+        <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginStart="15.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090237" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F08010A" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="第三方信息共享清单" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+        <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginStart="15.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090191" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:padding="1.000000dip" android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F0800C1" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="权限设置" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+        <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginStart="15.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901EA" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F08009A" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:id="@7F090092" android:layout_width="0.000000dip" android:layout_height="-2" android:text="联系我们" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+      <LinearLayout android:orientation="1" android:id="@7F09014A" android:background="?android:01010031" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090149" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+          <ImageView android:layout_width="22.000000dip" android:layout_height="22.000000dip" android:src="@7F080064" android:scaleType="3" android:tint="?7F04010C" android:layout_marginStart="15.000000dip"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="0.000000dip" android:layout_height="-2" android:text="更多作品" android:layout_weight="1.000000" android:layout_marginStart="15.000000dip"/>
+          <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>
+  <RelativeLayout android:id="@7F0900EE" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_alignParentBottom="true">
+      <TextView android:textSize="15.000000sp" android:textColor="?7F04016F" android:gravity="0x00000011" android:id="@7F0900EC" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="12.000000dip"/>
+      <TextView android:textSize="14.000000sp" android:textColor="?7F04016F" android:gravity="0x00000011" android:id="@7F0900ED" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="15.000000dip" android:text="粤ICP备18018897号-3A"/>
+    </LinearLayout>
+  </RelativeLayout>
+</LinearLayout>

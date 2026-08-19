@@ -1,0 +1,4 @@
+<androidx.appcompat.widget.FitWindowsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F09003A" android:fitsSystemWindows="true" android:layout_width="-1" android:layout_height="-1">
+  <include layout="@7F0C0014"/>
+  <androidx.appcompat.widget.ViewStubCompat android:id="@7F090045" android:layout="@7F0C0004" android:inflatedId="@7F090044" android:layout_width="-1" android:layout_height="-2"/>
+</androidx.appcompat.widget.FitWindowsFrameLayout>

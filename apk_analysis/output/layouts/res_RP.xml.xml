@@ -1,0 +1,4 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+  <alpha android:duration="@7F0A0002" android:fromAlpha="1.000000" android:toAlpha="0.300000"/>
+  <scale android:duration="@7F0A0002" android:pivotX="50.000001%" android:pivotY="50.000001%" android:fromXScale="1.000000" android:toXScale="0.000000" android:fromYScale="1.000000" android:toYScale="0.000000"/>
+</set>

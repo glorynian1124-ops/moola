@@ -1,0 +1,7 @@
+<vector xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android" android:height="24.000000dip" android:width="24.000000dip" android:viewportWidth="24.000000" android:viewportHeight="24.000000">
+  <path android:name="strike_through" android:pathData="@7F10009E" android:strokeColor="@android:0106000B" android:strokeWidth="1.800000" android:strokeLineCap="2"/>
+  <group>
+    <clip-path android:name="eye_mask" android:pathData="@7F10009C"/>
+    <path android:name="eye" android:fillColor="@android:0106000B" android:pathData="@7F10009B"/>
+  </group>
+</vector>

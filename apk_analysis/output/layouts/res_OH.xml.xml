@@ -1,0 +1,10 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="#FF000000" android:layout_width="-1" android:layout_height="-1">
+  <com.yhqx.account.widget.MyViewPager android:id="@7F09019C" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  <LinearLayout android:orientation="0" android:id="@7F090242" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="16.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F080080" android:scaleType="3"/>
+    <View android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000"/>
+    <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:gravity="0x00000011" android:id="@7F0901C7" android:layout_width="60.000000dip" android:layout_height="-1" android:text="分享"/>
+    <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:gravity="0x00000011" android:id="@7F0900B5" android:layout_width="60.000000dip" android:layout_height="-1" android:text="@7F100034"/>
+  </LinearLayout>
+  <me.relex.circleindicator.CircleIndicator android:gravity="0x00000011" android:layout_gravity="0x00000050" android:id="@7F090198" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="12.000000dip" app:ci_animator="@7F01001F" app:ci_drawable="@7F0800BA" app:ci_drawable_unselected="@7F0800BB" app:ci_height="6.000000dip" app:ci_margin="4.000000dip" app:ci_width="6.000000dip"/>
+</FrameLayout>

@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="1" android:background="?7F0400BA" android:layout_width="-1" android:layout_height="-2">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="?7F0400BA" android:layout_width="-1" android:layout_height="50.000000dip">
+      <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0401F0"/>
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901E6" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip">
+        <TextView android:textSize="18.000000sp" android:textColor="?7F0401F0" android:id="@7F090281" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="8.000000dip"/>
+        <ImageView android:id="@7F0900C8" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080095" android:scaleType="3"/>
+      </LinearLayout>
+      <ImageView android:id="@7F0900D7" android:padding="15.500001dip" android:visibility="2" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08009C" android:scaleType="3" android:tint="?7F0401F0"/>
+    </LinearLayout>
+    <RelativeLayout android:layout_width="-1" android:layout_height="140.000000dip">
+      <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:id="@7F09027E" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:text="年度结余" android:layout_marginStart="20.000000dip"/>
+      <TextView android:textSize="19.000000sp" android:textColor="?7F0401F0" android:id="@7F090089" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:text="¥" android:layout_below="@7F09027E" android:layout_marginStart="23.000000dip"/>
+      <TextView android:textSize="36.000000sp" android:textStyle="0x00000001" android:textColor="?7F0401F0" android:id="@7F09027D" android:layout_width="-2" android:layout_height="-2" android:layout_alignBottom="@7F090089" android:layout_marginStart="15.000000dip" android:layout_toEndOf="@7F090089"/>
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="15.000000dip" android:layout_alignParentBottom="true">
+        <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+          <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:id="@7F09027C" android:layout_width="-2" android:layout_height="-2" android:text="年度收入" android:layout_marginStart="20.000000dip"/>
+          <TextView android:textSize="21.000000sp" android:textColor="?7F0401F0" android:id="@7F09027B" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="8.000000dip"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:paddingStart="5.000000dip">
+          <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:id="@7F090280" android:layout_width="-2" android:layout_height="-2" android:text="年度支出" android:layout_marginStart="10.000000dip"/>
+          <TextView android:textSize="21.000000sp" android:textColor="?7F0401F0" android:id="@7F09027F" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="8.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+    </RelativeLayout>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="30.000000dip">
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="?7F04010D" android:gravity="0x00800005" android:id="@7F090142" android:layout_width="38.000000dip" android:layout_height="-2" android:text="月份" android:singleLine="true" android:layout_marginStart="8.000000dip"/>
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="?7F04010D" android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="-2" android:text="收入" android:singleLine="true" android:layout_weight="1.000000"/>
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="?7F04010D" android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="-2" android:text="支出" android:singleLine="true" android:layout_weight="1.000000"/>
+    <TextView android:textSize="15.000000sp" android:textStyle="0x00000001" android:textColor="?7F04010D" android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="-2" android:text="结余" android:singleLine="true" android:layout_weight="1.300000" android:paddingEnd="28.000000dip"/>
+  </LinearLayout>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <RelativeLayout android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F0900CF" android:visibility="1" android:layout_width="-1" android:layout_height="-2" android:layout_centerInParent="true">
+      <ImageView android:id="@7F0900D0" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F08009B" android:tint="?7F04031B" android:alpha="0.150000"/>
+      <LinearLayout android:gravity="0x00000001" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8.000000dip">
+        <TextView android:textSize="15.000000sp" android:textColor="?7F04031B" android:layout_width="-2" android:layout_height="-2" android:text="暂无数据" android:alpha="0.200000"/>
+      </LinearLayout>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F09020D" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+  </RelativeLayout>
+</LinearLayout>

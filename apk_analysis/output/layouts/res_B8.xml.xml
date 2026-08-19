@@ -1,0 +1,76 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@7F0901C1" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <com.google.android.material.tabs.TabLayout android:id="@7F090034" android:layout_width="-2" android:layout_height="48.000000dip" app:tabIndicatorColor="?7F0402DF" app:tabMode="0" app:tabRippleColor="#00000000" app:tabSelectedTextColor="?7F0402DF" app:tabTextAppearance="@7F1100F2" app:tabTextColor="?7F04010D"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <ImageView android:id="@7F090130" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:scaleType="3" android:tint="?7F0402DF"/>
+  </LinearLayout>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@7F090035" android:scrollbars="0x00000200" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+  <LinearLayout android:orientation="1" android:id="@7F09006F" android:visibility="2" android:layout_width="-1" android:layout_height="-2">
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+      <EditText android:textSize="15.500001sp" android:textColor="?7F04010E" android:textColorHint="?7F040171" android:gravity="0x00000010" android:id="@7F090090" android:background="#00000000" android:layout_width="0.000000dip" android:layout_height="-2" android:minHeight="50.000000dip" android:hint="添加备注..." android:singleLine="false" android:layout_weight="1.000000"/>
+      <View android:background="?7F040277" android:visibility="2" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+      <TextView android:textSize="24.000000sp" android:textColor="#FFCC0000" android:textColorHint="#FFCC0000" android:ellipsize="1" android:gravity="0x00800015" android:id="@7F09013F" android:layout_width="-2" android:layout_height="40.000000dip" android:hint="0" android:singleLine="true" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip"/>
+    </LinearLayout>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <RelativeLayout android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="50.000000dip" android:layout_centerVertical="true">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0900AE" android:layout_width="-2" android:layout_height="-1" android:layout_marginStart="15.000000dip">
+          <ImageView android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="@7F080077" android:scaleType="3" android:tint="?7F04010D"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0900AC" android:layout_width="-2" android:layout_height="-1" android:text="今天" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F09019B" android:layout_width="-2" android:layout_height="-1" android:layout_marginStart="14.000000dip">
+          <ImageView android:padding="0.500000dip" android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="@7F0800EF" android:scaleType="3" android:tint="?7F04010D"/>
+          <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090194" android:layout_width="-2" android:layout_height="-1" android:text="图片" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F09019C" android:layout_width="-2" android:layout_height="-2" android:layout_centerVertical="true" android:overScrollMode="2" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <LinearLayout android:orientation="1" android:id="@7F090172" android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0901F1" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="7" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0900CE" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="8" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090168" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="9" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <ImageView android:id="@7F0900B4" android:padding="14.000000dip" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:src="@7F080087" android:scaleType="3" android:tint="?7F04010D" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0900F3" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="4" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0900E9" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="5" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0901FA" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="6" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0901A1" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="+" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090177" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="1" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090254" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="2" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090238" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="3" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090210" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="-" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F09004C" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="再记" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090282" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="0" android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F0900C6" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="." android:layout_weight="1.000000"/>
+        <View android:background="?7F040277" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F0401F0" android:gravity="0x00000011" android:id="@7F0900C4" android:background="?7F0400BA" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="完成" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

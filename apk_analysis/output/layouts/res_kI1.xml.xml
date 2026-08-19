@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="0x00000001" android:orientation="1" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+    <FrameLayout android:layout_width="-1" android:layout_height="42.000000dip">
+      <ImageView android:layout_gravity="0x00800003" android:id="@7F0901B3" android:padding="10.000000dip" android:layout_width="50.000000dip" android:layout_height="42.000000dip" android:foreground="?android:0101030E" android:src="@7F0800FB" android:scaleType="3" android:tint="?7F0402DF"/>
+      <com.google.android.material.tabs.TabLayout android:layout_gravity="0x00000011" android:id="@7F090034" android:layout_width="140.000000dip" android:layout_height="42.000000dip" app:tabRippleColor="#00000000" app:tabSelectedTextColor="?7F04031C" app:tabTextAppearance="@7F1100F2" app:tabTextColor="?7F04010D"/>
+      <ImageView android:layout_gravity="0x00800005" android:id="@7F09007C" android:padding="10.000000dip" android:layout_width="50.000000dip" android:layout_height="42.000000dip" android:foreground="?android:0101030E" android:src="@7F08007B" android:scaleType="3" android:tint="?7F0402DF"/>
+    </FrameLayout>
+    <RadioGroup android:gravity="0x00000011" android:orientation="0" android:id="@7F090190" android:layout_width="-1" android:layout_height="50.000000dip">
+      <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F090272" android:layout_width="80.000000dip" android:layout_height="30.000000dip" android:text="周" android:layout_marginEnd="16777215.000000dip" style="@7F1102BF"/>
+      <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F090142" android:layout_width="80.000000dip" android:layout_height="30.000000dip" android:text="月" style="@7F1102BF"/>
+      <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F090281" android:layout_width="80.000000dip" android:layout_height="30.000000dip" android:text="年" android:layout_marginStart="16777215.000000dip" style="@7F1102BF"/>
+    </RadioGroup>
+    <com.google.android.material.tabs.TabLayout android:id="@7F09018F" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="35.000000dip" app:tabIndicatorColor="?7F04031B" app:tabMode="0" app:tabRippleColor="#0A000000" app:tabSelectedTextColor="?7F04031B" app:tabTextAppearance="@7F1100F2" app:tabTextColor="?7F04010D"/>
+  </LinearLayout>
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+      <androidx.core.widget.NestedScrollView android:layout_width="-1" android:layout_height="-2" android:overScrollMode="2">
+        <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+          <com.yhqx.account.widget.VerticalBarView android:id="@7F090251" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="-1" android:layout_height="160.000000dip"/>
+          <TextView android:textSize="14.000000sp" android:textColor="?7F04010D" android:gravity="0x00000010" android:id="@7F09019F" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="28.000000dip" android:paddingStart="7.000000dip"/>
+          <com.yhqx.account.widget.PieStatisticView android:id="@7F09019E" android:layout_width="-1" android:layout_height="210.000000dip"/>
+          <TextView android:textSize="12.000000sp" android:textColor="?7F040171" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:text="支持手指旋转查看，小于2%不会显示" android:layout_marginEnd="5.000000dip"/>
+          <TextView android:textSize="14.000000sp" android:textColor="?7F04010D" android:gravity="0x00000010" android:id="@7F090125" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="28.000000dip" android:paddingStart="7.000000dip"/>
+          <androidx.recyclerview.widget.RecyclerView android:id="@7F09020D" android:layout_width="-1" android:layout_height="-2" android:overScrollMode="2" android:nestedScrollingEnabled="false"/>
+        </LinearLayout>
+      </androidx.core.widget.NestedScrollView>
+      <View android:background="?7F0401EF" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0900CF" android:background="?7F0401EF" android:visibility="2" android:layout_width="-1" android:layout_height="-1">
+      <ImageView android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F08009B" android:tint="?7F04031B" android:alpha="0.150000"/>
+      <TextView android:textSize="15.000000sp" android:textColor="?7F04031B" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:text="暂无数据" android:alpha="0.200000"/>
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

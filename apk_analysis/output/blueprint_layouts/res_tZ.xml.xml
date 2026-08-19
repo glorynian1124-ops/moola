@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:orientation="1" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="match_parent" android:layout_height="50.000000dip">
+      <ImageView android:id="@id/back" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:back_arrow=res/0Z.png]" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000" android:layout_marginStart="20.000000dip"/>
+      <com.google.android.material.tabs.TabLayout android:id="@id/infotype" android:layout_width="wrap_content" android:layout_height="48.000000dip" app:tabIndicatorColor="[attr:textColorPrimary=#ff303f9f]" app:tabMode="0" app:tabRippleColor="#00000000" app:tabSelectedTextColor="[attr:textColorPrimary=#ff303f9f]" app:tabTextAppearance="[style:MyTabText]" app:tabTextColor="[attr:dark4clr=#ff444444]"/>
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000" android:layout_marginEnd="70.000000dip"/>
+    </LinearLayout>
+    <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/infolist" android:visibility="2" android:layout_width="match_parent" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:overScrollMode="2"/>
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@id/userinfo" android:layout_width="match_parent" android:layout_height="wrap_content">
+      <TextView android:textSize="16.000000sp" android:textColor="[attr:textColorPrimary=#ff303f9f]" android:id="@id/noaccount" android:visibility="2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.000000dip" android:text="当前设备未登录！"/>
+      <LinearLayout android:orientation="1" android:background="[drawable:roundrect3=res/hA.xml]" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="70.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+          <TextView android:textSize="16.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:layout_width="180.000000dip" android:layout_height="wrap_content" android:text="图像"/>
+          <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+          <ImageView android:id="@id/photo" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="[drawable:avatar=res/aW.png]"/>
+        </LinearLayout>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="50.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+          <TextView android:textSize="16.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:layout_width="180.000000dip" android:layout_height="wrap_content" android:text="昵称"/>
+          <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+          <TextView android:textSize="15.000000sp" android:textColor="[attr:dark6clr=#ff666666]" android:id="@id/nickname" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="50.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+          <TextView android:textSize="16.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:layout_width="180.000000dip" android:layout_height="wrap_content" android:text="会员状态"/>
+          <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+          <TextView android:textSize="15.000000sp" android:textColor="[attr:dark6clr=#ff666666]" android:id="@id/vip" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+      </LinearLayout>
+      <LinearLayout android:orientation="1" android:background="[drawable:roundrect3=res/hA.xml]" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="50.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+          <TextView android:textSize="16.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:layout_width="180.000000dip" android:layout_height="wrap_content" android:text="手机号"/>
+          <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+          <TextView android:textSize="15.000000sp" android:textColor="[attr:dark6clr=#ff666666]" android:id="@id/mobile" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="50.000000dip" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip">
+          <TextView android:textSize="16.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:layout_width="180.000000dip" android:layout_height="wrap_content" android:text="微信"/>
+          <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+          <TextView android:textSize="15.000000sp" android:textColor="[attr:dark6clr=#ff666666]" android:id="@id/bindwx" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+      </LinearLayout>
+      <TextView android:textSize="14.000000sp" android:textColor="[attr:gray9clr=#ff999999]" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.000000dip" android:text="手机号、微信仅用于账号登录"/>
+    </LinearLayout>
+  </LinearLayout>
+</RelativeLayout>

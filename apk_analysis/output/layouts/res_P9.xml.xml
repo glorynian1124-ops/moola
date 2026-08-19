@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="?7F040121" android:layout_width="-2" android:layout_height="-2">
+  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F090072" android:layout_width="200.000000dip" android:layout_height="60.000000dip" android:foreground="?android:0101030E">
+      <ImageView android:visibility="2" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:layout_margin="15.000000dip" android:src="@7F080079" android:scaleType="3" android:tint="#FF333333"/>
+      <TextView android:textSize="19.000000sp" android:textColor="#FF333333" android:layout_width="-2" android:layout_height="-2" android:text="拍照"/>
+    </LinearLayout>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <LinearLayout android:gravity="0x00000011" android:orientation="0" android:id="@7F09004E" android:layout_width="200.000000dip" android:layout_height="60.000000dip" android:foreground="?android:0101030E">
+      <ImageView android:visibility="2" android:layout_width="19.000000dip" android:layout_height="19.000000dip" android:layout_margin="15.000000dip" android:src="@7F0800EF" android:scaleType="3" android:tint="#FF333333"/>
+      <TextView android:textSize="19.000000sp" android:textColor="#FF333333" android:layout_width="-2" android:layout_height="-2" android:text="相册"/>
+    </LinearLayout>
+  </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+      <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000" android:layout_marginStart="20.000000dip"/>
+      <com.google.android.material.tabs.TabLayout android:id="@7F090034" android:layout_width="-2" android:layout_height="48.000000dip" app:tabIndicatorColor="?7F0402DF" app:tabMode="0" app:tabRippleColor="#00000000" app:tabSelectedTextColor="?7F0402DF" app:tabTextAppearance="@7F1100F2" app:tabTextColor="?7F04010D"/>
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+      <TextView android:textSize="16.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F09010B" android:layout_width="70.000000dip" android:layout_height="-1" android:foreground="?android:0101030E" android:text="导入"/>
+    </LinearLayout>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <androidx.recyclerview.widget.RecyclerView android:id="@7F090258" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:overScrollMode="2"/>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <LinearLayout android:gravity="0x00000011" android:id="@7F09009A" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip" android:foreground="?android:0101030E">
+      <ImageView android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="@7F080061" android:scaleType="3" android:tint="?7F0402DF" android:layout_marginEnd="10.000000dip"/>
+      <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:layout_width="-2" android:layout_height="-2" android:text="新增类别"/>
+    </LinearLayout>
+  </LinearLayout>
+</RelativeLayout>

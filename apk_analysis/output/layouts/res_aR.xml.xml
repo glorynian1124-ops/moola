@@ -1,0 +1,5 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F090153" android:paddingLeft="@7F0700C7" android:paddingTop="@7F0700E5" android:paddingRight="@7F0700C7" android:paddingBottom="16.000000dip" android:layout_width="-1" android:layout_height="-2">
+  <com.google.android.material.textfield.TextInputLayout android:id="@7F09015D" android:layout_width="-1" android:layout_height="-2">
+    <com.google.android.material.textfield.TextInputEditText android:layout_width="-1" android:layout_height="-2" android:hint="@7F100083" android:inputType="0x00000014" android:imeOptions="0x10000000"/>
+  </com.google.android.material.textfield.TextInputLayout>
+</FrameLayout>

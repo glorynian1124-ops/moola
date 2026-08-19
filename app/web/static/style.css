@@ -1,0 +1,77 @@
+/* Moola MVP 样式（占位版，后续按 Pixso 设计稿替换） */
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --ink: #1a1d24;
+  --muted: #8a919e;
+  --expense: #e5484d;
+  --income: #30a46c;
+  --accent: #4c6ef5;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 40px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 4px 16px;
+}
+.topbar h1 { font-size: 24px; letter-spacing: -0.5px; }
+.month { color: var(--muted); font-size: 14px; }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.card h2 { font-size: 15px; margin-bottom: 12px; }
+
+.overview { display: flex; justify-content: space-between; }
+.ov-item { display: flex; flex-direction: column; gap: 4px; }
+.ov-item .label { font-size: 12px; color: var(--muted); }
+.ov-item .value { font-size: 18px; font-weight: 600; }
+
+.income { color: var(--income); }
+.expense { color: var(--expense); }
+
+.cat-list { list-style: none; }
+.cat-list li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0; font-size: 14px;
+}
+.cat-name { width: 56px; flex-shrink: 0; }
+.cat-bar { flex: 1; height: 8px; background: #eef0f3; border-radius: 4px; overflow: hidden; }
+.cat-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.cat-amt { width: 90px; text-align: right; font-variant-numeric: tabular-nums; }
+
+.warn { border: 1px solid #ffd8a8; background: #fff9f0; }
+.warn ul { padding-left: 18px; font-size: 13px; color: #a05a00; }
+.warn li { margin: 4px 0; }
+
+.tx-list { list-style: none; }
+.tx-list li {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid #f1f2f4;
+}
+.tx-list li:last-child { border-bottom: none; }
+.tx-left { display: flex; flex-direction: column; gap: 2px; }
+.tx-merchant { font-size: 14px; }
+.tx-meta { font-size: 12px; color: var(--muted); }
+.tx-amount { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.empty { color: var(--muted); font-size: 13px; line-height: 1.8; }
+code { background: #eef0f3; padding: 1px 6px; border-radius: 4px; font-size: 12px; }

@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="@7F080122" android:layout_width="-1" android:layout_height="-1">
+  <RelativeLayout android:layout_gravity="0x00000011" android:layout_width="-1" android:layout_height="140.000000dip">
+    <ImageView android:id="@7F090063" android:layout_width="-1" android:layout_height="-1"/>
+    <ImageView android:id="@7F09021B" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="17.000000dip" android:layout_marginStart="20.000000dip"/>
+    <ImageView android:id="@7F0900BD" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="21.000000dip" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true"/>
+    <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="17.000000dip" android:layout_alignParentBottom="true">
+      <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="20.000000dip">
+        <ImageView android:id="@7F09021C" android:layout_width="-2" android:layout_height="-2"/>
+      </LinearLayout>
+      <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip">
+        <ImageView android:id="@7F09021D" android:layout_width="-2" android:layout_height="-2"/>
+      </LinearLayout>
+    </LinearLayout>
+  </RelativeLayout>
+</FrameLayout>

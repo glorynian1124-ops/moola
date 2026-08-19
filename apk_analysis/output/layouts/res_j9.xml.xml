@@ -1,0 +1,14 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="-1" android:layout_height="@7F0700D4">
+  <LinearLayout android:layout_gravity="0x00000031" android:orientation="0" android:paddingLeft="@7F0700D1" android:paddingTop="@7F0700D1" android:paddingRight="@7F0700D1" android:layout_width="-1" android:layout_height="@7F0700D4" android:paddingStart="@7F0700D1" android:paddingEnd="@7F0700D1" style="?7F040217">
+    <com.google.android.material.button.MaterialButton android:gravity="0x00000011" android:layout_gravity="0x00000030" android:id="@7F090075" android:padding="12.000000dip" android:layout_width="@7F070116" android:layout_height="@7F070116" android:insetTop="0.000000dip" android:insetBottom="0.000000dip" android:contentDescription="@7F100071" app:icon="@7F0800AD" app:iconTint="?7F0400B6" app:rippleColor="@7F060100" style="@7F110274"/>
+    <FrameLayout android:id="@7F09015B" android:paddingLeft="@7F0700D6" android:layout_width="0.000000dip" android:layout_height="-1" android:layout_weight="1.000000" android:paddingStart="@7F0700D6">
+      <TextView android:gravity="0x00800053" android:layout_gravity="0x00800033" android:id="@7F090160" android:layout_width="-1" android:layout_height="-2" app:firstBaselineToTopHeight="@7F0700E7" style="?7F040219"/>
+      <TextView android:gravity="0x00800053" android:layout_gravity="0x00800033" android:id="@7F09015A" android:paddingBottom="@7F0700E0" android:layout_width="-1" android:layout_height="-2" app:firstBaselineToTopHeight="@7F0700E1" app:lineHeight="@7F0700D5" style="?7F040218"/>
+    </FrameLayout>
+    <LinearLayout android:orientation="@7F0A000E" android:layout_width="-2" android:layout_height="-2">
+      <com.google.android.material.button.MaterialButton android:layout_gravity="0x00800035" android:id="@7F090091" android:layout_width="-2" android:layout_height="@7F070116" android:text="@7F100082" android:contentDescription="@7F100082" style="?7F040215"/>
+      <include layout="@7F0C0097"/>
+    </LinearLayout>
+  </LinearLayout>
+  <View android:layout_gravity="0x00000050" android:layout_width="-1" android:layout_height="@7F0700D2" style="?7F040216"/>
+</merge>

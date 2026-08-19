@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@7F090050" android:title="全部"/>
+  <item android:id="@7F09010C" android:title="收入"/>
+  <item android:id="@7F09017F" android:title="支出"/>
+</menu>

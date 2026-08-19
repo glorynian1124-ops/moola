@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:background="#FFDDDDDD" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:background="?7F0400BA" android:layout_width="-1" android:layout_height="-2">
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="50.000000dip">
+        <ImageView android:id="@7F090031" android:padding="13.500001dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08005E" android:scaleType="3"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901E4" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="10.000000dip">
+          <TextView android:textSize="19.000000sp" android:textColor="?7F0401F0" android:id="@7F090142" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="8.000000dip"/>
+          <ImageView android:id="@7F0900C8" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080095" android:scaleType="3"/>
+        </LinearLayout>
+        <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+        <ImageView android:id="@7F090219" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08011A" android:scaleType="3"/>
+        <ImageView android:id="@7F0901D1" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08010B" android:scaleType="3"/>
+        <ImageView android:id="@7F090071" android:padding="15.500001dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F080077" android:scaleType="3"/>
+      </LinearLayout>
+      <RelativeLayout android:id="@7F0900FE" android:layout_width="-1" android:layout_height="140.000000dip">
+        <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:id="@7F09024B" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginStart="20.000000dip"/>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true">
+          <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:layout_width="-2" android:layout_height="-2" android:text="报表统计"/>
+          <ImageView android:layout_width="13.000000dip" android:layout_height="13.000000dip" android:src="@7F0800A2" android:scaleType="3" android:layout_marginStart="6.000000dip"/>
+        </LinearLayout>
+        <TextView android:textSize="19.000000sp" android:textColor="?7F0401F0" android:id="@7F090089" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:text="¥" android:layout_below="@7F09024B" android:layout_marginStart="23.000000dip"/>
+        <TextView android:textSize="36.000000sp" android:textStyle="0x00000001" android:textColor="?7F0401F0" android:id="@7F09017F" android:layout_width="-2" android:layout_height="-2" android:layout_alignBottom="@7F090089" android:layout_marginStart="15.000000dip" android:layout_toEndOf="@7F090089"/>
+        <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="15.000000dip" android:layout_alignParentBottom="true">
+          <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+            <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:id="@7F09023B" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="20.000000dip"/>
+            <TextView android:textSize="21.000000sp" android:textColor="?7F0401F0" android:id="@7F09010C" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="8.000000dip"/>
+          </LinearLayout>
+          <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:paddingStart="5.000000dip">
+            <TextView android:textSize="14.000000sp" android:textColor="?7F0401F0" android:id="@7F090227" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="10.000000dip"/>
+            <TextView android:textSize="21.000000sp" android:textColor="?7F0401F0" android:id="@7F09005B" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="8.000000dip"/>
+          </LinearLayout>
+        </LinearLayout>
+      </RelativeLayout>
+    </LinearLayout>
+    <com.aspsine.swipetoloadlayout.SwipeToLoadLayout android:id="@7F090215" android:layout_width="-1" android:layout_height="-1">
+      <com.yhqx.account.widget.RefreshHeaderView android:textSize="15.500001sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090217" android:background="#FFDDDDDD" android:paddingTop="10.000000dip" android:layout_width="-1" android:layout_height="90.000000dip"/>
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F090218" android:background="?7F0401EF" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+      <com.yhqx.account.widget.LoadMoreFooterView android:textSize="15.500001sp" android:textColor="?7F04010D" android:gravity="0x00000011" android:id="@7F090216" android:background="#FFDDDDDD" android:paddingBottom="10.000000dip" android:layout_width="-1" android:layout_height="90.000000dip"/>
+    </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
+  </LinearLayout>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@7F09009A" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="18.000000dip" android:src="@7F080061" android:tint="?7F0401F0" android:layout_alignParentBottom="true" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true" app:backgroundTint="?7F0400BA" app:elevation="5.000000dip" app:fabSize="0"/>
+</RelativeLayout>

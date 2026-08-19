@@ -1,0 +1,2542 @@
+[
+  {
+    "name": "$avd_hide_password__0",
+    "rid": "0x7f080000",
+    "file": "res/cc.xml"
+  },
+  {
+    "name": "$avd_hide_password__1",
+    "rid": "0x7f080001",
+    "file": "res/UQ1.xml"
+  },
+  {
+    "name": "$avd_hide_password__2",
+    "rid": "0x7f080002",
+    "file": "res/MQ.xml"
+  },
+  {
+    "name": "$avd_show_password__0",
+    "rid": "0x7f080003",
+    "file": "res/tk.xml"
+  },
+  {
+    "name": "$avd_show_password__1",
+    "rid": "0x7f080004",
+    "file": "res/tm.xml"
+  },
+  {
+    "name": "$avd_show_password__2",
+    "rid": "0x7f080005",
+    "file": "res/to.xml"
+  },
+  {
+    "name": "abc_action_bar_item_background_material",
+    "rid": "0x7f080008",
+    "file": "res/l2.xml"
+  },
+  {
+    "name": "abc_btn_borderless_material",
+    "rid": "0x7f080009",
+    "file": "res/nz.xml"
+  },
+  {
+    "name": "abc_btn_check_material",
+    "rid": "0x7f08000a",
+    "file": "res/oz.xml"
+  },
+  {
+    "name": "abc_btn_check_material_anim",
+    "rid": "0x7f08000b",
+    "file": "res/gA.xml"
+  },
+  {
+    "name": "abc_btn_colored_material",
+    "rid": "0x7f08000e",
+    "file": "res/yP.xml"
+  },
+  {
+    "name": "abc_btn_default_mtrl_shape",
+    "rid": "0x7f08000f",
+    "file": "res/WT1.xml"
+  },
+  {
+    "name": "abc_btn_radio_material",
+    "rid": "0x7f080010",
+    "file": "res/NI.xml"
+  },
+  {
+    "name": "abc_btn_radio_material_anim",
+    "rid": "0x7f080011",
+    "file": "res/dV.xml"
+  },
+  {
+    "name": "abc_cab_background_internal_bg",
+    "rid": "0x7f080016",
+    "file": "res/OK.xml"
+  },
+  {
+    "name": "abc_cab_background_top_material",
+    "rid": "0x7f080017",
+    "file": "res/lW.xml"
+  },
+  {
+    "name": "abc_dialog_material_background",
+    "rid": "0x7f08001a",
+    "file": "res/aD.xml"
+  },
+  {
+    "name": "abc_edit_text_material",
+    "rid": "0x7f08001b",
+    "file": "res/bb.xml"
+  },
+  {
+    "name": "abc_ic_ab_back_material",
+    "rid": "0x7f08001c",
+    "file": "res/hu.xml"
+  },
+  {
+    "name": "abc_ic_arrow_drop_right_black_24dp",
+    "rid": "0x7f08001d",
+    "file": "res/Bx.xml"
+  },
+  {
+    "name": "abc_ic_clear_material",
+    "rid": "0x7f08001e",
+    "file": "res/Ts.xml"
+  },
+  {
+    "name": "abc_ic_go_search_api_material",
+    "rid": "0x7f080020",
+    "file": "res/3c.xml"
+  },
+  {
+    "name": "abc_ic_menu_overflow_material",
+    "rid": "0x7f080023",
+    "file": "res/p7.xml"
+  },
+  {
+    "name": "abc_ic_search_api_material",
+    "rid": "0x7f080027",
+    "file": "res/MN.xml"
+  },
+  {
+    "name": "abc_ic_voice_search_api_material",
+    "rid": "0x7f08002e",
+    "file": "res/Ov.xml"
+  },
+  {
+    "name": "abc_item_background_holo_dark",
+    "rid": "0x7f08002f",
+    "file": "res/ih.xml"
+  },
+  {
+    "name": "abc_item_background_holo_light",
+    "rid": "0x7f080030",
+    "file": "res/uo.xml"
+  },
+  {
+    "name": "abc_list_divider_material",
+    "rid": "0x7f080031",
+    "file": "res/1y.xml"
+  },
+  {
+    "name": "abc_list_selector_background_transition_holo_dark",
+    "rid": "0x7f080037",
+    "file": "res/z1.xml"
+  },
+  {
+    "name": "abc_list_selector_background_transition_holo_light",
+    "rid": "0x7f080038",
+    "file": "res/Z4.xml"
+  },
+  {
+    "name": "abc_list_selector_holo_dark",
+    "rid": "0x7f08003b",
+    "file": "res/E7.xml"
+  },
+  {
+    "name": "abc_list_selector_holo_light",
+    "rid": "0x7f08003c",
+    "file": "res/ll.xml"
+  },
+  {
+    "name": "abc_ratingbar_indicator_material",
+    "rid": "0x7f08003f",
+    "file": "res/XM.xml"
+  },
+  {
+    "name": "abc_ratingbar_material",
+    "rid": "0x7f080040",
+    "file": "res/Of.xml"
+  },
+  {
+    "name": "abc_ratingbar_small_material",
+    "rid": "0x7f080041",
+    "file": "res/M6.xml"
+  },
+  {
+    "name": "abc_seekbar_thumb_material",
+    "rid": "0x7f080047",
+    "file": "res/-u.xml"
+  },
+  {
+    "name": "abc_seekbar_tick_mark_material",
+    "rid": "0x7f080048",
+    "file": "res/nl.xml"
+  },
+  {
+    "name": "abc_seekbar_track_material",
+    "rid": "0x7f080049",
+    "file": "res/J71.xml"
+  },
+  {
+    "name": "abc_spinner_textfield_background_material",
+    "rid": "0x7f08004b",
+    "file": "res/DP.xml"
+  },
+  {
+    "name": "abc_switch_thumb_material",
+    "rid": "0x7f08004c",
+    "file": "res/0b.xml"
+  },
+  {
+    "name": "abc_tab_indicator_material",
+    "rid": "0x7f08004e",
+    "file": "res/36.xml"
+  },
+  {
+    "name": "abc_text_cursor_material",
+    "rid": "0x7f080050",
+    "file": "res/x1.xml"
+  },
+  {
+    "name": "abc_textfield_search_material",
+    "rid": "0x7f08005b",
+    "file": "res/Qw.xml"
+  },
+  {
+    "name": "abc_vector_test",
+    "rid": "0x7f08005c",
+    "file": "res/K3.xml"
+  },
+  {
+    "name": "about",
+    "rid": "0x7f08005d",
+    "file": "res/8y.png"
+  },
+  {
+    "name": "accountbook",
+    "rid": "0x7f08005e",
+    "file": "res/sk.png"
+  },
+  {
+    "name": "accounts",
+    "rid": "0x7f08005f",
+    "file": "res/vz.png"
+  },
+  {
+    "name": "accounts2",
+    "rid": "0x7f080060",
+    "file": "res/t9.png"
+  },
+  {
+    "name": "add",
+    "rid": "0x7f080061",
+    "file": "res/2b.png"
+  },
+  {
+    "name": "additem",
+    "rid": "0x7f080062",
+    "file": "res/_g.png"
+  },
+  {
+    "name": "alipay",
+    "rid": "0x7f080063",
+    "file": "res/27.png"
+  },
+  {
+    "name": "app",
+    "rid": "0x7f080064",
+    "file": "res/2U.png"
+  },
+  {
+    "name": "apple",
+    "rid": "0x7f080065",
+    "file": "res/nk.png"
+  },
+  {
+    "name": "avatar",
+    "rid": "0x7f080066",
+    "file": "res/aW.png"
+  },
+  {
+    "name": "avd_hide_password",
+    "rid": "0x7f080067",
+    "file": "res/Q1.xml"
+  },
+  {
+    "name": "avd_show_password",
+    "rid": "0x7f080068",
+    "file": "res/jt.xml"
+  },
+  {
+    "name": "baby",
+    "rid": "0x7f080069",
+    "file": "res/RZ.png"
+  },
+  {
+    "name": "back_arrow",
+    "rid": "0x7f08006a",
+    "file": "res/0Z.png"
+  },
+  {
+    "name": "borrow",
+    "rid": "0x7f08006b",
+    "file": "res/o3.png"
+  },
+  {
+    "name": "botdlgbg",
+    "rid": "0x7f08006c",
+    "file": "res/0z.xml"
+  },
+  {
+    "name": "btn_checkbox_checked_mtrl",
+    "rid": "0x7f08006d",
+    "file": "res/q61.xml"
+  },
+  {
+    "name": "btn_checkbox_checked_to_unchecked_mtrl_animation",
+    "rid": "0x7f08006e",
+    "file": "res/rE.xml"
+  },
+  {
+    "name": "btn_checkbox_unchecked_mtrl",
+    "rid": "0x7f08006f",
+    "file": "res/1L.xml"
+  },
+  {
+    "name": "btn_checkbox_unchecked_to_checked_mtrl_animation",
+    "rid": "0x7f080070",
+    "file": "res/gZ.xml"
+  },
+  {
+    "name": "btn_radio_off_mtrl",
+    "rid": "0x7f080071",
+    "file": "res/Cb.xml"
+  },
+  {
+    "name": "btn_radio_off_to_on_mtrl_animation",
+    "rid": "0x7f080072",
+    "file": "res/Ks.xml"
+  },
+  {
+    "name": "btn_radio_on_mtrl",
+    "rid": "0x7f080073",
+    "file": "res/I7.xml"
+  },
+  {
+    "name": "btn_radio_on_to_off_mtrl_animation",
+    "rid": "0x7f080074",
+    "file": "res/gl.xml"
+  },
+  {
+    "name": "btnbg",
+    "rid": "0x7f080075",
+    "file": "res/Uf.xml"
+  },
+  {
+    "name": "bus",
+    "rid": "0x7f080076",
+    "file": "res/ls.png"
+  },
+  {
+    "name": "calendar",
+    "rid": "0x7f080077",
+    "file": "res/yw.png"
+  },
+  {
+    "name": "camera",
+    "rid": "0x7f080078",
+    "file": "res/77.png"
+  },
+  {
+    "name": "camera2",
+    "rid": "0x7f080079",
+    "file": "res/93.png"
+  },
+  {
+    "name": "carrot",
+    "rid": "0x7f08007a",
+    "file": "res/54.png"
+  },
+  {
+    "name": "chart",
+    "rid": "0x7f08007b",
+    "file": "res/Nn.png"
+  },
+  {
+    "name": "chat",
+    "rid": "0x7f08007c",
+    "file": "res/eK.png"
+  },
+  {
+    "name": "check_boxs",
+    "rid": "0x7f08007d",
+    "file": "res/yT.xml"
+  },
+  {
+    "name": "checkbox",
+    "rid": "0x7f08007e",
+    "file": "res/mF.xml"
+  },
+  {
+    "name": "checkbox0",
+    "rid": "0x7f08007f",
+    "file": "res/dA.xml"
+  },
+  {
+    "name": "close",
+    "rid": "0x7f080080",
+    "file": "res/zA.png"
+  },
+  {
+    "name": "cloth",
+    "rid": "0x7f080081",
+    "file": "res/Zk.png"
+  },
+  {
+    "name": "color",
+    "rid": "0x7f080082",
+    "file": "res/HJ.png"
+  },
+  {
+    "name": "cookie",
+    "rid": "0x7f080083",
+    "file": "res/3Z.png"
+  },
+  {
+    "name": "custom",
+    "rid": "0x7f080084",
+    "file": "res/h0.png"
+  },
+  {
+    "name": "cv_bg_material",
+    "rid": "0x7f080085",
+    "file": "res/7r.xml"
+  },
+  {
+    "name": "del",
+    "rid": "0x7f080086",
+    "file": "res/lk.png"
+  },
+  {
+    "name": "delete",
+    "rid": "0x7f080087",
+    "file": "res/3G.png"
+  },
+  {
+    "name": "delivery",
+    "rid": "0x7f080088",
+    "file": "res/io.png"
+  },
+  {
+    "name": "design_bottom_navigation_item_background",
+    "rid": "0x7f080089",
+    "file": "res/7E.xml"
+  },
+  {
+    "name": "design_fab_background",
+    "rid": "0x7f08008a",
+    "file": "res/UQ.xml"
+  },
+  {
+    "name": "design_password_eye",
+    "rid": "0x7f08008d",
+    "file": "res/9S.xml"
+  },
+  {
+    "name": "design_snackbar_background",
+    "rid": "0x7f08008e",
+    "file": "res/fv.xml"
+  },
+  {
+    "name": "diamond",
+    "rid": "0x7f08008f",
+    "file": "res/sL.png"
+  },
+  {
+    "name": "dog",
+    "rid": "0x7f080090",
+    "file": "res/F7.png"
+  },
+  {
+    "name": "donat",
+    "rid": "0x7f080091",
+    "file": "res/36.png"
+  },
+  {
+    "name": "dot",
+    "rid": "0x7f080092",
+    "file": "res/lq.xml"
+  },
+  {
+    "name": "drawback",
+    "rid": "0x7f080093",
+    "file": "res/R_.png"
+  },
+  {
+    "name": "drink",
+    "rid": "0x7f080094",
+    "file": "res/80.png"
+  },
+  {
+    "name": "dropdown",
+    "rid": "0x7f080095",
+    "file": "res/yU.png"
+  },
+  {
+    "name": "drug",
+    "rid": "0x7f080096",
+    "file": "res/fh.png"
+  },
+  {
+    "name": "dumbell",
+    "rid": "0x7f080097",
+    "file": "res/Oe.png"
+  },
+  {
+    "name": "edit",
+    "rid": "0x7f080098",
+    "file": "res/-M.png"
+  },
+  {
+    "name": "electricity",
+    "rid": "0x7f080099",
+    "file": "res/OO.png"
+  },
+  {
+    "name": "email",
+    "rid": "0x7f08009a",
+    "file": "res/ju.png"
+  },
+  {
+    "name": "empty",
+    "rid": "0x7f08009b",
+    "file": "res/8e.png"
+  },
+  {
+    "name": "eraser",
+    "rid": "0x7f08009c",
+    "file": "res/ng.png"
+  },
+  {
+    "name": "export",
+    "rid": "0x7f08009d",
+    "file": "res/jV.png"
+  },
+  {
+    "name": "eye",
+    "rid": "0x7f08009e",
+    "file": "res/l9.png"
+  },
+  {
+    "name": "film",
+    "rid": "0x7f08009f",
+    "file": "res/Zy.png"
+  },
+  {
+    "name": "fingerprint",
+    "rid": "0x7f0800a0",
+    "file": "res/jl.png"
+  },
+  {
+    "name": "firstday",
+    "rid": "0x7f0800a1",
+    "file": "res/fa.png"
+  },
+  {
+    "name": "forward",
+    "rid": "0x7f0800a2",
+    "file": "res/LO.png"
+  },
+  {
+    "name": "fp",
+    "rid": "0x7f0800a3",
+    "file": "res/Vc.png"
+  },
+  {
+    "name": "fridge",
+    "rid": "0x7f0800a4",
+    "file": "res/xX.png"
+  },
+  {
+    "name": "furniture",
+    "rid": "0x7f0800a5",
+    "file": "res/e7.png"
+  },
+  {
+    "name": "game",
+    "rid": "0x7f0800a6",
+    "file": "res/L4.png"
+  },
+  {
+    "name": "gift",
+    "rid": "0x7f0800a9",
+    "file": "res/Ri.png"
+  },
+  {
+    "name": "handshake",
+    "rid": "0x7f0800aa",
+    "file": "res/8C.png"
+  },
+  {
+    "name": "home",
+    "rid": "0x7f0800ab",
+    "file": "res/bC.png"
+  },
+  {
+    "name": "ic_calendar_black_24dp",
+    "rid": "0x7f0800ac",
+    "file": "res/sh.xml"
+  },
+  {
+    "name": "ic_clear_black_24dp",
+    "rid": "0x7f0800ad",
+    "file": "res/k3.xml"
+  },
+  {
+    "name": "ic_edit_black_24dp",
+    "rid": "0x7f0800ae",
+    "file": "res/ks.xml"
+  },
+  {
+    "name": "ic_keyboard_arrow_left_black_24dp",
+    "rid": "0x7f0800af",
+    "file": "res/1W.xml"
+  },
+  {
+    "name": "ic_keyboard_arrow_right_black_24dp",
+    "rid": "0x7f0800b0",
+    "file": "res/B-.xml"
+  },
+  {
+    "name": "ic_launcher_background",
+    "rid": "0x7f0800b1",
+    "file": "res/3N.xml"
+  },
+  {
+    "name": "ic_menu_arrow_down_black_24dp",
+    "rid": "0x7f0800b3",
+    "file": "res/Hp.xml"
+  },
+  {
+    "name": "ic_menu_arrow_up_black_24dp",
+    "rid": "0x7f0800b4",
+    "file": "res/VW.xml"
+  },
+  {
+    "name": "ic_mtrl_checked_circle",
+    "rid": "0x7f0800b5",
+    "file": "res/RT.xml"
+  },
+  {
+    "name": "ic_mtrl_chip_checked_black",
+    "rid": "0x7f0800b6",
+    "file": "res/ID.xml"
+  },
+  {
+    "name": "ic_mtrl_chip_checked_circle",
+    "rid": "0x7f0800b7",
+    "file": "res/2D.xml"
+  },
+  {
+    "name": "ic_mtrl_chip_close_circle",
+    "rid": "0x7f0800b8",
+    "file": "res/rM1.xml"
+  },
+  {
+    "name": "image",
+    "rid": "0x7f0800b9",
+    "file": "res/EB.png"
+  },
+  {
+    "name": "indicator_selected",
+    "rid": "0x7f0800ba",
+    "file": "res/Qj.xml"
+  },
+  {
+    "name": "indicator_unselected",
+    "rid": "0x7f0800bb",
+    "file": "res/24.xml"
+  },
+  {
+    "name": "insurance",
+    "rid": "0x7f0800bc",
+    "file": "res/-J.png"
+  },
+  {
+    "name": "investment",
+    "rid": "0x7f0800bd",
+    "file": "res/R8.png"
+  },
+  {
+    "name": "list",
+    "rid": "0x7f0800be",
+    "file": "res/DY.png"
+  },
+  {
+    "name": "livingexpn",
+    "rid": "0x7f0800bf",
+    "file": "res/Qh.png"
+  },
+  {
+    "name": "loading",
+    "rid": "0x7f0800c0",
+    "file": "res/qx.png"
+  },
+  {
+    "name": "lock",
+    "rid": "0x7f0800c1",
+    "file": "res/bo.png"
+  },
+  {
+    "name": "logo",
+    "rid": "0x7f0800c2",
+    "file": "res/nm.png"
+  },
+  {
+    "name": "medical",
+    "rid": "0x7f0800c3",
+    "file": "res/MG.png"
+  },
+  {
+    "name": "menubk1",
+    "rid": "0x7f0800c4",
+    "file": "res/ZS8.xml"
+  },
+  {
+    "name": "menubk2",
+    "rid": "0x7f0800c5",
+    "file": "res/ZS7.xml"
+  },
+  {
+    "name": "menubk3",
+    "rid": "0x7f0800c6",
+    "file": "res/ZS6.xml"
+  },
+  {
+    "name": "menubk4",
+    "rid": "0x7f0800c7",
+    "file": "res/ZS5.xml"
+  },
+  {
+    "name": "menubk5",
+    "rid": "0x7f0800c8",
+    "file": "res/ZS4.xml"
+  },
+  {
+    "name": "menubk6",
+    "rid": "0x7f0800c9",
+    "file": "res/ZS3.xml"
+  },
+  {
+    "name": "menubk7",
+    "rid": "0x7f0800ca",
+    "file": "res/ZS2.xml"
+  },
+  {
+    "name": "menubk8",
+    "rid": "0x7f0800cb",
+    "file": "res/ZS1.xml"
+  },
+  {
+    "name": "merge",
+    "rid": "0x7f0800cc",
+    "file": "res/z2.png"
+  },
+  {
+    "name": "mirror",
+    "rid": "0x7f0800cd",
+    "file": "res/CK.png"
+  },
+  {
+    "name": "moments",
+    "rid": "0x7f0800ce",
+    "file": "res/_N.png"
+  },
+  {
+    "name": "money",
+    "rid": "0x7f0800cf",
+    "file": "res/nI.png"
+  },
+  {
+    "name": "moneybag",
+    "rid": "0x7f0800d0",
+    "file": "res/fZ.png"
+  },
+  {
+    "name": "more",
+    "rid": "0x7f0800d1",
+    "file": "res/6h.png"
+  },
+  {
+    "name": "moresetting",
+    "rid": "0x7f0800d2",
+    "file": "res/P6.png"
+  },
+  {
+    "name": "mtrl_dialog_background",
+    "rid": "0x7f0800d3",
+    "file": "res/uP.xml"
+  },
+  {
+    "name": "mtrl_dropdown_arrow",
+    "rid": "0x7f0800d4",
+    "file": "res/J7.xml"
+  },
+  {
+    "name": "mtrl_ic_arrow_drop_down",
+    "rid": "0x7f0800d5",
+    "file": "res/WP.xml"
+  },
+  {
+    "name": "mtrl_ic_arrow_drop_up",
+    "rid": "0x7f0800d6",
+    "file": "res/M4.xml"
+  },
+  {
+    "name": "mtrl_ic_cancel",
+    "rid": "0x7f0800d7",
+    "file": "res/WG.xml"
+  },
+  {
+    "name": "mtrl_ic_error",
+    "rid": "0x7f0800d8",
+    "file": "res/41.xml"
+  },
+  {
+    "name": "mtrl_popupmenu_background",
+    "rid": "0x7f0800d9",
+    "file": "res/wY.xml"
+  },
+  {
+    "name": "mtrl_popupmenu_background_dark",
+    "rid": "0x7f0800da",
+    "file": "res/e-.xml"
+  },
+  {
+    "name": "mtrl_tabs_default_indicator",
+    "rid": "0x7f0800db",
+    "file": "res/eN.xml"
+  },
+  {
+    "name": "mycheckbox",
+    "rid": "0x7f0800dc",
+    "file": "res/bB.xml"
+  },
+  {
+    "name": "navigation_empty_icon",
+    "rid": "0x7f0800dd",
+    "file": "res/lR.xml"
+  },
+  {
+    "name": "notification_action_background",
+    "rid": "0x7f0800de",
+    "file": "res/q6.xml"
+  },
+  {
+    "name": "notification_bg",
+    "rid": "0x7f0800df",
+    "file": "res/FZ.xml"
+  },
+  {
+    "name": "notification_bg_low",
+    "rid": "0x7f0800e0",
+    "file": "res/3m.xml"
+  },
+  {
+    "name": "notification_icon_background",
+    "rid": "0x7f0800e5",
+    "file": "res/NR.xml"
+  },
+  {
+    "name": "notification_tile_bg",
+    "rid": "0x7f0800e8",
+    "file": "res/Cv1.xml"
+  },
+  {
+    "name": "oldman",
+    "rid": "0x7f0800ea",
+    "file": "res/3f.png"
+  },
+  {
+    "name": "paper",
+    "rid": "0x7f0800eb",
+    "file": "res/Tf.png"
+  },
+  {
+    "name": "park",
+    "rid": "0x7f0800ec",
+    "file": "res/4_.png"
+  },
+  {
+    "name": "partjob",
+    "rid": "0x7f0800ed",
+    "file": "res/DS.png"
+  },
+  {
+    "name": "phone",
+    "rid": "0x7f0800ee",
+    "file": "res/nL.png"
+  },
+  {
+    "name": "photo",
+    "rid": "0x7f0800ef",
+    "file": "res/_F.png"
+  },
+  {
+    "name": "plane",
+    "rid": "0x7f0800f0",
+    "file": "res/me.png"
+  },
+  {
+    "name": "profile",
+    "rid": "0x7f0800f1",
+    "file": "res/y3.png"
+  },
+  {
+    "name": "profile2",
+    "rid": "0x7f0800f2",
+    "file": "res/tm.png"
+  },
+  {
+    "name": "protocal",
+    "rid": "0x7f0800f3",
+    "file": "res/hM.png"
+  },
+  {
+    "name": "purchasebtn",
+    "rid": "0x7f0800f4",
+    "file": "res/0T.xml"
+  },
+  {
+    "name": "radio_selector_text",
+    "rid": "0x7f0800f5",
+    "file": "res/g6.xml"
+  },
+  {
+    "name": "rect1",
+    "rid": "0x7f0800f6",
+    "file": "res/zo.xml"
+  },
+  {
+    "name": "redbag",
+    "rid": "0x7f0800f7",
+    "file": "res/fW.png"
+  },
+  {
+    "name": "redirect",
+    "rid": "0x7f0800f8",
+    "file": "res/n4.png"
+  },
+  {
+    "name": "refuel",
+    "rid": "0x7f0800f9",
+    "file": "res/Qg.png"
+  },
+  {
+    "name": "refund",
+    "rid": "0x7f0800fa",
+    "file": "res/DZ.png"
+  },
+  {
+    "name": "region",
+    "rid": "0x7f0800fb",
+    "file": "res/qr.png"
+  },
+  {
+    "name": "reimburse",
+    "rid": "0x7f0800fc",
+    "file": "res/5x.png"
+  },
+  {
+    "name": "remind",
+    "rid": "0x7f0800fd",
+    "file": "res/Kn.png"
+  },
+  {
+    "name": "remove",
+    "rid": "0x7f0800fe",
+    "file": "res/a6.png"
+  },
+  {
+    "name": "repair0",
+    "rid": "0x7f0800ff",
+    "file": "res/Un.png"
+  },
+  {
+    "name": "restaurant",
+    "rid": "0x7f080100",
+    "file": "res/Bs.png"
+  },
+  {
+    "name": "reward",
+    "rid": "0x7f080101",
+    "file": "res/_n.png"
+  },
+  {
+    "name": "rice",
+    "rid": "0x7f080102",
+    "file": "res/ts.png"
+  },
+  {
+    "name": "road",
+    "rid": "0x7f080103",
+    "file": "res/gY.png"
+  },
+  {
+    "name": "roundrect",
+    "rid": "0x7f080104",
+    "file": "res/8V.xml"
+  },
+  {
+    "name": "roundrect1",
+    "rid": "0x7f080105",
+    "file": "res/BX.xml"
+  },
+  {
+    "name": "roundrect3",
+    "rid": "0x7f080106",
+    "file": "res/hA.xml"
+  },
+  {
+    "name": "safe",
+    "rid": "0x7f080107",
+    "file": "res/hp.png"
+  },
+  {
+    "name": "salary",
+    "rid": "0x7f080108",
+    "file": "res/CT.png"
+  },
+  {
+    "name": "scroll",
+    "rid": "0x7f080109",
+    "file": "res/eH.png"
+  },
+  {
+    "name": "sdk",
+    "rid": "0x7f08010a",
+    "file": "res/qQ.png"
+  },
+  {
+    "name": "search",
+    "rid": "0x7f08010b",
+    "file": "res/Rc.png"
+  },
+  {
+    "name": "secret",
+    "rid": "0x7f08010c",
+    "file": "res/hl.png"
+  },
+  {
+    "name": "select",
+    "rid": "0x7f08010d",
+    "file": "res/qi.png"
+  },
+  {
+    "name": "selector_pickerview_btn",
+    "rid": "0x7f08010e",
+    "file": "res/8p.xml"
+  },
+  {
+    "name": "shape_sku",
+    "rid": "0x7f08010f",
+    "file": "res/ZJ.xml"
+  },
+  {
+    "name": "shape_sku_normal",
+    "rid": "0x7f080110",
+    "file": "res/qC.xml"
+  },
+  {
+    "name": "share",
+    "rid": "0x7f080111",
+    "file": "res/yg.png"
+  },
+  {
+    "name": "sharelogo",
+    "rid": "0x7f080112",
+    "file": "res/Ln.png"
+  },
+  {
+    "name": "shopping",
+    "rid": "0x7f080113",
+    "file": "res/fM.png"
+  },
+  {
+    "name": "smoking",
+    "rid": "0x7f080114",
+    "file": "res/6p.png"
+  },
+  {
+    "name": "sorting",
+    "rid": "0x7f080115",
+    "file": "res/fU.png"
+  },
+  {
+    "name": "star",
+    "rid": "0x7f080116",
+    "file": "res/Oh1.png"
+  },
+  {
+    "name": "statistics",
+    "rid": "0x7f080117",
+    "file": "res/6A.png"
+  },
+  {
+    "name": "statistics2",
+    "rid": "0x7f080118",
+    "file": "res/65.png"
+  },
+  {
+    "name": "study",
+    "rid": "0x7f080119",
+    "file": "res/Oh.png"
+  },
+  {
+    "name": "swtch",
+    "rid": "0x7f08011a",
+    "file": "res/B3.png"
+  },
+  {
+    "name": "sync",
+    "rid": "0x7f08011b",
+    "file": "res/SP.png"
+  },
+  {
+    "name": "taxi",
+    "rid": "0x7f08011c",
+    "file": "res/ok.png"
+  },
+  {
+    "name": "test_custom_background",
+    "rid": "0x7f08011d",
+    "file": "res/1V.xml"
+  },
+  {
+    "name": "theme",
+    "rid": "0x7f08011e",
+    "file": "res/vl.png"
+  },
+  {
+    "name": "tooltip_frame_dark",
+    "rid": "0x7f08011f",
+    "file": "res/f1.xml"
+  },
+  {
+    "name": "tooltip_frame_light",
+    "rid": "0x7f080120",
+    "file": "res/PA.xml"
+  },
+  {
+    "name": "train",
+    "rid": "0x7f080121",
+    "file": "res/fP.png"
+  },
+  {
+    "name": "transparentbk",
+    "rid": "0x7f080122",
+    "file": "res/mH.xml"
+  },
+  {
+    "name": "types",
+    "rid": "0x7f080123",
+    "file": "res/gu.png"
+  },
+  {
+    "name": "update",
+    "rid": "0x7f080124",
+    "file": "res/7n.png"
+  },
+  {
+    "name": "user",
+    "rid": "0x7f080125",
+    "file": "res/jU.png"
+  },
+  {
+    "name": "vibrate",
+    "rid": "0x7f080126",
+    "file": "res/W_.png"
+  },
+  {
+    "name": "vip",
+    "rid": "0x7f080127",
+    "file": "res/ci.png"
+  },
+  {
+    "name": "vipflag",
+    "rid": "0x7f080128",
+    "file": "res/Qj.png"
+  },
+  {
+    "name": "wechat",
+    "rid": "0x7f080129",
+    "file": "res/Vb.png"
+  },
+  {
+    "name": "white_radius",
+    "rid": "0x7f08012a",
+    "file": "res/Xk.xml"
+  },
+  {
+    "name": "widget",
+    "rid": "0x7f08012b",
+    "file": "res/Zl.png"
+  },
+  {
+    "name": "widgetbk",
+    "rid": "0x7f08012c",
+    "file": "res/Hs.JPG"
+  },
+  {
+    "name": "widgetpreview",
+    "rid": "0x7f08012d",
+    "file": "res/CV.PNG"
+  },
+  {
+    "name": "wine",
+    "rid": "0x7f08012e",
+    "file": "res/c4.png"
+  },
+  {
+    "name": "wxlogin",
+    "rid": "0x7f08012f",
+    "file": "res/E4.png"
+  },
+  {
+    "name": "abc_dialog_material_background",
+    "rid": "0x7f08001a",
+    "file": "res/aD.xml"
+  },
+  {
+    "name": "abc_control_background_material",
+    "rid": "0x7f080019",
+    "file": "res/Vl.xml"
+  },
+  {
+    "name": "mtrl_popupmenu_background_dark",
+    "rid": "0x7f0800da",
+    "file": "res/e-.xml"
+  },
+  {
+    "name": "abc_ab_share_pack_mtrl_alpha",
+    "rid": "0x7f080007",
+    "file": "res/fr.9.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_000",
+    "rid": "0x7f08000c",
+    "file": "res/ee.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_015",
+    "rid": "0x7f08000d",
+    "file": "res/TQ.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_000",
+    "rid": "0x7f080012",
+    "file": "res/n_.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_015",
+    "rid": "0x7f080013",
+    "file": "res/V9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00001",
+    "rid": "0x7f080014",
+    "file": "res/oR.9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00012",
+    "rid": "0x7f080015",
+    "file": "res/Yt.9.png"
+  },
+  {
+    "name": "abc_cab_background_top_mtrl_alpha",
+    "rid": "0x7f080018",
+    "file": "res/Xs1.9.png"
+  },
+  {
+    "name": "abc_ic_commit_search_api_mtrl_alpha",
+    "rid": "0x7f08001f",
+    "file": "res/BO.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_ic_menu_paste_mtrl_am_alpha",
+    "rid": "0x7f080024",
+    "file": "res/km.png"
+  },
+  {
+    "name": "abc_ic_menu_selectall_mtrl_alpha",
+    "rid": "0x7f080025",
+    "file": "res/EJ.png"
+  },
+  {
+    "name": "abc_ic_menu_share_mtrl_alpha",
+    "rid": "0x7f080026",
+    "file": "res/im.png"
+  },
+  {
+    "name": "abc_ic_star_black_16dp",
+    "rid": "0x7f080028",
+    "file": "res/S-.png"
+  },
+  {
+    "name": "abc_ic_star_black_36dp",
+    "rid": "0x7f080029",
+    "file": "res/SU.png"
+  },
+  {
+    "name": "abc_ic_star_black_48dp",
+    "rid": "0x7f08002a",
+    "file": "res/wc.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_16dp",
+    "rid": "0x7f08002b",
+    "file": "res/_0.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_36dp",
+    "rid": "0x7f08002c",
+    "file": "res/bB.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_48dp",
+    "rid": "0x7f08002d",
+    "file": "res/LE.png"
+  },
+  {
+    "name": "abc_list_divider_mtrl_alpha",
+    "rid": "0x7f080032",
+    "file": "res/ei.9.png"
+  },
+  {
+    "name": "abc_list_focused_holo",
+    "rid": "0x7f080033",
+    "file": "res/E2.9.png"
+  },
+  {
+    "name": "abc_list_longpressed_holo",
+    "rid": "0x7f080034",
+    "file": "res/Q1.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_dark",
+    "rid": "0x7f080035",
+    "file": "res/2C.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_light",
+    "rid": "0x7f080036",
+    "file": "res/Mz.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_dark",
+    "rid": "0x7f080039",
+    "file": "res/s2.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_light",
+    "rid": "0x7f08003a",
+    "file": "res/fD.9.png"
+  },
+  {
+    "name": "abc_menu_hardkey_panel_mtrl_mult",
+    "rid": "0x7f08003d",
+    "file": "res/HS.9.png"
+  },
+  {
+    "name": "abc_popup_background_mtrl_mult",
+    "rid": "0x7f08003e",
+    "file": "res/bK.9.png"
+  },
+  {
+    "name": "abc_scrubber_control_off_mtrl_alpha",
+    "rid": "0x7f080042",
+    "file": "res/11.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_000",
+    "rid": "0x7f080043",
+    "file": "res/rn.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_005",
+    "rid": "0x7f080044",
+    "file": "res/3_.png"
+  },
+  {
+    "name": "abc_scrubber_primary_mtrl_alpha",
+    "rid": "0x7f080045",
+    "file": "res/In.9.png"
+  },
+  {
+    "name": "abc_scrubber_track_mtrl_alpha",
+    "rid": "0x7f080046",
+    "file": "res/j9.9.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_switch_track_mtrl_alpha",
+    "rid": "0x7f08004d",
+    "file": "res/pF.9.png"
+  },
+  {
+    "name": "abc_tab_indicator_mtrl_alpha",
+    "rid": "0x7f08004f",
+    "file": "res/Ac.9.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_dark",
+    "rid": "0x7f080051",
+    "file": "res/-v.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_light",
+    "rid": "0x7f080052",
+    "file": "res/oK.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_dark",
+    "rid": "0x7f080053",
+    "file": "res/Ib.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_light",
+    "rid": "0x7f080054",
+    "file": "res/sc.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_dark",
+    "rid": "0x7f080055",
+    "file": "res/C1.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_light",
+    "rid": "0x7f080056",
+    "file": "res/Z5.png"
+  },
+  {
+    "name": "abc_textfield_activated_mtrl_alpha",
+    "rid": "0x7f080057",
+    "file": "res/5j.9.png"
+  },
+  {
+    "name": "abc_textfield_default_mtrl_alpha",
+    "rid": "0x7f080058",
+    "file": "res/ii.9.png"
+  },
+  {
+    "name": "abc_textfield_search_activated_mtrl_alpha",
+    "rid": "0x7f080059",
+    "file": "res/YH.9.png"
+  },
+  {
+    "name": "abc_textfield_search_default_mtrl_alpha",
+    "rid": "0x7f08005a",
+    "file": "res/kK.9.png"
+  },
+  {
+    "name": "design_ic_visibility",
+    "rid": "0x7f08008b",
+    "file": "res/vI.png"
+  },
+  {
+    "name": "design_ic_visibility_off",
+    "rid": "0x7f08008c",
+    "file": "res/fb.png"
+  },
+  {
+    "name": "notification_bg_low_normal",
+    "rid": "0x7f0800e1",
+    "file": "res/Pq.9.png"
+  },
+  {
+    "name": "notification_bg_low_pressed",
+    "rid": "0x7f0800e2",
+    "file": "res/eK.9.png"
+  },
+  {
+    "name": "notification_bg_normal",
+    "rid": "0x7f0800e3",
+    "file": "res/hj.9.png"
+  },
+  {
+    "name": "notification_bg_normal_pressed",
+    "rid": "0x7f0800e4",
+    "file": "res/O3.9.png"
+  },
+  {
+    "name": "notify_panel_notification_icon_bg",
+    "rid": "0x7f0800e9",
+    "file": "res/Qv.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_ab_share_pack_mtrl_alpha",
+    "rid": "0x7f080007",
+    "file": "res/fr.9.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_000",
+    "rid": "0x7f08000c",
+    "file": "res/ee.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_015",
+    "rid": "0x7f08000d",
+    "file": "res/TQ.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_000",
+    "rid": "0x7f080012",
+    "file": "res/n_.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_015",
+    "rid": "0x7f080013",
+    "file": "res/V9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00001",
+    "rid": "0x7f080014",
+    "file": "res/oR.9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00012",
+    "rid": "0x7f080015",
+    "file": "res/Yt.9.png"
+  },
+  {
+    "name": "abc_cab_background_top_mtrl_alpha",
+    "rid": "0x7f080018",
+    "file": "res/Xs1.9.png"
+  },
+  {
+    "name": "abc_ic_commit_search_api_mtrl_alpha",
+    "rid": "0x7f08001f",
+    "file": "res/BO.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_ic_menu_paste_mtrl_am_alpha",
+    "rid": "0x7f080024",
+    "file": "res/km.png"
+  },
+  {
+    "name": "abc_ic_menu_selectall_mtrl_alpha",
+    "rid": "0x7f080025",
+    "file": "res/EJ.png"
+  },
+  {
+    "name": "abc_ic_menu_share_mtrl_alpha",
+    "rid": "0x7f080026",
+    "file": "res/im.png"
+  },
+  {
+    "name": "abc_ic_star_black_16dp",
+    "rid": "0x7f080028",
+    "file": "res/S-.png"
+  },
+  {
+    "name": "abc_ic_star_black_36dp",
+    "rid": "0x7f080029",
+    "file": "res/SU.png"
+  },
+  {
+    "name": "abc_ic_star_black_48dp",
+    "rid": "0x7f08002a",
+    "file": "res/wc.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_16dp",
+    "rid": "0x7f08002b",
+    "file": "res/_0.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_36dp",
+    "rid": "0x7f08002c",
+    "file": "res/bB.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_48dp",
+    "rid": "0x7f08002d",
+    "file": "res/LE.png"
+  },
+  {
+    "name": "abc_list_divider_mtrl_alpha",
+    "rid": "0x7f080032",
+    "file": "res/ei.9.png"
+  },
+  {
+    "name": "abc_list_focused_holo",
+    "rid": "0x7f080033",
+    "file": "res/E2.9.png"
+  },
+  {
+    "name": "abc_list_longpressed_holo",
+    "rid": "0x7f080034",
+    "file": "res/Q1.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_dark",
+    "rid": "0x7f080035",
+    "file": "res/2C.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_light",
+    "rid": "0x7f080036",
+    "file": "res/Mz.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_dark",
+    "rid": "0x7f080039",
+    "file": "res/s2.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_light",
+    "rid": "0x7f08003a",
+    "file": "res/fD.9.png"
+  },
+  {
+    "name": "abc_menu_hardkey_panel_mtrl_mult",
+    "rid": "0x7f08003d",
+    "file": "res/HS.9.png"
+  },
+  {
+    "name": "abc_popup_background_mtrl_mult",
+    "rid": "0x7f08003e",
+    "file": "res/bK.9.png"
+  },
+  {
+    "name": "abc_scrubber_control_off_mtrl_alpha",
+    "rid": "0x7f080042",
+    "file": "res/11.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_000",
+    "rid": "0x7f080043",
+    "file": "res/rn.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_005",
+    "rid": "0x7f080044",
+    "file": "res/3_.png"
+  },
+  {
+    "name": "abc_scrubber_primary_mtrl_alpha",
+    "rid": "0x7f080045",
+    "file": "res/In.9.png"
+  },
+  {
+    "name": "abc_scrubber_track_mtrl_alpha",
+    "rid": "0x7f080046",
+    "file": "res/j9.9.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_switch_track_mtrl_alpha",
+    "rid": "0x7f08004d",
+    "file": "res/pF.9.png"
+  },
+  {
+    "name": "abc_tab_indicator_mtrl_alpha",
+    "rid": "0x7f08004f",
+    "file": "res/Ac.9.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_dark",
+    "rid": "0x7f080051",
+    "file": "res/-v.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_light",
+    "rid": "0x7f080052",
+    "file": "res/oK.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_dark",
+    "rid": "0x7f080053",
+    "file": "res/Ib.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_light",
+    "rid": "0x7f080054",
+    "file": "res/sc.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_dark",
+    "rid": "0x7f080055",
+    "file": "res/C1.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_light",
+    "rid": "0x7f080056",
+    "file": "res/Z5.png"
+  },
+  {
+    "name": "abc_textfield_activated_mtrl_alpha",
+    "rid": "0x7f080057",
+    "file": "res/5j.9.png"
+  },
+  {
+    "name": "abc_textfield_default_mtrl_alpha",
+    "rid": "0x7f080058",
+    "file": "res/ii.9.png"
+  },
+  {
+    "name": "abc_textfield_search_activated_mtrl_alpha",
+    "rid": "0x7f080059",
+    "file": "res/YH.9.png"
+  },
+  {
+    "name": "abc_textfield_search_default_mtrl_alpha",
+    "rid": "0x7f08005a",
+    "file": "res/kK.9.png"
+  },
+  {
+    "name": "design_ic_visibility",
+    "rid": "0x7f08008b",
+    "file": "res/vI.png"
+  },
+  {
+    "name": "design_ic_visibility_off",
+    "rid": "0x7f08008c",
+    "file": "res/fb.png"
+  },
+  {
+    "name": "gdt_ic_express_pause",
+    "rid": "0x7f0800a7",
+    "file": "res/33.png"
+  },
+  {
+    "name": "gdt_ic_express_play",
+    "rid": "0x7f0800a8",
+    "file": "res/43.png"
+  },
+  {
+    "name": "notification_bg_low_normal",
+    "rid": "0x7f0800e1",
+    "file": "res/Pq.9.png"
+  },
+  {
+    "name": "notification_bg_low_pressed",
+    "rid": "0x7f0800e2",
+    "file": "res/eK.9.png"
+  },
+  {
+    "name": "notification_bg_normal",
+    "rid": "0x7f0800e3",
+    "file": "res/hj.9.png"
+  },
+  {
+    "name": "notification_bg_normal_pressed",
+    "rid": "0x7f0800e4",
+    "file": "res/O3.9.png"
+  },
+  {
+    "name": "notify_panel_notification_icon_bg",
+    "rid": "0x7f0800e9",
+    "file": "res/Qv.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_ab_share_pack_mtrl_alpha",
+    "rid": "0x7f080007",
+    "file": "res/fr.9.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_000",
+    "rid": "0x7f08000c",
+    "file": "res/ee.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_015",
+    "rid": "0x7f08000d",
+    "file": "res/TQ.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_000",
+    "rid": "0x7f080012",
+    "file": "res/n_.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_015",
+    "rid": "0x7f080013",
+    "file": "res/V9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00001",
+    "rid": "0x7f080014",
+    "file": "res/oR.9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00012",
+    "rid": "0x7f080015",
+    "file": "res/Yt.9.png"
+  },
+  {
+    "name": "abc_cab_background_top_mtrl_alpha",
+    "rid": "0x7f080018",
+    "file": "res/Xs1.9.png"
+  },
+  {
+    "name": "abc_ic_commit_search_api_mtrl_alpha",
+    "rid": "0x7f08001f",
+    "file": "res/BO.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_ic_menu_paste_mtrl_am_alpha",
+    "rid": "0x7f080024",
+    "file": "res/km.png"
+  },
+  {
+    "name": "abc_ic_menu_selectall_mtrl_alpha",
+    "rid": "0x7f080025",
+    "file": "res/EJ.png"
+  },
+  {
+    "name": "abc_ic_menu_share_mtrl_alpha",
+    "rid": "0x7f080026",
+    "file": "res/im.png"
+  },
+  {
+    "name": "abc_ic_star_black_16dp",
+    "rid": "0x7f080028",
+    "file": "res/S-.png"
+  },
+  {
+    "name": "abc_ic_star_black_36dp",
+    "rid": "0x7f080029",
+    "file": "res/SU.png"
+  },
+  {
+    "name": "abc_ic_star_black_48dp",
+    "rid": "0x7f08002a",
+    "file": "res/wc.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_16dp",
+    "rid": "0x7f08002b",
+    "file": "res/_0.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_36dp",
+    "rid": "0x7f08002c",
+    "file": "res/bB.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_48dp",
+    "rid": "0x7f08002d",
+    "file": "res/LE.png"
+  },
+  {
+    "name": "abc_list_divider_mtrl_alpha",
+    "rid": "0x7f080032",
+    "file": "res/ei.9.png"
+  },
+  {
+    "name": "abc_list_focused_holo",
+    "rid": "0x7f080033",
+    "file": "res/E2.9.png"
+  },
+  {
+    "name": "abc_list_longpressed_holo",
+    "rid": "0x7f080034",
+    "file": "res/Q1.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_dark",
+    "rid": "0x7f080035",
+    "file": "res/2C.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_light",
+    "rid": "0x7f080036",
+    "file": "res/Mz.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_dark",
+    "rid": "0x7f080039",
+    "file": "res/s2.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_light",
+    "rid": "0x7f08003a",
+    "file": "res/fD.9.png"
+  },
+  {
+    "name": "abc_menu_hardkey_panel_mtrl_mult",
+    "rid": "0x7f08003d",
+    "file": "res/HS.9.png"
+  },
+  {
+    "name": "abc_popup_background_mtrl_mult",
+    "rid": "0x7f08003e",
+    "file": "res/bK.9.png"
+  },
+  {
+    "name": "abc_scrubber_control_off_mtrl_alpha",
+    "rid": "0x7f080042",
+    "file": "res/11.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_000",
+    "rid": "0x7f080043",
+    "file": "res/rn.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_005",
+    "rid": "0x7f080044",
+    "file": "res/3_.png"
+  },
+  {
+    "name": "abc_scrubber_primary_mtrl_alpha",
+    "rid": "0x7f080045",
+    "file": "res/In.9.png"
+  },
+  {
+    "name": "abc_scrubber_track_mtrl_alpha",
+    "rid": "0x7f080046",
+    "file": "res/j9.9.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_switch_track_mtrl_alpha",
+    "rid": "0x7f08004d",
+    "file": "res/pF.9.png"
+  },
+  {
+    "name": "abc_tab_indicator_mtrl_alpha",
+    "rid": "0x7f08004f",
+    "file": "res/Ac.9.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_dark",
+    "rid": "0x7f080051",
+    "file": "res/-v.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_light",
+    "rid": "0x7f080052",
+    "file": "res/oK.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_dark",
+    "rid": "0x7f080053",
+    "file": "res/Ib.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_light",
+    "rid": "0x7f080054",
+    "file": "res/sc.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_dark",
+    "rid": "0x7f080055",
+    "file": "res/C1.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_light",
+    "rid": "0x7f080056",
+    "file": "res/Z5.png"
+  },
+  {
+    "name": "abc_textfield_activated_mtrl_alpha",
+    "rid": "0x7f080057",
+    "file": "res/5j.9.png"
+  },
+  {
+    "name": "abc_textfield_default_mtrl_alpha",
+    "rid": "0x7f080058",
+    "file": "res/ii.9.png"
+  },
+  {
+    "name": "abc_textfield_search_activated_mtrl_alpha",
+    "rid": "0x7f080059",
+    "file": "res/YH.9.png"
+  },
+  {
+    "name": "abc_textfield_search_default_mtrl_alpha",
+    "rid": "0x7f08005a",
+    "file": "res/kK.9.png"
+  },
+  {
+    "name": "design_ic_visibility",
+    "rid": "0x7f08008b",
+    "file": "res/vI.png"
+  },
+  {
+    "name": "design_ic_visibility_off",
+    "rid": "0x7f08008c",
+    "file": "res/fb.png"
+  },
+  {
+    "name": "notification_bg_low_normal",
+    "rid": "0x7f0800e1",
+    "file": "res/Pq.9.png"
+  },
+  {
+    "name": "notification_bg_low_pressed",
+    "rid": "0x7f0800e2",
+    "file": "res/eK.9.png"
+  },
+  {
+    "name": "notification_bg_normal",
+    "rid": "0x7f0800e3",
+    "file": "res/hj.9.png"
+  },
+  {
+    "name": "notification_bg_normal_pressed",
+    "rid": "0x7f0800e4",
+    "file": "res/O3.9.png"
+  },
+  {
+    "name": "notify_panel_notification_icon_bg",
+    "rid": "0x7f0800e9",
+    "file": "res/Qv.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_ab_share_pack_mtrl_alpha",
+    "rid": "0x7f080007",
+    "file": "res/fr.9.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_000",
+    "rid": "0x7f08000c",
+    "file": "res/ee.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_015",
+    "rid": "0x7f08000d",
+    "file": "res/TQ.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_000",
+    "rid": "0x7f080012",
+    "file": "res/n_.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_015",
+    "rid": "0x7f080013",
+    "file": "res/V9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00001",
+    "rid": "0x7f080014",
+    "file": "res/oR.9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00012",
+    "rid": "0x7f080015",
+    "file": "res/Yt.9.png"
+  },
+  {
+    "name": "abc_cab_background_top_mtrl_alpha",
+    "rid": "0x7f080018",
+    "file": "res/Xs1.9.png"
+  },
+  {
+    "name": "abc_ic_commit_search_api_mtrl_alpha",
+    "rid": "0x7f08001f",
+    "file": "res/BO.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_ic_menu_paste_mtrl_am_alpha",
+    "rid": "0x7f080024",
+    "file": "res/km.png"
+  },
+  {
+    "name": "abc_ic_menu_selectall_mtrl_alpha",
+    "rid": "0x7f080025",
+    "file": "res/EJ.png"
+  },
+  {
+    "name": "abc_ic_menu_share_mtrl_alpha",
+    "rid": "0x7f080026",
+    "file": "res/im.png"
+  },
+  {
+    "name": "abc_ic_star_black_16dp",
+    "rid": "0x7f080028",
+    "file": "res/S-.png"
+  },
+  {
+    "name": "abc_ic_star_black_36dp",
+    "rid": "0x7f080029",
+    "file": "res/SU.png"
+  },
+  {
+    "name": "abc_ic_star_black_48dp",
+    "rid": "0x7f08002a",
+    "file": "res/wc.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_16dp",
+    "rid": "0x7f08002b",
+    "file": "res/_0.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_36dp",
+    "rid": "0x7f08002c",
+    "file": "res/bB.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_48dp",
+    "rid": "0x7f08002d",
+    "file": "res/LE.png"
+  },
+  {
+    "name": "abc_list_divider_mtrl_alpha",
+    "rid": "0x7f080032",
+    "file": "res/ei.9.png"
+  },
+  {
+    "name": "abc_list_focused_holo",
+    "rid": "0x7f080033",
+    "file": "res/E2.9.png"
+  },
+  {
+    "name": "abc_list_longpressed_holo",
+    "rid": "0x7f080034",
+    "file": "res/Q1.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_dark",
+    "rid": "0x7f080035",
+    "file": "res/2C.9.png"
+  },
+  {
+    "name": "abc_list_pressed_holo_light",
+    "rid": "0x7f080036",
+    "file": "res/Mz.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_dark",
+    "rid": "0x7f080039",
+    "file": "res/s2.9.png"
+  },
+  {
+    "name": "abc_list_selector_disabled_holo_light",
+    "rid": "0x7f08003a",
+    "file": "res/fD.9.png"
+  },
+  {
+    "name": "abc_menu_hardkey_panel_mtrl_mult",
+    "rid": "0x7f08003d",
+    "file": "res/HS.9.png"
+  },
+  {
+    "name": "abc_popup_background_mtrl_mult",
+    "rid": "0x7f08003e",
+    "file": "res/bK.9.png"
+  },
+  {
+    "name": "abc_scrubber_control_off_mtrl_alpha",
+    "rid": "0x7f080042",
+    "file": "res/11.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_000",
+    "rid": "0x7f080043",
+    "file": "res/rn.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_005",
+    "rid": "0x7f080044",
+    "file": "res/3_.png"
+  },
+  {
+    "name": "abc_scrubber_primary_mtrl_alpha",
+    "rid": "0x7f080045",
+    "file": "res/In.9.png"
+  },
+  {
+    "name": "abc_scrubber_track_mtrl_alpha",
+    "rid": "0x7f080046",
+    "file": "res/j9.9.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_switch_track_mtrl_alpha",
+    "rid": "0x7f08004d",
+    "file": "res/pF.9.png"
+  },
+  {
+    "name": "abc_tab_indicator_mtrl_alpha",
+    "rid": "0x7f08004f",
+    "file": "res/Ac.9.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_dark",
+    "rid": "0x7f080051",
+    "file": "res/-v.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_light",
+    "rid": "0x7f080052",
+    "file": "res/oK.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_dark",
+    "rid": "0x7f080053",
+    "file": "res/Ib.png"
+  },
+  {
+    "name": "abc_text_select_handle_middle_mtrl_light",
+    "rid": "0x7f080054",
+    "file": "res/sc.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_dark",
+    "rid": "0x7f080055",
+    "file": "res/C1.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_light",
+    "rid": "0x7f080056",
+    "file": "res/Z5.png"
+  },
+  {
+    "name": "abc_textfield_activated_mtrl_alpha",
+    "rid": "0x7f080057",
+    "file": "res/5j.9.png"
+  },
+  {
+    "name": "abc_textfield_default_mtrl_alpha",
+    "rid": "0x7f080058",
+    "file": "res/ii.9.png"
+  },
+  {
+    "name": "abc_textfield_search_activated_mtrl_alpha",
+    "rid": "0x7f080059",
+    "file": "res/YH.9.png"
+  },
+  {
+    "name": "abc_textfield_search_default_mtrl_alpha",
+    "rid": "0x7f08005a",
+    "file": "res/kK.9.png"
+  },
+  {
+    "name": "design_ic_visibility",
+    "rid": "0x7f08008b",
+    "file": "res/vI.png"
+  },
+  {
+    "name": "design_ic_visibility_off",
+    "rid": "0x7f08008c",
+    "file": "res/fb.png"
+  },
+  {
+    "name": "gdt_ic_express_pause",
+    "rid": "0x7f0800a7",
+    "file": "res/33.png"
+  },
+  {
+    "name": "gdt_ic_express_play",
+    "rid": "0x7f0800a8",
+    "file": "res/43.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_000",
+    "rid": "0x7f08000c",
+    "file": "res/ee.png"
+  },
+  {
+    "name": "abc_btn_check_to_on_mtrl_015",
+    "rid": "0x7f08000d",
+    "file": "res/TQ.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_000",
+    "rid": "0x7f080012",
+    "file": "res/n_.png"
+  },
+  {
+    "name": "abc_btn_radio_to_on_mtrl_015",
+    "rid": "0x7f080013",
+    "file": "res/V9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00001",
+    "rid": "0x7f080014",
+    "file": "res/oR.9.png"
+  },
+  {
+    "name": "abc_btn_switch_to_on_mtrl_00012",
+    "rid": "0x7f080015",
+    "file": "res/Yt.9.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_ic_menu_paste_mtrl_am_alpha",
+    "rid": "0x7f080024",
+    "file": "res/km.png"
+  },
+  {
+    "name": "abc_ic_menu_selectall_mtrl_alpha",
+    "rid": "0x7f080025",
+    "file": "res/EJ.png"
+  },
+  {
+    "name": "abc_ic_menu_share_mtrl_alpha",
+    "rid": "0x7f080026",
+    "file": "res/im.png"
+  },
+  {
+    "name": "abc_ic_star_black_16dp",
+    "rid": "0x7f080028",
+    "file": "res/S-.png"
+  },
+  {
+    "name": "abc_ic_star_black_36dp",
+    "rid": "0x7f080029",
+    "file": "res/SU.png"
+  },
+  {
+    "name": "abc_ic_star_black_48dp",
+    "rid": "0x7f08002a",
+    "file": "res/wc.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_16dp",
+    "rid": "0x7f08002b",
+    "file": "res/_0.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_36dp",
+    "rid": "0x7f08002c",
+    "file": "res/bB.png"
+  },
+  {
+    "name": "abc_ic_star_half_black_48dp",
+    "rid": "0x7f08002d",
+    "file": "res/LE.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_000",
+    "rid": "0x7f080043",
+    "file": "res/rn.png"
+  },
+  {
+    "name": "abc_scrubber_control_to_pressed_mtrl_005",
+    "rid": "0x7f080044",
+    "file": "res/3_.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "abc_switch_track_mtrl_alpha",
+    "rid": "0x7f08004d",
+    "file": "res/pF.9.png"
+  },
+  {
+    "name": "abc_tab_indicator_mtrl_alpha",
+    "rid": "0x7f08004f",
+    "file": "res/Ac.9.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_dark",
+    "rid": "0x7f080051",
+    "file": "res/-v.png"
+  },
+  {
+    "name": "abc_text_select_handle_left_mtrl_light",
+    "rid": "0x7f080052",
+    "file": "res/oK.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_dark",
+    "rid": "0x7f080055",
+    "file": "res/C1.png"
+  },
+  {
+    "name": "abc_text_select_handle_right_mtrl_light",
+    "rid": "0x7f080056",
+    "file": "res/Z5.png"
+  },
+  {
+    "name": "design_ic_visibility",
+    "rid": "0x7f08008b",
+    "file": "res/vI.png"
+  },
+  {
+    "name": "design_ic_visibility_off",
+    "rid": "0x7f08008c",
+    "file": "res/fb.png"
+  },
+  {
+    "name": "abc_ic_menu_copy_mtrl_am_alpha",
+    "rid": "0x7f080021",
+    "file": "res/h-.png"
+  },
+  {
+    "name": "abc_ic_menu_cut_mtrl_alpha",
+    "rid": "0x7f080022",
+    "file": "res/-l.png"
+  },
+  {
+    "name": "abc_spinner_mtrl_am_alpha",
+    "rid": "0x7f08004a",
+    "file": "res/Tl.9.png"
+  },
+  {
+    "name": "design_ic_visibility",
+    "rid": "0x7f08008b",
+    "file": "res/vI.png"
+  },
+  {
+    "name": "design_ic_visibility_off",
+    "rid": "0x7f08008c",
+    "file": "res/fb.png"
+  },
+  {
+    "name": "$ic_launcher_foreground__0",
+    "rid": "0x7f080006",
+    "file": "res/Za1.xml"
+  },
+  {
+    "name": "ic_launcher_foreground",
+    "rid": "0x7f0800b2",
+    "file": "res/qm.xml"
+  }
+]

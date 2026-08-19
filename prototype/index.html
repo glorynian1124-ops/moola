@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>简约记账 · 复刻</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ 页面 1：明细（MainActivity / res_nK） ============ -->
+  <div class="page active" id="page-account">
+    <header class="acct-header">
+      <div class="topbar">
+        <button class="icon-btn" id="btn-book" title="账本"><i class="ic ic20" style="--mask:url(assets/icons/ic_book.png)"></i></button>
+        <button class="month-btn" id="btn-month"><span id="month-label">2026年8月</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
+        <div class="spacer"></div>
+        <button class="icon-btn" id="btn-switch" title="切换账本"><i class="ic ic20" style="--mask:url(assets/icons/ic_switch.png)"></i></button>
+        <button class="icon-btn" id="btn-search" title="搜索"><i class="ic ic20" style="--mask:url(assets/icons/ic_search.png)"></i></button>
+        <button class="icon-btn" id="btn-calendar" title="日历"><i class="ic ic20" style="--mask:url(assets/icons/ic_calendar.png)"></i></button>
+      </div>
+      <div class="acct-overview">
+        <div class="ov-expense">
+          <span class="ov-label" id="ov-label">本月支出</span>
+          <button class="ov-report" id="btn-report">报表统计<i class="ic ic10" style="--mask:url(assets/icons/ic_forward.png)"></i></button>
+          <div class="ov-amount"><span class="cny">¥</span><span class="amt" id="ov-expense-amt">1000.00</span></div>
+        </div>
+        <div class="ov-bottom" id="ov-bottom">
+          <div class="ov-col"><span class="ov-label-sm">收入</span><span class="ov-val">¥3,500.00</span></div>
+          <div class="ov-col"><span class="ov-label-sm">结余</span><span class="ov-val">¥2,665.50</span></div>
+        </div>
+      </div>
+    </header>
+    <div class="tx-list" id="tx-list"></div>
+    <button class="fab" id="fab-add"><i class="ic ic24" style="--mask:url(assets/icons/ic_add.png)"></i></button>
+  </div>
+
+  <!-- ============ 页面 2：统计（res_kI1 / res_z9） ============ -->
+  <div class="page" id="page-stat">
+    <div class="stat-toolbar">
+      <button class="icon-btn dark" id="btn-region" title="区域"><i class="ic ic20" style="--mask:url(assets/icons/ic_region.png)"></i></button>
+      <div class="stat-tabs" id="stat-cat-tabs">
+        <span class="stat-tab active" data-cat="expense">支出</span>
+        <span class="stat-tab" data-cat="income">收入</span>
+      </div>
+      <button class="icon-btn dark" id="btn-charttype" title="图表类型"><i class="ic ic20" style="--mask:url(assets/icons/ic_chart.png)"></i></button>
+    </div>
+    <div class="period-group" id="period-group">
+      <span class="period active" data-p="week">周</span>
+      <span class="period" data-p="month">月</span>
+      <span class="period" data-p="year">年</span>
+    </div>
+    <div class="periods-bar" id="periods-bar"></div>
+    <div class="stat-body" id="stat-body">
+      <div class="chart-block" id="trend-chart"></div>
+      <div class="sec-title" id="pie-title">消费结构</div>
+      <div class="pie-wrap">
+        <div class="pie-canvas" id="pie-chart"></div>
+        <div class="pie-hint">支持手指旋转查看，小于2%不会显示</div>
+      </div>
+      <div class="sec-title" id="list-title">明细</div>
+      <div class="stat-list" id="stat-list"></div>
+    </div>
+    <div class="empty-state" id="stat-empty" hidden>
+      <i class="ic ic50" style="--mask:url(assets/icons/ic_empty.png)"></i>
+      <div class="empty-text">暂无数据</div>
+    </div>
+  </div>
+
+  <!-- ============ 页面 3：图片凭证（PictureActivity） ============ -->
+  <div class="page" id="page-pic">
+    <div class="simple-toolbar"><span class="toolbar-title">经济简讯</span></div>
+    <div class="empty-state">
+      <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
+      <div class="empty-text">暂无数据</div>
+    </div>
+  </div>
+
+  <!-- ============ 页面 4：我的（ProfileActivity） ============ -->
+  <div class="page" id="page-profile">
+    <div class="profile-head" id="profile-head">
+      <div class="avatar-wrap"><i class="ic ic44" style="--mask:url(assets/icons/ic_avatar.png);color:#303f9f"></i></div>
+      <div class="profile-info">
+        <span class="nickname" id="nickname">点击登录</span>
+        <span class="vip-status" id="vip-status">未开通会员</span>
+      </div>
+      <i class="ic ic36 vipflag" id="vipflag" style="--mask:url(assets/icons/ic_vipflag.png)" hidden></i>
+      <button class="login-btn" id="btn-login">登录 ›</button>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="vip"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_vip.png)"></i></span><span class="cell-name">开通会员</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="sync"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_sync.png)"></i></span><span class="cell-name">云备份与恢复</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="types"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">类别管理</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="settings"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_setting.png)"></i></span><span class="cell-name">选项设置</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="widget"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_widget.png)"></i></span><span class="cell-name">桌面小部件</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_remind.png)"></i></span><span class="cell-name">记账提醒</span><span class="cell-val">20:00</span><span class="switch on"></span></div>
+      <div class="cell" data-nav="export"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_export.png)"></i></span><span class="cell-name">导出Excel</span><span class="cell-arrow">›</span></div>
+      <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_finger.png)"></i></span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
+      <div class="cell" data-nav="gesture"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="theme"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_theme.png)"></i></span><span class="cell-name">主题设置</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="about"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_about.png)"></i></span><span class="cell-name">关于</span><span class="cell-arrow">›</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：记账（res_B8 NewAccountActivity） ============ -->
+  <div class="page overlay" id="page-newaccount">
+    <div class="na-topbar">
+      <button class="icon-btn dark" id="na-back"><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <div class="na-tabs" id="na-kind-tabs">
+        <span class="na-tab active" data-kind="expense">支出</span>
+        <span class="na-tab" data-kind="income">收入</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn dark" id="na-manage" title="类别管理"><i class="ic ic20" style="--mask:url(assets/icons/ic_switch.png)"></i></button>
+    </div>
+    <div class="type-grid" id="type-grid"></div>
+    <div class="calc-panel" id="calc-panel">
+      <div class="note-row">
+        <input class="note-input" id="note-input" type="text" placeholder="添加备注...">
+        <div class="money-display" id="money-display">0</div>
+      </div>
+      <div class="meta-row">
+        <button class="meta-btn" id="btn-date"><i class="ic ic14" style="--mask:url(assets/icons/ic_calendar.png)"></i><span id="date-label">今天</span></button>
+        <button class="meta-btn" id="btn-pic"><i class="ic ic14" style="--mask:url(assets/icons/ic_photo.png)"></i><span id="pic-label">图片</span><span class="pic-added" id="pic-added" hidden>✓</span></button>
+      </div>
+      <div class="numpad">
+        <div class="np-row"><span class="np-key" data-k="7">7</span><span class="np-key" data-k="8">8</span><span class="np-key" data-k="9">9</span><span class="np-key np-fn" data-k="del"><i class="ic ic14" style="--mask:url(assets/icons/ic_delete.png)"></i></span></div>
+        <div class="np-row"><span class="np-key" data-k="4">4</span><span class="np-key" data-k="5">5</span><span class="np-key" data-k="6">6</span><span class="np-key np-fn" data-k="plus">＋</span></div>
+        <div class="np-row"><span class="np-key" data-k="1">1</span><span class="np-key" data-k="2">2</span><span class="np-key" data-k="3">3</span><span class="np-key np-fn" data-k="minus">－</span></div>
+        <div class="np-row"><span class="np-key np-fn" data-k="again">再记</span><span class="np-key" data-k="0">0</span><span class="np-key" data-k=".">.</span><span class="np-key np-done" data-k="done">完成</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：日历（res_7V CalenderActivity） ============ -->
+  <div class="page overlay" id="page-calendar">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <button class="month-btn dark" id="cal-month-btn"><span id="cal-month-label">2026年8月</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="cal-today">今</button>
+      <button class="icon-btn dark" id="cal-add"><i class="ic ic20" style="--mask:url(assets/icons/ic_add.png)"></i></button>
+    </div>
+    <div class="cal-wrap">
+      <div class="cal-view-tabs" id="cal-view-tabs">
+        <span class="cal-view-tab active" data-v="month">月</span>
+        <span class="cal-view-tab" data-v="week">周</span>
+        <span class="cal-view-tab" data-v="year">年</span>
+      </div>
+      <div class="cal-week" id="cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="sec-title">账单列表</div>
+    <div class="cal-list" id="cal-list"></div>
+  </div>
+
+  <!-- ============ 覆盖页：搜索（res_92 SearchActivity） ============ -->
+  <div class="page overlay" id="page-search">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <div class="search-tabs" id="search-tabs">
+        <span class="stat-tab active" data-st="bill">账单</span>
+        <span class="stat-tab" data-st="type">类别</span>
+      </div>
+      <div class="spacer"></div>
+    </div>
+    <div class="search-row">
+      <input class="search-input" id="search-input" type="text" placeholder="搜索">
+      <button class="search-btn" id="search-go">搜索</button>
+    </div>
+    <div class="result-panel" id="result-panel">
+      <div class="result-bar">
+        <span class="result-label">搜索结果</span>
+        <div class="sort-group" id="sort-group">
+          <span class="period active" data-s="time">按时间</span>
+          <span class="period" data-s="money">按金额</span>
+        </div>
+      </div>
+      <div class="result-list" id="result-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：年度统计（res_4E MonthStatisticActivity） ============ -->
+  <div class="page overlay" id="page-yearstat">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title" id="yearstat-title">2026年度统计</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="year-cards">
+      <div class="year-card"><span class="yc-label">年度结余</span><span class="yc-val" id="ys-balance">¥0.00</span></div>
+      <div class="year-card"><span class="yc-label">年度收入</span><span class="yc-val" id="ys-income">¥0.00</span></div>
+      <div class="year-card"><span class="yc-label">年度支出</span><span class="yc-val" id="ys-expense">¥0.00</span></div>
+    </div>
+    <div class="year-list" id="year-list"></div>
+  </div>
+
+  <!-- ============ 覆盖页：私人信息（res_tZ PrivateInfosActivity） ============ -->
+  <div class="page overlay" id="page-private">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <div class="na-tabs" id="private-tabs">
+        <span class="na-tab active">个人信息</span>
+        <span class="na-tab">设备信息</span>
+      </div>
+      <div class="spacer"></div>
+    </div>
+    <div class="private-body">
+      <div class="no-account" id="no-account">当前设备未登录！</div>
+      <div class="info-card">
+        <div class="info-row"><span class="info-label">图像</span><i class="ic ic40 info-avatar" style="--mask:url(assets/icons/ic_avatar.png)"></i></div>
+        <div class="info-row"><span class="info-label">昵称</span><span class="info-val" id="pi-nickname">点击登录</span></div>
+        <div class="info-row"><span class="info-label">会员状态</span><span class="info-val" id="pi-vip">未开通会员</span></div>
+      </div>
+      <div class="info-card">
+        <div class="info-row"><span class="info-label">手机号</span><span class="info-val" id="pi-mobile">未绑定</span></div>
+        <div class="info-row"><span class="info-label">微信</span><span class="info-val" id="pi-wx">未绑定</span></div>
+      </div>
+      <div class="info-tip">手机号、微信仅用于账号登录</div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：管理账本（res_0Y ManageBooksActivity） ============ -->
+  <div class="page overlay" id="page-books">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">管理账本</span>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="btn-merge">合并</button>
+    </div>
+    <div class="book-list" id="book-list"></div>
+    <div class="bottom-bar">
+      <button class="btn-cancel" id="btn-books-cancel">取消</button>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：编辑账本（res_Ms EditBookActivity） ============ -->
+  <div class="page overlay" id="page-editbook">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">编辑账本</span>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="btn-book-save">保存</button>
+    </div>
+    <div class="form-card">
+      <div class="form-row"><span class="form-label">账本名称</span><input class="form-input" id="book-name" placeholder="点此输入..."></div>
+      <div class="form-row"><span class="form-label">账本类型</span><span class="form-val" id="book-type">标准账本 ›</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：类别管理（res_sJ ManageAccountTypesActivity） ============ -->
+  <div class="page overlay" id="page-types">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <div class="na-tabs" id="type-mgr-tabs">
+        <span class="na-tab active" data-kind="expense">支出</span>
+        <span class="na-tab" data-kind="income">收入</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="btn-import-type">导入</button>
+      <button class="text-btn dark" id="btn-new-type">新增类别</button>
+    </div>
+    <div class="type-mgr-list" id="type-mgr-list"></div>
+  </div>
+
+  <!-- ============ 覆盖页：新增类别（res_bD NewAccountTypeActivity） ============ -->
+  <div class="page overlay" id="page-newtype">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">新增类别</span>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="btn-newtype-save">保存</button>
+    </div>
+    <div class="form-card">
+      <div class="form-row"><span class="form-label">选择图标</span><span class="form-val" id="newtype-icon"><i class="ic ic20" style="--mask:url(assets/icons/cate_more.png)"></i> ›</span></div>
+      <div class="form-row"><span class="form-label">类别名称</span><input class="form-input" id="newtype-name" placeholder="输入类别名称"></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：会员（res_16 PurchaseActivity） ============ -->
+  <div class="page overlay" id="page-vip">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">开通会员</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="vip-body">
+      <div class="vip-hero"><i class="ic ic60" style="--mask:url(assets/icons/ic_logo.png)"></i></div>
+      <div class="vip-title">简约记账 · 会员</div>
+      <div class="vip-desc">解锁全部高级功能</div>
+      <button class="btn-capsule" id="vip-buy">立即开通</button>
+      <div class="group">
+        <div class="cell"><span class="cell-name">解锁权限:</span></div>
+        <div class="cell"><span class="cell-name">注意事项:</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：账单详情（AccountDetail res_xv） ============ -->
+  <div class="page overlay" id="page-detail">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">账单详情</span>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="detail-edit">修改</button>
+      <button class="text-btn danger" id="detail-del">删除</button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-money" id="detail-money">-12.50</div>
+      <div class="detail-card">
+        <div class="detail-row"><span class="dl-label">分类</span><span class="dl-val" id="detail-type"><i class="ic ic16" id="detail-type-ic"></i><span id="detail-type-name">餐饮</span></span></div>
+        <div class="detail-row"><span class="dl-label">日期</span><span class="dl-val" id="detail-date">2026年08月18日</span></div>
+        <div class="detail-row"><span class="dl-label">备注</span><span class="dl-val" id="detail-remark">餐饮</span></div>
+        <div class="detail-row" id="detail-pic-row" hidden><span class="dl-label">图片</span><span class="dl-val" id="detail-pic"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：账单统计（AccountTypeStatistic2 res_z9） ============ -->
+  <div class="page overlay" id="page-billstat">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title" id="billstat-title">账单统计</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="period-group" id="billstat-period-group">
+      <span class="period active" data-p="week">周</span>
+      <span class="period" data-p="month">月</span>
+      <span class="period" data-p="year">年</span>
+    </div>
+    <div class="periods-bar" id="billstat-periods-bar"></div>
+    <div class="chart-block" id="billstat-chart" style="height:150px"></div>
+    <div class="result-bar">
+      <span class="result-label">账单列表</span>
+      <span class="result-label" id="billstat-tot" style="text-align:right">合计: ¥0.00</span>
+    </div>
+    <div class="billstat-list" id="billstat-list"></div>
+  </div>
+
+  <!-- ============ 覆盖页：图表页（Balance/Chart res_lC） ============ -->
+  <div class="page overlay" id="page-chart">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <button class="month-btn dark" id="chart-region-btn"><span id="chart-region-label">全部区域</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
+      <div class="spacer"></div>
+      <button class="icon-btn dark" id="chart-more"><i class="ic ic20" style="--mask:url(assets/icons/ic_chart.png)"></i></button>
+    </div>
+    <div class="hbar-block" id="chart-hbar"></div>
+    <div class="chart-tabs" id="chart-tabs">
+      <span class="stat-tab active" data-cat="expense">支出</span>
+      <span class="stat-tab" data-cat="income">收入</span>
+    </div>
+    <div class="stat-body">
+      <div class="pie-wrap">
+        <div class="pie-canvas" id="chart-pie"></div>
+        <div class="pie-hint">支持手指旋转查看，小于2%不会显示</div>
+      </div>
+      <div class="sec-title">明细</div>
+      <div class="stat-list" id="chart-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：自定义统计（CustomStatistic res_sC） ============ -->
+  <div class="page overlay" id="page-customstat">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title" id="customstat-title">自定义统计</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="hbar-block" id="customstat-hbar"></div>
+    <div class="chart-tabs" id="customstat-tabs">
+      <span class="stat-tab active" data-cat="expense">支出</span>
+      <span class="stat-tab" data-cat="income">收入</span>
+    </div>
+    <div class="stat-body">
+      <div class="chart-block" id="customstat-vbar" style="height:150px"></div>
+      <div class="sec-title">消费结构</div>
+      <div class="pie-wrap">
+        <div class="pie-canvas" id="customstat-pie"></div>
+        <div class="pie-hint">支持手指旋转查看，小于2%不会显示</div>
+      </div>
+      <div class="sec-title">明细</div>
+      <div class="stat-list" id="customstat-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：导入类别（ImportTypeActivity res_f7） ============ -->
+  <div class="page overlay" id="page-import">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">导入类别</span>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="import-all">全选</button>
+      <button class="text-btn dark" id="import-reset">重置</button>
+    </div>
+    <div class="import-list" id="import-list"></div>
+    <div class="bottom-bar">
+      <button class="btn-primary" id="import-go">导入选中类别</button>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：登录（LoginActivity res_4y） ============ -->
+  <div class="page overlay" id="page-login">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">登录</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="login-body">
+      <input class="login-input" id="login-mobile" type="tel" placeholder="输入手机号" maxlength="11">
+      <input class="login-input" id="login-pwd" type="password" placeholder="输入登录密码">
+      <button class="btn-primary" id="login-go" style="width:100%;height:45px;border-radius:6px;margin-top:5px">登录</button>
+      <div class="login-links">
+        <span id="login-register">注册账号</span>
+        <span id="login-forgot">忘记密码</span>
+      </div>
+      <div class="third-party">
+        <div class="tp-line"><span>第三方登录</span></div>
+        <div class="tp-wechat" id="login-wechat"><img src="assets/icons/ic_wechat.png" alt="微信登录"><span>微信登录</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：用户中心（res_gm） ============ -->
+  <div class="page overlay" id="page-usercenter">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">用户中心</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="uc-body">
+      <div class="info-card" style="margin-top:20px;background:#fcfcfc">
+        <div class="uc-row"><span class="info-label">图像</span><i class="ic ic30" style="--mask:url(assets/icons/ic_avatar.png);color:#303f9f;margin-left:auto"></i><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="uc-row"><span class="info-label">昵称</span><span class="uc-val" id="uc-nickname">简约用户</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="uc-row" data-form="pwd"><span class="info-label">修改密码</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa;margin-left:auto"></i></div>
+        <div class="uc-row" data-form="mobile"><span class="info-label">修改手机号</span><span class="uc-val" id="uc-mobile">138****8000</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="uc-row"><span class="info-label">绑定微信</span><span class="uc-val" id="uc-wx">未绑定</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="uc-row"><span class="info-label">会员状态</span><span class="uc-val" id="uc-vip">未开通会员</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+      </div>
+      <button class="btn-primary" id="uc-logout" style="width:auto;margin:28px 12px 5px">退出登录</button>
+      <div class="uc-unregister" id="uc-unregister">注销账号</div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：云备份与恢复（res_tX） ============ -->
+  <div class="page overlay" id="page-backup">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">云备份与恢复</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="backup-body">
+      <div class="backup-tip">创建云备份防止数据丢失，您可以在任何时刻一键恢复数据</div>
+      <div class="backup-btns">
+        <button class="btn-primary" id="backup-now">一键备份</button>
+        <button class="btn-cancel" id="backup-restore">一键恢复</button>
+      </div>
+      <div class="info-card" style="margin-top:0">
+        <div class="uc-row"><span class="info-label">自动备份</span><span class="switch on" id="backup-auto-sw"></span></div>
+      </div>
+      <div class="backup-log" id="backup-log"></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：主题设置（res_ng） ============ -->
+  <div class="page overlay" id="page-theme">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">设置主题</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="theme-list" id="theme-list"></div>
+  </div>
+
+  <!-- ============ 覆盖页：关于（AboutActivity res_ZS） ============ -->
+  <div class="page overlay" id="page-about">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">关于</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="about-body">
+      <div class="about-logo"><i class="ic ic64" style="--mask:url(assets/icons/ic_logo.png)"></i></div>
+      <div class="about-name">简约记账</div>
+      <div class="about-version">Version 1.8.9</div>
+      <div class="about-list">
+        <div class="about-row" data-a="update"><span>检查更新</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="praise"><span>好评支持</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="share"><span>推荐给好友</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="privacy"><span>隐私政策</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="agreement"><span>用户协议</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="permission"><span>权限设置</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="contact"><span>联系我们</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+        <div class="about-row" data-a="more"><span>更多作品</span><i class="ic ic12" style="--mask:url(assets/icons/ic_forward.png);color:#aaa"></i></div>
+      </div>
+      <div class="about-icp">粤ICP备18018897号-3A</div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：手势密码（GesturePwdActivity） ============ -->
+  <div class="page overlay" id="page-gesture">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">手势密码</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="gesture-body">
+      <div class="gesture-hint" id="gesture-hint">绘制解锁图案，请至少连接4个点</div>
+      <svg class="gesture-pad" id="gesture-pad" viewBox="0 0 300 300"></svg>
+      <button class="btn-primary" id="gesture-reset" style="width:200px">重绘</button>
+      <span class="gesture-forgot" id="gesture-forgot">忘记解锁图案？</span>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：指纹验证（res_c-） ============ -->
+  <div class="page overlay" id="page-finger">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">指纹验证</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="finger-body">
+      <div class="finger-ring" id="finger-ring"><i class="ic ic48" style="--mask:url(assets/icons/menu_finger.png)"></i></div>
+      <div class="finger-hint" id="finger-hint">请验证指纹</div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：修改手机号/密码（SetMobile/SetPassword） ============ -->
+  <div class="page overlay" id="page-authform">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title" id="authform-title">修改手机号</span>
+      <div class="spacer"></div>
+      <button class="text-btn dark" id="authform-save">保存</button>
+    </div>
+    <div class="form-card" id="authform-card" style="margin-top:15px"></div>
+  </div>
+
+  <!-- ============ 覆盖页：选项设置（activity_moresetting 完整 7 项） ============ -->
+  <div class="page overlay" id="page-setting">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">选项设置</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="setting-body">
+      <div class="setting-block">
+        <div class="setting-title"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_eye.png)"></i></span>首页大字显示<span class="setting-sub">仅对当前账本生效</span></div>
+        <div class="setting-radio-row" id="set-bigdisplay">
+          <span class="set-radio active" data-v="expense">支出</span>
+          <span class="set-radio" data-v="income">收入</span>
+          <span class="set-radio" data-v="balance">结余</span>
+        </div>
+      </div>
+      <div class="setting-block">
+        <div class="setting-title"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_firstday.png)"></i></span>每月账单起始日<span class="setting-sub">仅对当前账本生效</span></div>
+        <div class="setting-row" id="set-startday"><span>每月账单起始日</span><span class="set-val" id="set-startday-val">1日</span><span class="cell-arrow">›</span></div>
+      </div>
+      <div class="setting-block">
+        <div class="setting-row"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/cate_moneybag.png)"></i></span><span>月/年周期显示总计结余<span class="setting-sub">仅对当前账本生效</span></span><span class="switch on" id="set-totalbal"></span></div>
+        <div class="setting-row" id="set-moneycolor"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_color.png)"></i></span><span>金额颜色</span><span class="set-val" id="set-moneycolor-val">支出红色，收入绿色</span><span class="cell-arrow">›</span></div>
+        <div class="setting-title" style="margin-top:8px"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_sorting.png)"></i></span>账单排序方式</div>
+        <div class="setting-radio-row" id="set-sort">
+          <span class="set-radio active" data-v="desc">逆序</span>
+          <span class="set-radio" data-v="asc">正序</span>
+        </div>
+        <div class="setting-row"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_loading.png)"></i></span><span>下拉/上拉加载邻期数据</span><span class="switch on" id="set-neighbor"></span></div>
+        <div class="setting-row"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_vibrate.png)"></i></span><span>按键振动</span><span class="switch on" id="set-vibrate"></span></div>
+      </div>
+      <div class="setting-block">
+        <div class="setting-row" id="set-erase"><span class="setting-icon"><i class="ic ic22" style="--mask:url(assets/icons/ic_close.png)"></i></span><span>删除区间账单</span><span class="set-val" style="color:#dd0000">数据管理</span><span class="cell-arrow">›</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：支付方式（dialog_choosepay） ============ -->
+  <div class="sheet" id="pay-sheet">
+    <div class="pay-row" id="pay-wechat"><i class="ic ic28" style="--mask:url(assets/icons/ic_wechat.png)"></i><span class="pay-name" style="color:#00c800">微信支付</span></div>
+    <div class="pay-row" id="pay-alipay"><i class="ic ic28" style="--mask:url(assets/icons/ic_alipay.png)"></i><span class="pay-name" style="color:#00ace0">支付宝支付</span></div>
+    <button class="btn-cancel" id="pay-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：分享平台（dialog_share） ============ -->
+  <div class="sheet" id="share-sheet">
+    <div class="share-title">选择要分享的平台</div>
+    <div class="share-grid">
+      <div class="share-item" data-p="微信好友"><i class="ic ic44" style="--mask:url(assets/icons/ic_wechat.png)"></i><span>微信好友</span></div>
+      <div class="share-item" data-p="朋友圈"><i class="ic ic44" style="--mask:url(assets/icons/menu_share.png)"></i><span>朋友圈</span></div>
+      <div class="share-item" data-p="QQ"><i class="ic ic44" style="--mask:url(assets/icons/menu_sync.png)"></i><span>QQ</span></div>
+      <div class="share-item" data-p="保存图片"><i class="ic ic44" style="--mask:url(assets/icons/ic_camera.png)"></i><span>保存图片</span></div>
+    </div>
+    <button class="btn-cancel" id="share-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：删除区间账单（dialog_eraserange） ============ -->
+  <div class="sheet" id="erase-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 6px">删除区间账单</div>
+    <div class="erase-tip">一键删除区间内所有账单，请谨慎操作！</div>
+    <div class="erase-dates">
+      <button class="erase-date" id="erase-start">2026-01-01</button>
+      <span class="erase-sep">至</span>
+      <button class="erase-date" id="erase-end">2026-12-31</button>
+    </div>
+    <div class="privacy-btns" style="padding:0 15px 15px">
+      <button class="btn-cancel" id="erase-cancel" style="border-radius:6px">取消</button>
+      <button class="btn-danger" id="erase-go" style="border-radius:6px">确定删除</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：设置昵称（dialog_setnickname） ============ -->
+  <div class="sheet" id="nickname-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 12px">设置昵称</div>
+    <input class="login-input" id="nickname-input" placeholder="输入昵称" style="width:auto;margin:0 15px">
+    <div class="privacy-btns" style="padding:15px">
+      <button class="btn-cancel" id="nickname-cancel" style="border-radius:6px">取消</button>
+      <button class="btn-primary" id="nickname-save" style="border-radius:6px">确定</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：恢复方式（dialog_restoretype） ============ -->
+  <div class="sheet" id="restore-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 12px">选择恢复方式</div>
+    <div class="restore-opts">
+      <div class="restore-opt active" data-v="merge"><span>与现有账单合并 [推荐]</span><i class="ic ic18" style="--mask:url(assets/icons/ic_check.png)"></i></div>
+      <div class="restore-opt" data-v="overwrite"><span>覆盖现有账单</span></div>
+    </div>
+    <div class="privacy-btns" style="padding:15px">
+      <button class="btn-cancel" id="restore-cancel" style="border-radius:6px">取消</button>
+      <button class="btn-primary" id="restore-go" style="border-radius:6px">确定</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：自定义统计区间（dialog_customstatistic） ============ -->
+  <div class="sheet" id="customstat-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 12px">自定义区间</div>
+    <div class="erase-dates">
+      <button class="erase-date" id="customstat-start">2026-01-01</button>
+      <span class="erase-sep">至</span>
+      <button class="erase-date" id="customstat-end">2026-12-31</button>
+    </div>
+    <div class="privacy-btns" style="padding:15px">
+      <button class="btn-cancel" id="customstat-cancel" style="border-radius:6px">取消</button>
+      <button class="btn-primary" id="customstat-go" style="border-radius:6px">确定</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：切换账单周期（dialog_mode） ============ -->
+  <div class="sheet" id="mode-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 6px">切换账单周期</div>
+    <div class="mode-opts">
+      <div class="mode-opt active" data-v="month"><span>按月</span><i class="ic ic18" style="--mask:url(assets/icons/ic_check.png)"></i></div>
+      <div class="mode-opt" data-v="year"><span>按年</span></div>
+    </div>
+    <button class="btn-cancel" id="mode-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：图片来源（dialog_choosepic） ============ -->
+  <div class="sheet" id="pic-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 6px">选择来源</div>
+    <div class="mode-opts">
+      <div class="mode-opt" data-v="camera"><span>拍照</span></div>
+      <div class="mode-opt" data-v="album"><span>从相册选择</span></div>
+    </div>
+    <button class="btn-cancel" id="pic-sheet-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 覆盖页：更多作品（AppListActivity res_Mv） ============ -->
+  <div class="page overlay" id="page-moreapps">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">更多作品</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="moreapps-list" id="moreapps-list"></div>
+  </div>
+
+  <!-- ============ 启动页（activity_splash） ============ -->
+  <div class="splash" id="splash">
+    <div class="splash-center">简单记账 · 快乐生活</div>
+    <div class="splash-bottom">
+      <div class="splash-logo"><i class="ic ic50" style="--mask:url(assets/icons/ic_logo.png)"></i></div>
+      <div class="splash-info">
+        <div class="splash-name">简约记账</div>
+        <div class="splash-slogan">Version 1.8.9</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：结余趋势（BalanceActivity res_Mx ChartView） ============ -->
+  <div class="page overlay" id="page-balance">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <button class="month-btn dark" id="balance-book-btn"><span id="balance-book-label">默认账本</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
+      <button class="month-btn dark" id="balance-date-btn"><span id="balance-date-label">2026年</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
+      <div class="spacer"></div>
+      <div class="period-group" id="balance-kind-group" style="padding:0">
+        <span class="period active" data-k="inout" style="min-width:60px;padding:0 12px">收支</span>
+        <span class="period" data-k="balance" style="min-width:60px;padding:0 12px">结余</span>
+      </div>
+    </div>
+    <div class="balance-chart" id="balance-chart"></div>
+    <div class="sec-title">账单列表</div>
+    <div class="billstat-list" id="balance-list"></div>
+  </div>
+
+  <!-- ============ 覆盖页：图片大图查看（res_OH MyViewPager） ============ -->
+  <div class="page overlay picviewer" id="page-viewpic">
+    <div class="picviewer-top">
+      <button class="icon-btn" id="viewpic-close"><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <div class="spacer"></div>
+      <button class="text-btn" id="viewpic-rotate"><i class="ic ic20" style="--mask:url(assets/icons/ic_camera.png)"></i></button>
+      <button class="text-btn" id="viewpic-flip">⇋</button>
+      <button class="text-btn" id="viewpic-share">分享</button>
+      <button class="text-btn danger" id="viewpic-del">删除</button>
+    </div>
+    <div class="picviewer-stage" id="viewpic-stage">
+      <div class="picviewer-img" id="viewpic-img"></div>
+    </div>
+    <div class="picviewer-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+  </div>
+
+  <!-- ============ 弹窗：选择账本（res_K1 底部弹窗） ============ -->
+  <div class="sheet" id="book-sheet">
+    <div class="sheet-title">选择账本</div>
+    <div class="sheet-list" id="book-sheet-list"></div>
+    <button class="btn-cancel" id="book-sheet-cancel" style="margin:0;border-radius:0;border:none">取消</button>
+  </div>
+
+  <!-- ============ 覆盖页：注册（LoginActivity 注册流程） ============ -->
+  <div class="page overlay" id="page-register">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">用户注册</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="login-body">
+      <div class="reg-step" id="reg-step-1">
+        <input class="login-input" id="reg-mobile" type="tel" placeholder="输入手机号" maxlength="11">
+        <div class="vcode-row">
+          <input class="login-input" id="reg-vcode" placeholder="输入验证码" style="margin:0">
+          <button class="search-btn" id="reg-getcode" style="border-radius:6px;height:48px;width:100px">获取验证码</button>
+        </div>
+        <button class="btn-primary" id="reg-next" style="height:45px;border-radius:6px">下一步</button>
+      </div>
+      <div class="reg-step" id="reg-step-2" hidden>
+        <input class="login-input" id="reg-pwd" type="password" placeholder="输入密码">
+        <input class="login-input" id="reg-pwd2" type="password" placeholder="再次确认密码">
+        <button class="btn-primary" id="reg-finish" style="height:45px;border-radius:6px">完成注册</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：找回密码 ============ -->
+  <div class="page overlay" id="page-forgot">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">找回密码</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="login-body">
+      <input class="login-input" id="forgot-mobile" type="tel" placeholder="输入手机号" maxlength="11">
+      <div class="vcode-row">
+        <input class="login-input" id="forgot-vcode" placeholder="输入验证码" style="margin:0">
+        <button class="search-btn" id="forgot-getcode" style="border-radius:6px;height:48px;width:100px">获取验证码</button>
+      </div>
+      <input class="login-input" id="forgot-pwd" type="password" placeholder="输入新密码">
+      <button class="btn-primary" id="forgot-go" style="height:45px;border-radius:6px;margin-top:5px">确定</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：隐私协议（首次启动） ============ -->
+  <div class="sheet privacy" id="privacy-sheet">
+    <div class="privacy-title">用户协议和隐私政策</div>
+    <div class="privacy-body">欢迎使用简约记账APP，我们非常重视用户的个人信息保护，在您使用简约记账提供的服务之前，请您务必阅读并同意《用户协议》和《隐私政策》，我们将严格按照您同意的条款收集、使用和存储您的相关信息。</div>
+    <div class="privacy-links">
+      <span class="link" id="privacy-view1">《用户协议》</span>
+      <span class="link" id="privacy-view2">《隐私政策》</span>
+    </div>
+    <div class="privacy-btns">
+      <button class="btn-cancel" id="privacy-no" style="border-radius:6px">不同意</button>
+      <button class="btn-primary" id="privacy-yes" style="border-radius:6px">同意</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：桌面小部件设置（dialog_widget） ============ -->
+  <div class="sheet" id="widget-sheet">
+    <div class="sheet-title">桌面小部件</div>
+    <div class="widget-opts">
+      <div class="widget-row"><span class="wr-label">样式：</span><span class="wr-choice active" data-k="style" data-v="dark">幽暗</span><span class="wr-choice" data-k="style" data-v="light">明亮</span></div>
+      <div class="widget-row"><span class="wr-label">形状：</span><span class="wr-choice active" data-k="shape" data-v="round">圆角</span><span class="wr-choice" data-k="shape" data-v="square">直角</span></div>
+      <div class="widget-row"><span class="wr-label">透明：</span><span class="switch" id="widget-trans"></span></div>
+    </div>
+    <div class="widget-perm">后台弹出界面 权限<br>若点击桌面小部件无响应，请开启此权限</div>
+    <button class="btn-cancel" id="widget-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：选择主账本（dialog_setmainbook） ============ -->
+  <div class="sheet" id="mainbook-sheet">
+    <div class="sheet-title">选择主账本</div>
+    <div class="mainbook-tip">主账本将作为合并后的账本保留</div>
+    <div class="sheet-list" id="mainbook-list"></div>
+    <button class="btn-cancel" id="mainbook-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：下载进度（dialog_downloading） ============ -->
+  <div class="sheet" id="download-sheet">
+    <div class="sheet-title">正在下载</div>
+    <div class="download-bar"><div class="download-fill" id="download-fill"></div></div>
+    <div class="download-pct" id="download-pct">0%</div>
+    <button class="btn-cancel" id="download-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：通用消息确认（dialog_message） ============ -->
+  <div class="sheet" id="msg-sheet">
+    <div class="sheet-title" style="height:auto;padding:18px 0 10px" id="msg-title">提示</div>
+    <div class="msg-body" id="msg-body"></div>
+    <div class="privacy-btns" style="padding:15px">
+      <button class="btn-cancel" id="msg-cancel" style="border-radius:6px">取消</button>
+      <button class="btn-primary" id="msg-ok" style="border-radius:6px">确定</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹窗：日期选择（记账页） ============ -->
+  <div class="sheet" id="date-sheet">
+    <div class="sheet-title">选择日期</div>
+    <div class="date-opts">
+      <div class="date-opt" data-d="today"><span>今天</span><span class="date-opt-sub" id="date-today"></span></div>
+      <div class="date-opt" data-d="yesterday"><span>昨天</span><span class="date-opt-sub" id="date-yesterday"></span></div>
+      <div class="date-opt" data-d="dbefore"><span>前天</span><span class="date-opt-sub" id="date-dbefore"></span></div>
+      <div class="date-opt" data-d="custom"><span>自定义日期</span><span class="cell-arrow">›</span></div>
+    </div>
+    <button class="btn-cancel" id="date-cancel" style="border:none;border-radius:0">取消</button>
+  </div>
+
+  <!-- ============ 底部 Tab ============ -->
+  <nav class="tabbar">
+    <div class="tab active" data-page="page-account"><i class="ic ic24" style="--mask:url(assets/icons/tab_list.png)"></i><span class="tab-name">明细</span></div>
+    <div class="tab" data-page="page-stat"><i class="ic ic24" style="--mask:url(assets/icons/tab_stat.png)"></i><span class="tab-name">统计</span></div>
+    <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">经济简讯</span></div>
+    <div class="tab" data-page="page-profile"><i class="ic ic24" style="--mask:url(assets/icons/tab_profile.png)"></i><span class="tab-name">我的</span></div>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>

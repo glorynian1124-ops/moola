@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
+  <ProgressBar android:id="@7F090192" android:layout_width="70.000000dip" android:layout_height="70.000000dip" android:indeterminateTint="?7F04031C" android:indeterminateTintMode="9"/>
+</FrameLayout>

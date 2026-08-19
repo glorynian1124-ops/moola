@@ -1,0 +1,22 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android" android:insetLeft="@7F070012" android:insetRight="@7F070012" android:insetTop="@7F070013" android:insetBottom="@7F070013">
+  <ripple android:color="?android:0101042C">
+    <item>
+      <selector>
+        <item android:state_enabled="false">
+          <shape android:shape="0">
+            <corners android:radius="@7F070018"/>
+            <solid android:color="?android:0101042B"/>
+            <padding android:left="@7F070014" android:top="@7F070015" android:right="@7F070014" android:bottom="@7F070015"/>
+          </shape>
+        </item>
+        <item>
+          <shape android:shape="0">
+            <corners android:radius="@7F070018"/>
+            <solid android:color="?android:01010435"/>
+            <padding android:left="@7F070014" android:top="@7F070015" android:right="@7F070014" android:bottom="@7F070015"/>
+          </shape>
+        </item>
+      </selector>
+    </item>
+  </ripple>
+</inset>

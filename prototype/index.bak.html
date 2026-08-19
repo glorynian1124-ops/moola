@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Moola · 记账</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ 页面 1：明细（首页） ============ -->
+  <div class="page active" id="page-account">
+    <!-- 靛蓝头部 -->
+    <header class="acct-header">
+      <div class="topbar">
+        <button class="icon-btn" id="btn-book" title="账本">▤</button>
+        <button class="month-btn" id="btn-month"><span id="month-label">2026年8月</span> <span class="caret">▾</span></button>
+        <div class="spacer"></div>
+        <button class="icon-btn" title="切换账本">⇄</button>
+        <button class="icon-btn" title="搜索" id="btn-search">⌕</button>
+        <button class="icon-btn" title="日历">▦</button>
+      </div>
+      <div class="acct-overview">
+        <div class="ov-expense">
+          <div class="ov-label">本月支出</div>
+          <button class="ov-report">报表统计 ›</button>
+          <div class="ov-amount"><span class="cny">¥</span><span id="ov-expense-amt">1000.00</span></div>
+        </div>
+        <div class="ov-bottom">
+          <div class="ov-in"><span class="ov-label-sm">收入</span><span class="ov-val" id="ov-income">¥3,500.00</span></div>
+          <div class="ov-bal"><span class="ov-label-sm">结余</span><span class="ov-val" id="ov-balance">¥2,665.50</span></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 账单列表 -->
+    <div class="tx-list" id="tx-list"></div>
+
+    <!-- FAB -->
+    <button class="fab" id="fab-add">＋</button>
+  </div>
+
+  <!-- ============ 页面 2：统计 ============ -->
+  <div class="page" id="page-stat">
+    <div class="stat-toolbar">
+      <button class="icon-btn" title="区域">◉</button>
+      <div class="stat-tabs" id="stat-cat-tabs">
+        <span class="stat-tab active">支出</span><span class="stat-tab">收入</span>
+      </div>
+      <button class="icon-btn" title="图表">▥</button>
+    </div>
+    <div class="period-group" id="period-group">
+      <span class="period active">周</span><span class="period">月</span><span class="period">年</span>
+    </div>
+    <div class="periods-bar" id="periods-bar"></div>
+    <div class="stat-body">
+      <div class="trend-block">
+        <div class="trend-title">支出趋势</div>
+        <div class="trend-chart" id="trend-chart"></div>
+      </div>
+      <div class="sec-title">消费结构</div>
+      <div class="pie-wrap">
+        <svg class="pie" id="pie-chart" viewBox="0 0 200 200"></svg>
+        <div class="pie-hint">支持手指旋转查看，小于2%不会显示</div>
+      </div>
+      <div class="sec-title">明细</div>
+      <div class="stat-list" id="stat-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ 页面 3：图片 ============ -->
+  <div class="page" id="page-pic">
+    <div class="pic-toolbar">图片凭证</div>
+    <div class="empty-state">
+      <div class="empty-icon">▧</div>
+      <div class="empty-text">暂无数据</div>
+    </div>
+  </div>
+
+  <!-- ============ 页面 4：我的 ============ -->
+  <div class="page" id="page-profile">
+    <div class="profile-head">
+      <div class="avatar">李</div>
+      <span class="nickname">点击登录</span>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon">◆</span><span class="cell-name">开通会员</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon">⇅</span><span class="cell-name">云备份与恢复</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon">☰</span><span class="cell-name">类别管理</span><span class="cell-arrow">›</span></div>
+      <div class="cell"><span class="cell-icon">⚙</span><span class="cell-name">选项设置</span><span class="cell-arrow">›</span></div>
+      <div class="cell"><span class="cell-icon">▦</span><span class="cell-name">桌面小部件</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon">◷</span><span class="cell-name">记账提醒</span><span class="cell-val">20:00</span><span class="switch on"></span></div>
+      <div class="cell"><span class="cell-icon">⤓</span><span class="cell-name">导出Excel</span><span class="cell-arrow">›</span></div>
+      <div class="cell"><span class="cell-icon">⏽</span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
+      <div class="cell"><span class="cell-icon">✿</span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon">◐</span><span class="cell-name">主题设置</span><span class="cell-arrow">›</span></div>
+    </div>
+    <div class="group">
+      <div class="cell"><span class="cell-icon">ⓘ</span><span class="cell-name">关于</span><span class="cell-arrow">›</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 记账页（全屏覆盖） ============ -->
+  <div class="page overlay" id="page-newaccount">
+    <div class="na-topbar">
+      <button class="icon-btn" id="na-back">‹</button>
+      <div class="na-tabs" id="na-kind-tabs">
+        <span class="na-tab active" data-kind="expense">支出</span>
+        <span class="na-tab" data-kind="income">收入</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="na-manage" title="管理">✎</button>
+    </div>
+
+    <!-- 类型网格 -->
+    <div class="type-grid" id="type-grid"></div>
+
+    <!-- 计算器面板 -->
+    <div class="calc-panel" id="calc-panel">
+      <div class="calc-row note-row">
+        <input class="note-input" id="note-input" type="text" placeholder="添加备注...">
+        <div class="money-display" id="money-display">0</div>
+      </div>
+      <div class="calc-row meta-row">
+        <button class="meta-btn" id="btn-date"><span class="meta-icon">▦</span><span id="date-label">今天</span></button>
+        <button class="meta-btn" id="btn-pic"><span class="meta-icon">▧</span><span>图片</span></button>
+      </div>
+      <div class="numpad">
+        <div class="np-row"><span class="np-key" data-k="7">7</span><span class="np-key" data-k="8">8</span><span class="np-key" data-k="9">9</span><span class="np-key np-fn" data-k="del">⌫</span></div>
+        <div class="np-row"><span class="np-key" data-k="4">4</span><span class="np-key" data-k="5">5</span><span class="np-key" data-k="6">6</span><span class="np-key np-fn" data-k="plus">＋</span></div>
+        <div class="np-row"><span class="np-key" data-k="1">1</span><span class="np-key" data-k="2">2</span><span class="np-key" data-k="3">3</span><span class="np-key np-fn" data-k="minus">－</span></div>
+        <div class="np-row"><span class="np-key np-fn" data-k="again">再记</span><span class="np-key" data-k="0">0</span><span class="np-key" data-k=".">.</span><span class="np-key np-done" data-k="done">完成</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 底部 Tab ============ -->
+  <nav class="tabbar">
+    <div class="tab active" data-page="page-account"><span class="tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><path d="M5.6 7.4h12.8l-1.05 12.3a1.7 1.7 0 0 1-1.7 1.55H8.35a1.7 1.7 0 0 1-1.7-1.55L5.6 7.4z" fill="currentColor"/><path d="M8.8 7.4V6.1a3.2 3.2 0 0 1 6.4 0v1.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 11.3 10.55 13.3h2.9L12 11.3z" fill="#fff"/><path d="M12 11.3v3.7" stroke="#fff" stroke-width="1.25" stroke-linecap="round"/><path d="M10.55 15.3h2.9M10.55 16.8h2.9" stroke="#fff" stroke-width="1.25" stroke-linecap="round"/></svg></span><span class="tab-name">明细</span></div>
+    <div class="tab" data-page="page-stat"><span class="tab-icon">▥</span><span class="tab-name">统计</span></div>
+    <div class="tab" data-page="page-pic"><span class="tab-icon">▧</span><span class="tab-name">经济简讯</span></div>
+    <div class="tab" data-page="page-profile"><span class="tab-icon">■</span><span class="tab-name">我的</span></div>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>

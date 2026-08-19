@@ -1,0 +1,4 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="60.000000dip" android:layout_height="60.000000dip">
+  <ImageView android:id="@7F090194" android:background="#00000000" android:layout_width="-1" android:layout_height="-1" android:scaleType="6"/>
+  <ImageView android:id="@7F0900B4" android:visibility="2" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F0800FE" android:tint="#FFCC0000" android:layout_alignParentTop="true" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

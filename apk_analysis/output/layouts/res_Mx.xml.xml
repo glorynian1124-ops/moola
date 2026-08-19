@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090242" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F080080" android:scaleType="3" android:tint="?7F0402DF"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901E5" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="15.000000dip">
+      <TextView android:textSize="17.000000sp" android:textColor="?7F0402DF" android:id="@7F09023E" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="8.000000dip"/>
+      <ImageView android:id="@7F0900C8" android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080095" android:scaleType="3" android:tint="?7F0402DF"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00800005" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901E3" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="10.000000dip">
+        <TextView android:textSize="17.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F090111" android:layout_width="-2" android:layout_height="32.000000dip" android:layout_marginEnd="8.000000dip"/>
+        <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080095" android:scaleType="3" android:tint="?7F0402DF"/>
+      </LinearLayout>
+    </LinearLayout>
+    <RadioGroup android:gravity="0x00800015" android:orientation="0" android:id="@7F090268" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="22.000000dip" android:layout_marginEnd="15.000000dip">
+      <RadioButton android:textSize="16.000000sp" android:gravity="0x00000011" android:id="@7F090110" android:layout_width="95.000000dip" android:layout_height="32.000000dip" android:checked="true" android:text="收支" android:layout_marginEnd="16777215.000000dip" style="@7F1102BF"/>
+      <RadioButton android:textSize="16.000000sp" android:gravity="0x00000011" android:id="@7F09005B" android:layout_width="95.000000dip" android:layout_height="32.000000dip" android:text="结余" style="@7F1102BF"/>
+    </RadioGroup>
+  </LinearLayout>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <com.yhqx.account.widget.ChartView android:id="@7F09007C" android:layout_width="-1" android:layout_height="-1"/>
+</LinearLayout>

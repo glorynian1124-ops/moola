@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="?7F040121" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="10.000000dip">
+    <TextView android:textSize="20.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="60.000000dip" android:text="删除区间账单"/>
+    <TextView android:textSize="15.000000sp" android:textColor="?7F04010D" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="5.000000dip" android:text="一键删除区间内所有账单，请谨慎操作！" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="22.000000dip" android:layout_marginBottom="10.000000dip" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip">
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="0.400000"/>
+      <TextView android:textSize="15.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F09020C" android:background="?7F0402FB" android:layout_width="110.000000dip" android:layout_height="40.000000dip" android:foreground="?android:0101030E"/>
+      <TextView android:textSize="15.000000sp" android:textColor="?7F04010C" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-2" android:text="至" android:layout_weight="1.000000"/>
+      <TextView android:textSize="15.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F0900D3" android:background="?7F0402FB" android:layout_width="110.000000dip" android:layout_height="40.000000dip" android:foreground="?android:0101030E"/>
+      <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="0.400000"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00800015" android:orientation="0" android:layout_width="-1" android:layout_height="50.000000dip">
+      <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F090174" android:layout_width="-2" android:layout_height="-2" android:text="确定" android:layout_marginEnd="20.000000dip"/>
+      <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F090073" android:layout_width="-2" android:layout_height="-2" android:text="@7F100021" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip"/>
+    </LinearLayout>
+  </LinearLayout>
+</FrameLayout>

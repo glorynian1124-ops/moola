@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?7F040121" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="45.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:layout_width="-2" android:layout_height="-2" android:text="账单详情"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <TextView android:textSize="16.000000sp" android:textColor="?7F0400BA" android:id="@7F0900CA" android:layout_width="-2" android:layout_height="-2" android:text="修改"/>
+    <TextView android:textSize="16.000000sp" android:textColor="#FFDD0000" android:id="@7F0900B5" android:layout_width="-2" android:layout_height="-2" android:text="删除" android:layout_marginStart="35.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:id="@7F090140" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:id="@7F090141" android:layout_width="-2" android:layout_height="-2" android:text="金额"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <TextView android:textSize="16.000000sp" android:id="@7F09013F" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:layout_width="-2" android:layout_height="-2" android:text="分类"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010F" android:id="@7F090256" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:layout_width="-2" android:layout_height="-2" android:text="日期"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010F" android:id="@7F0900AC" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:id="@7F09016E" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:layout_width="-2" android:layout_height="-2" android:text="备注"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010F" android:id="@7F09016D" android:layout_width="-2" android:layout_height="-2"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="0" android:id="@7F09019A" android:visibility="2" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:id="@7F09019D" android:layout_width="-2" android:layout_height="-2" android:text="图片"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <LinearLayout android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="3.000000dip">
+      <FrameLayout android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="@7F090195" android:background="#11000000" android:visibility="2" android:layout_width="92.000000dip" android:layout_height="92.000000dip" android:scaleType="6"/>
+        <TextView android:textSize="15.000000sp" android:textColor="?7F0402DF" android:layout_gravity="0x00000011" android:id="@7F090129" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:text="登录&#10;查看"/>
+      </FrameLayout>
+      <FrameLayout android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="@7F090196" android:background="#11000000" android:visibility="2" android:layout_width="92.000000dip" android:layout_height="92.000000dip" android:scaleType="6" android:layout_marginStart="2.000000dip"/>
+        <TextView android:textSize="15.000000sp" android:textColor="?7F0402DF" android:layout_gravity="0x00000011" android:id="@7F09012A" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:text="登录&#10;查看"/>
+      </FrameLayout>
+      <FrameLayout android:layout_width="-2" android:layout_height="-2">
+        <ImageView android:id="@7F090197" android:background="#11000000" android:visibility="2" android:layout_width="92.000000dip" android:layout_height="92.000000dip" android:scaleType="6" android:layout_marginStart="2.000000dip"/>
+        <TextView android:textSize="15.000000sp" android:textColor="?7F0402DF" android:layout_gravity="0x00000011" android:id="@7F09012B" android:visibility="2" android:layout_width="-2" android:layout_height="-2" android:text="登录&#10;查看"/>
+      </FrameLayout>
+    </LinearLayout>
+  </LinearLayout>
+  <View android:id="@7F090265" android:layout_width="-1" android:layout_height="20.000000dip"/>
+</LinearLayout>

@@ -1,0 +1,11 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-1">
+  <TextView android:textSize="23.000000sp" android:textColor="?7F0402DF" android:layout_gravity="0x00000011" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="45.000000dip" android:text="" android:letterSpacing="0.070000"/>
+  <LinearLayout android:layout_gravity="0x00000051" android:orientation="0" android:layout_width="-2" android:layout_height="-2" android:layout_marginBottom="65.000000dip">
+    <ImageView android:id="@7F09012C" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:scaleType="3"/>
+    <LinearLayout android:layout_gravity="0x00000010" android:orientation="1" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="10.000000dip">
+      <TextView android:textSize="17.000000sp" android:textColor="?7F0402DF" android:layout_width="-2" android:layout_height="-2" android:text="@7F10001D"/>
+      <TextView android:textSize="11.000000sp" android:textColor="?7F0402DF" android:id="@7F0900DD" android:layout_width="-2" android:layout_height="-2"/>
+    </LinearLayout>
+  </LinearLayout>
+  <FrameLayout android:id="@7F09004A" android:layout_width="-1" android:layout_height="-1"/>
+</FrameLayout>

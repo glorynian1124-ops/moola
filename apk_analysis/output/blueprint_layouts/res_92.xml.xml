@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="?android:01010031" android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="match_parent" android:layout_height="50.000000dip">
+    <ImageView android:id="@id/back" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:back_arrow=res/0Z.png]" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <com.google.android.material.tabs.TabLayout android:id="@id/searchtype" android:layout_width="wrap_content" android:layout_height="48.000000dip" app:tabIndicatorColor="[attr:textColorPrimary=#ff303f9f]" app:tabMode="0" app:tabRippleColor="#00000000" app:tabSelectedTextColor="[attr:textColorPrimary=#ff303f9f]" app:tabTextAppearance="[style:MyTabText]" app:tabTextColor="[attr:dark4clr=#ff444444]"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000" android:layout_marginEnd="50.000000dip"/>
+  </LinearLayout>
+  <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="45.000000dip">
+    <EditText android:theme="[style:MyEditText]" android:textSize="15.000000sp" android:textColor="[attr:dark3clr=#ff333333]" android:textColorHint="[attr:gray9clr=#ff999999]" android:gravity="0x00000010" android:id="@id/editcontent" android:background="#00000000" android:layout_width="0.000000dip" android:layout_height="match_parent" android:singleLine="true" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip" android:layout_marginEnd="5.000000dip"/>
+    <TextView android:textSize="17.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:gravity="0x00000011" android:id="@id/search" android:background="[attr:colorPrimary=#ff303f9f]" android:layout_width="80.000000dip" android:layout_height="35.000000dip" android:text="搜索" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip"/>
+  </LinearLayout>
+  <LinearLayout android:orientation="1" android:id="@id/resultpanel" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFEEEEEE" android:layout_width="match_parent" android:layout_height="45.000000dip" android:paddingStart="9.000000dip" android:paddingEnd="9.000000dip">
+      <TextView android:textSize="14.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000010" android:layout_width="0.000000dip" android:layout_height="28.000000dip" android:text="搜索结果" android:layout_weight="1.000000"/>
+      <RadioGroup android:gravity="0x00000010" android:orientation="0" android:id="@id/sorttype" android:layout_width="wrap_content" android:layout_height="35.000000dip">
+        <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@id/time" android:layout_width="70.000000dip" android:layout_height="30.000000dip" android:text="按时间" android:layout_marginEnd="16777215.000000dip" style="[style:radiostyle]"/>
+        <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@id/money" android:layout_width="70.000000dip" android:layout_height="30.000000dip" android:text="按金额" style="[style:radiostyle]"/>
+      </RadioGroup>
+      <TextView android:textSize="14.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00800015" android:id="@id/resultcnt" android:visibility="1" android:layout_width="0.000000dip" android:layout_height="28.000000dip" android:layout_weight="1.000000"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/results" android:background="[attr:lighteclr=#ffeeeeee]" android:layout_width="match_parent" android:layout_height="match_parent" android:overScrollMode="2"/>
+  </LinearLayout>
+</LinearLayout>

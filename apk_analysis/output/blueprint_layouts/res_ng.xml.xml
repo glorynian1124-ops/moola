@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="[attr:dlgcolorBackground]" android:layout_width="match_parent" android:layout_height="match_parent">
+  <TextView android:textSize="20.000000sp" android:textColor="[attr:textColorPrimary=#ff303f9f]" android:gravity="0x00000011" android:layout_width="match_parent" android:layout_height="60.000000dip" android:text="[string:settheme=设置主题]"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@id/themes" android:layout_width="match_parent" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:overScrollMode="2" android:layout_marginStart="0.500000dip" android:layout_marginEnd="0.500000dip"/>
+  <RelativeLayout android:gravity="0x00000010" android:layout_width="match_parent" android:layout_height="50.000000dip">
+    <TextView android:textSize="18.000000sp" android:textColor="[attr:textColorPrimary=#ff303f9f]" android:id="@id/cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="[string:cancel=取消]" android:layout_marginStart="20.000000dip" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true"/>
+  </RelativeLayout>
+</LinearLayout>

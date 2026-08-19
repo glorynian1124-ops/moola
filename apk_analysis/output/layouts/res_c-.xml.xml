@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?7F040121" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+    <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:layout_width="0.000000dip" android:layout_height="-2" android:text="@7F10001D" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip"/>
+  </LinearLayout>
+  <FrameLayout android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000">
+    <LinearLayout android:gravity="0x00000001" android:layout_gravity="0x00000011" android:orientation="1" android:id="@7F09023D" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="16777186.000000dip">
+      <ImageView android:id="@7F090199" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F0800A3" android:tint="?7F0402DF" android:scaleX="-1.000000"/>
+      <TextView android:textSize="17.000000sp" android:textColor="?7F0402DF" android:id="@7F0900F4" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="20.000000dip" android:text="请验证指纹"/>
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

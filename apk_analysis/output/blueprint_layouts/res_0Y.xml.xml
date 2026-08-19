@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:orientation="1" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="match_parent" android:layout_height="50.000000dip">
+      <ImageView android:id="@id/back" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:back_arrow=res/0Z.png]" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+      <TextView android:textSize="18.000000sp" android:textColor="[attr:textColorPrimary=#ff303f9f]" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:text="管理账本" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip"/>
+      <ImageView android:id="@id/createNew" android:padding="14.500001dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:add=res/2b.png]" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+      <ImageView android:id="@id/merge" android:padding="14.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:merge=res/z2.png]" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+    </LinearLayout>
+    <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/booklist" android:layout_width="match_parent" android:layout_height="0.000000dip" android:layout_weight="1.000000" android:overScrollMode="2"/>
+    <LinearLayout android:orientation="1" android:id="@id/mergeop" android:background="#FFFFFFFF" android:visibility="2" android:layout_width="match_parent" android:layout_height="wrap_content">
+      <View android:background="[attr:graydclr=#ffdddddd]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="match_parent" android:layout_height="50.000000dip">
+        <TextView android:textSize="17.000000sp" android:textColor="[attr:textColorPrimary=#ff303f9f]" android:gravity="0x00000011" android:id="@id/domerge" android:layout_width="0.000000dip" android:layout_height="match_parent" android:foreground="?android:0101030E" android:text="合并" android:layout_weight="1.000000"/>
+        <View android:background="[attr:graydclr=#ffdddddd]" android:layout_width="1.000000px" android:layout_height="match_parent"/>
+        <TextView android:textSize="17.000000sp" android:textColor="[attr:textColorPrimary=#ff303f9f]" android:gravity="0x00000011" android:id="@id/cancel" android:layout_width="0.000000dip" android:layout_height="match_parent" android:foreground="?android:0101030E" android:text="取消" android:layout_weight="1.000000"/>
+      </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>
+</RelativeLayout>

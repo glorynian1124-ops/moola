@@ -1,0 +1,1 @@
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt" android:interpolator="@android:010C000D" android:duration="@7F0A0009" android:valueFrom="0" android:valueTo="1" android:propertyName="trimPathEnd"/>

@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="?7F040121" android:layout_width="-2" android:layout_height="-2">
+  <LinearLayout android:orientation="1" android:layout_width="-2" android:layout_height="-2">
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F09027A" android:layout_width="220.000000dip" android:layout_height="-2">
+      <ImageView android:layout_width="50.000000dip" android:layout_height="45.000000dip" android:layout_margin="15.000000dip" android:src="@7F080129" android:scaleType="3"/>
+      <TextView android:textSize="18.000000sp" android:textColor="#FF00C800" android:layout_width="-2" android:layout_height="-2" android:text="@7F1000D4" android:layout_marginStart="10.000000dip"/>
+    </LinearLayout>
+    <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090283" android:layout_width="220.000000dip" android:layout_height="-2">
+      <ImageView android:layout_width="50.000000dip" android:layout_height="45.000000dip" android:layout_margin="15.000000dip" android:src="@7F080063" android:scaleType="3"/>
+      <TextView android:textSize="18.000000sp" android:textColor="#FF00ACED" android:layout_width="-2" android:layout_height="-2" android:text="@7F1000D6" android:layout_marginStart="10.000000dip"/>
+    </LinearLayout>
+  </LinearLayout>
+</FrameLayout>

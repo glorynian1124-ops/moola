@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00000001" android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+  <TextView android:textSize="20.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F09023E" android:visibility="2" android:layout_width="-1" android:layout_height="60.000000dip" android:text="桌面小部件"/>
+  <FrameLayout android:layout_width="-1" android:layout_height="180.000000dip" android:maxWidth="350.000000dip">
+    <ImageView android:id="@7F090062" android:layout_width="-1" android:layout_height="-1" android:src="@7F08012C" android:scaleType="6"/>
+    <RelativeLayout android:layout_gravity="0x00000011" android:layout_width="-1" android:layout_height="140.000000dip" android:layout_marginStart="10.000000dip" android:layout_marginEnd="10.000000dip">
+      <ImageView android:id="@7F090063" android:layout_width="-1" android:layout_height="-1"/>
+      <ImageView android:id="@7F09021B" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="17.000000dip" android:layout_marginStart="20.000000dip"/>
+      <ImageView android:id="@7F0900BD" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="21.000000dip" android:layout_marginEnd="20.000000dip" android:layout_alignParentEnd="true"/>
+      <LinearLayout android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="17.000000dip" android:layout_alignParentBottom="true">
+        <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="20.000000dip">
+          <ImageView android:id="@7F09021C" android:layout_width="-2" android:layout_height="-2"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="0" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip">
+          <ImageView android:id="@7F09021D" android:layout_width="-2" android:layout_height="-2"/>
+        </LinearLayout>
+      </LinearLayout>
+    </RelativeLayout>
+  </FrameLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="30.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:gravity="0x00800005" android:layout_width="-2" android:layout_height="-2" android:text="样式：" android:layout_marginStart="20.000000dip"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2">
+      <RadioGroup android:textSize="16.000000sp" android:gravity="0x00000010" android:orientation="0" android:id="@7F09008E" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip">
+        <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F0900AA" android:layout_width="0.000000dip" android:layout_height="30.000000dip" android:text="幽暗" android:layout_weight="1.000000" android:layout_marginEnd="16777215.000000dip" style="@7F1102BF"/>
+        <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F09006B" android:layout_width="0.000000dip" android:layout_height="30.000000dip" android:text="明亮" android:layout_weight="1.000000" style="@7F1102BF"/>
+      </RadioGroup>
+      <RadioGroup android:textSize="16.000000sp" android:gravity="0x00000010" android:orientation="0" android:id="@7F090098" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="25.000000dip" android:layout_marginEnd="25.000000dip">
+        <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F0901C2" android:layout_width="0.000000dip" android:layout_height="30.000000dip" android:text="圆角" android:layout_weight="1.000000" android:layout_marginEnd="16777215.000000dip" style="@7F1102BF"/>
+        <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F0901F3" android:layout_width="0.000000dip" android:layout_height="30.000000dip" android:text="直角" android:layout_weight="1.000000" style="@7F1102BF"/>
+      </RadioGroup>
+    </LinearLayout>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="25.000000dip" android:layout_marginBottom="35.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:gravity="0x00800005" android:layout_width="-2" android:layout_height="-2" android:text="透明：" android:layout_marginStart="20.000000dip"/>
+    <SeekBar android:id="@7F090051" android:focusable="true" android:layout_width="-1" android:layout_height="-2" android:max="255" android:layout_marginEnd="20.000000dip"/>
+  </LinearLayout>
+  <TextView android:textSize="14.000000sp" android:textColor="#FF666666" android:id="@7F090255" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15.000000dip" android:layout_marginBottom="20.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F09005E" android:visibility="2" android:layout_width="-1" android:layout_height="50.000000dip" android:layout_marginTop="15.000000dip" android:layout_marginBottom="15.000000dip">
+    <LinearLayout android:orientation="1" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000">
+      <TextView android:textSize="17.000000sp" android:textColor="?7F04010D" android:layout_width="-1" android:layout_height="-2" android:text="后台弹出界面权限" android:layout_marginStart="15.000000dip"/>
+      <TextView android:textSize="11.000000sp" android:textColor="?7F04016F" android:layout_width="-1" android:layout_height="-2" android:text="若点击桌面小部件无响应，请开启此权限" android:layout_marginStart="15.000000dip"/>
+    </LinearLayout>
+    <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F0800A2" android:scaleType="3" android:tint="?7F040170" android:layout_marginEnd="10.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

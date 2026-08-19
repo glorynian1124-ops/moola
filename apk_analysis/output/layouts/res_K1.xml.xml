@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:background="?7F040121" android:layout_width="-1" android:layout_height="-2">
+  <TextView android:textSize="20.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F09023E" android:layout_width="-1" android:layout_height="60.000000dip" android:text="选择账本"/>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <com.yhqx.account.widget.MaxHeightRecycleView android:id="@7F090067" android:scrollbars="0x00000200" android:layout_width="-1" android:layout_height="-2" app:maxHeight="400.000000dip"/>
+</LinearLayout>

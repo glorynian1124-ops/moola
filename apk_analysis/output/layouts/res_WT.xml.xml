@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="0x00800005" android:orientation="0" android:id="@7F0900AD" android:paddingRight="@7F0700C5" android:layout_width="-1" android:layout_height="@7F0700C4" android:paddingEnd="@7F0700C5">
+  <Button android:layout_gravity="0x00000010" android:id="@7F090075" android:layout_width="-2" android:layout_height="-2" android:text="@7F100071" style="?7F040061"/>
+  <Button android:layout_gravity="0x00000010" android:id="@7F090091" android:layout_width="-2" android:layout_height="-2" android:text="@7F100072" style="?7F040063"/>
+</LinearLayout>

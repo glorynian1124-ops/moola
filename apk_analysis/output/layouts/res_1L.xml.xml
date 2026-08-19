@@ -1,0 +1,5 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@7F0901C5" android:background="@7F06013C" android:layout_width="-1" android:layout_height="-1">
+  <Button android:textSize="@7F07013E" android:textColor="@7F08010E" android:gravity="0x00000013" android:id="@7F09006C" android:background="@android:0106000D" android:paddingLeft="@7F070140" android:layout_width="-2" android:layout_height="-1" android:text="@7F1000A7" android:textAllCaps="false"/>
+  <TextView android:textSize="@7F070141" android:textColor="@7F06013F" android:gravity="0x00000011" android:id="@7F090252" android:layout_width="-1" android:layout_height="-2" android:layout_toLeftOf="@7F09006D" android:layout_toRightOf="@7F09006C" android:layout_centerVertical="true"/>
+  <Button android:textSize="@7F07013E" android:textColor="@7F08010E" android:gravity="0x00000015" android:id="@7F09006D" android:background="@android:0106000D" android:paddingRight="@7F070140" android:layout_width="-2" android:layout_height="-1" android:text="@7F1000AD" android:layout_alignParentRight="true" android:textAllCaps="false"/>
+</RelativeLayout>

@@ -1,0 +1,3 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <CheckBox android:textSize="15.000000sp" android:gravity="0x00000011" android:layout_gravity="0x00000011" android:id="@7F0900AC" android:layout_width="-1" android:layout_height="32.000000dip" android:layout_marginTop="8.000000dip" android:layout_marginBottom="8.000000dip" android:singleLine="true" android:layout_marginStart="5.000000dip" android:layout_marginEnd="5.000000dip" style="@7F1102BF"/>
+</FrameLayout>

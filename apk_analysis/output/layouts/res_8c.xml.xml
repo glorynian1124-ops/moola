@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?7F040121" android:layout_width="-1" android:layout_height="-2">
+  <TextView android:textSize="20.000000sp" android:textColor="?7F0402DF" android:gravity="0x00000011" android:id="@7F09023E" android:layout_width="-1" android:layout_height="60.000000dip" android:text="切换账单周期"/>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090142" android:layout_width="-1" android:layout_height="54.000000dip" android:foreground="?android:0101030E">
+    <TextView android:textSize="18.000000sp" android:textColor="?7F04010C" android:layout_width="-2" android:layout_height="-2" android:text="按月" android:layout_marginStart="18.000000dip"/>
+    <ImageView android:id="@7F090115" android:visibility="1" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F08010D" android:scaleType="3" android:tint="#FF067D17" android:layout_marginStart="18.000000dip"/>
+  </LinearLayout>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090281" android:layout_width="-1" android:layout_height="54.000000dip" android:foreground="?android:0101030E">
+    <TextView android:textSize="18.000000sp" android:textColor="?7F04010C" android:layout_width="-2" android:layout_height="-2" android:text="按年" android:layout_marginStart="18.000000dip"/>
+    <ImageView android:id="@7F090116" android:visibility="1" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F08010D" android:scaleType="3" android:tint="#FF067D17" android:layout_marginStart="18.000000dip"/>
+  </LinearLayout>
+  <View android:background="?7F040277" android:layout_width="-1" android:layout_height="1.000000px"/>
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F090050" android:layout_width="-1" android:layout_height="54.000000dip" android:foreground="?android:0101030E">
+    <TextView android:textSize="18.000000sp" android:textColor="?7F04010C" android:layout_width="-2" android:layout_height="-2" android:text="全部" android:layout_marginStart="18.000000dip"/>
+    <ImageView android:id="@7F090114" android:visibility="1" android:layout_width="20.000000dip" android:layout_height="20.000000dip" android:src="@7F08010D" android:scaleType="3" android:tint="#FF067D17" android:layout_marginStart="18.000000dip"/>
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,4 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-2" android:layout_height="-2">
+  <CheckBox android:id="@7F090228" android:background="?android:01010031" android:layout_width="-2" android:layout_height="-2" android:buttonTint="@7F06002C"/>
+  <CheckBox android:id="@7F090229" android:background="?android:01010031" android:layout_width="-2" android:layout_height="-2" app:buttonTint="@7F06002C"/>
+</LinearLayout>

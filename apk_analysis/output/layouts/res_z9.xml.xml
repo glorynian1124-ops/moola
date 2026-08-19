@@ -1,0 +1,28 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?android:01010031" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+    <TextView android:textSize="18.000000sp" android:textColor="?7F0402DF" android:id="@7F09023E" android:layout_width="0.000000dip" android:layout_height="-2" android:layout_weight="1.000000" android:layout_marginStart="10.000000dip"/>
+  </LinearLayout>
+  <FrameLayout android:layout_width="-1" android:layout_height="-1">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+      <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+        <RadioGroup android:gravity="0x00000011" android:orientation="0" android:id="@7F090190" android:layout_width="-1" android:layout_height="50.000000dip">
+          <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F090272" android:layout_width="80.000000dip" android:layout_height="30.000000dip" android:text="周" android:layout_marginEnd="16777215.000000dip" style="@7F1102BF"/>
+          <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F090142" android:layout_width="80.000000dip" android:layout_height="30.000000dip" android:text="月" style="@7F1102BF"/>
+          <RadioButton android:textSize="15.000000sp" android:gravity="0x00000011" android:id="@7F090281" android:layout_width="80.000000dip" android:layout_height="30.000000dip" android:text="年" android:layout_marginStart="16777215.000000dip" style="@7F1102BF"/>
+        </RadioGroup>
+        <com.google.android.material.tabs.TabLayout android:id="@7F09018F" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="35.000000dip" app:tabIndicatorColor="?7F04031B" app:tabMode="0" app:tabRippleColor="#0A000000" app:tabSelectedTextColor="?7F04031B" app:tabTextAppearance="@7F1100F2" app:tabTextColor="?7F04010D"/>
+        <com.yhqx.account.widget.VerticalBarView android:id="@7F090251" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="-1" android:layout_height="150.000000dip"/>
+      </LinearLayout>
+      <LinearLayout android:orientation="0" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="-2">
+        <TextView android:textSize="14.000000sp" android:textColor="?7F04010F" android:gravity="0x00000010" android:layout_width="0.000000dip" android:layout_height="32.000000dip" android:text="账单列表" android:layout_weight="1.000000" android:paddingStart="7.000000dip"/>
+        <TextView android:textSize="14.000000sp" android:textColor="?7F04010F" android:gravity="0x00000010" android:id="@7F090246" android:layout_width="-2" android:layout_height="32.000000dip" android:paddingEnd="7.000000dip"/>
+      </LinearLayout>
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F09020D" android:background="?7F0401EF" android:layout_width="-1" android:layout_height="-1" android:overScrollMode="2"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="0x00000011" android:orientation="1" android:id="@7F0900CF" android:background="?7F0401EF" android:visibility="2" android:clickable="true" android:layout_width="-1" android:layout_height="-1" android:layout_marginTop="50.000000dip">
+      <ImageView android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:src="@7F08009B" android:tint="?7F04031B" android:alpha="0.150000"/>
+      <TextView android:textSize="15.000000sp" android:textColor="?7F04031B" android:id="@7F0900D2" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="8.000000dip" android:text="暂无数据" android:alpha="0.200000"/>
+    </LinearLayout>
+  </FrameLayout>
+</LinearLayout>

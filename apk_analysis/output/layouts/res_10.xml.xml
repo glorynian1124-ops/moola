@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:background="?7F040121" android:layout_width="-1" android:layout_height="-2">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="-1" android:layout_height="45.000000dip" android:layout_marginStart="15.000000dip" android:layout_marginEnd="15.000000dip">
+    <TextView android:textSize="16.000000sp" android:textColor="?7F04010D" android:layout_width="-2" android:layout_height="-2" android:text="选择要分享的平台"/>
+  </LinearLayout>
+  <LinearLayout android:gravity="0x00000030" android:orientation="0" android:paddingTop="3.000000dip" android:layout_width="-1" android:layout_height="115.000000dip">
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F09007D" android:layout_width="80.000000dip" android:layout_height="-2">
+      <ImageView android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:src="@7F08007C" android:scaleType="6"/>
+      <TextView android:textSize="14.000000sp" android:textColor="?7F04016E" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="0.000000dip" android:text="微信好友"/>
+    </LinearLayout>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+    <LinearLayout android:gravity="0x00000001" android:orientation="1" android:id="@7F09013D" android:layout_width="80.000000dip" android:layout_height="-2">
+      <ImageView android:layout_width="55.000000dip" android:layout_height="55.000000dip" android:src="@7F0800CE" android:scaleType="6"/>
+      <TextView android:textSize="14.000000sp" android:textColor="?7F04016E" android:layout_width="-2" android:layout_height="-2" android:layout_marginTop="0.000000dip" android:text="微信朋友圈"/>
+    </LinearLayout>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+  </LinearLayout>
+</LinearLayout>

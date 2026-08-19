@@ -1,0 +1,83 @@
+{
+  "array": {},
+  "plurals": {},
+  "integer": {
+    "abc_config_activityDefaultDur": [
+      "220"
+    ],
+    "abc_config_activityShortDur": [
+      "150"
+    ],
+    "animation_default_duration": [
+      "300"
+    ],
+    "app_bar_elevation_anim_duration": [
+      "150"
+    ],
+    "bottom_sheet_slide_duration": [
+      "150"
+    ],
+    "cancel_button_image_alpha": [
+      "127"
+    ],
+    "config_tooltipAnimTime": [
+      "150"
+    ],
+    "design_snackbar_text_max_lines": [
+      "2"
+    ],
+    "design_tab_indicator_anim_duration_ms": [
+      "300"
+    ],
+    "hide_password_duration": [
+      "320"
+    ],
+    "min_screen_width_bucket": [
+      "1"
+    ],
+    "mtrl_badge_max_character_count": [
+      "4"
+    ],
+    "mtrl_btn_anim_delay_ms": [
+      "100"
+    ],
+    "mtrl_btn_anim_duration_ms": [
+      "100"
+    ],
+    "mtrl_calendar_header_orientation": [
+      "1"
+    ],
+    "mtrl_calendar_selection_text_lines": [
+      "1"
+    ],
+    "mtrl_calendar_year_selector_span": [
+      "3"
+    ],
+    "mtrl_card_anim_delay_ms": [
+      "75"
+    ],
+    "mtrl_card_anim_duration_ms": [
+      "120"
+    ],
+    "mtrl_chip_anim_duration": [
+      "100"
+    ],
+    "mtrl_tab_indicator_anim_duration_ms": [
+      "250"
+    ],
+    "show_password_duration": [
+      "200"
+    ],
+    "status_bar_notification_info_maxnum": [
+      "999"
+    ]
+  },
+  "bool": {
+    "abc_action_bar_embed_tabs": [],
+    "abc_allow_stacked_button_bar": [
+      "false"
+    ],
+    "abc_config_actionMenuItemAllCaps": [],
+    "mtrl_btn_textappearance_all_caps": []
+  }
+}

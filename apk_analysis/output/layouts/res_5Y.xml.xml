@@ -1,0 +1,8 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="-1" android:layout_height="-2">
+  <FrameLayout android:orientation="1" android:id="@7F0900F5" android:visibility="0" android:layout_width="-1" android:layout_height="-1">
+    <com.haibin.calendarview.MonthViewPager android:id="@7F090270" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="41.000000dip"/>
+    <com.haibin.calendarview.WeekViewPager android:id="@7F090271" android:visibility="2" android:layout_width="-1" android:layout_height="50.000000dip" android:layout_marginTop="41.000000dip"/>
+    <View android:id="@7F090120" android:background="#FFCFCFCF" android:layout_width="-1" android:layout_height="1.000000px" android:layout_marginLeft="16.000000dip" android:layout_marginTop="40.000000dip" android:layout_marginRight="16.000000dip"/>
+  </FrameLayout>
+  <com.haibin.calendarview.YearViewPager android:id="@7F0901E0" android:background="#FFFFFFFF" android:paddingLeft="12.000000dip" android:paddingRight="12.000000dip" android:visibility="2" android:layout_width="-1" android:layout_height="-1"/>
+</merge>

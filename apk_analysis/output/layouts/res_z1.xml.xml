@@ -1,0 +1,4 @@
+<transition xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@7F080035"/>
+  <item android:drawable="@7F080034"/>
+</transition>

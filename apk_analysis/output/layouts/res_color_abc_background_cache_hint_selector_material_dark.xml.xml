@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:color="@7F06001E" android:state_accelerated="false"/>
+  <item android:color="@android:0106000D"/>
+</selector>

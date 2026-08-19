@@ -1,0 +1,7 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@android:01020000" android:drawable="@7F08002A"/>
+  <item android:id="@android:0102000F" android:drawable="@7F08002D"/>
+  <item android:id="@android:0102000D">
+    <bitmap android:src="@7F08002A" android:tileModeX="1"/>
+  </item>
+</layer-list>

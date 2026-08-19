@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moola · AI 记账</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Moola</h1>
+    <span class="month">{{ month }}</span>
+  </header>
+
+  <main>
+    <!-- 本月概览 -->
+    <section class="card overview">
+      <div class="ov-item">
+        <span class="label">本月支出</span>
+        <span class="value expense">¥{{ "%.2f"|format(report.total_expense or 0) }}</span>
+      </div>
+      <div class="ov-item">
+        <span class="label">本月收入</span>
+        <span class="value income">¥{{ "%.2f"|format(report.total_income or 0) }}</span>
+      </div>
+      <div class="ov-item">
+        <span class="label">净结余</span>
+        <span class="value {{ 'income' if (report.net or 0) >= 0 else 'expense' }}">¥{{ "%.2f"|format(report.net or 0) }}</span>
+      </div>
+    </section>
+
+    <!-- 消费结构 -->
+    {% if report.by_category %}
+    <section class="card">
+      <h2>消费结构</h2>
+      <ul class="cat-list">
+        {% for cat, amt in report.by_category.items() %}
+        <li>
+          <span class="cat-name">{{ cat }}</span>
+          <div class="cat-bar"><div class="cat-fill" style="width: {{ (amt / report.total_expense * 100)|round(1) }}%"></div></div>
+          <span class="cat-amt">¥{{ "%.2f"|format(amt) }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <!-- 异常提醒 -->
+    {% if report.anomalies %}
+    <section class="card warn">
+      <h2>⚠️ 提醒</h2>
+      <ul>
+        {% for a in report.anomalies %}
+        <li>{{ a }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <!-- 最近账单 -->
+    <section class="card">
+      <h2>最近账单</h2>
+      {% if transactions %}
+      <ul class="tx-list">
+        {% for t in transactions %}
+        <li>
+          <div class="tx-left">
+            <span class="tx-merchant">{{ t.merchant or '手动记账' }}</span>
+            <span class="tx-meta">{{ t.trans_time }} · {{ t.category or '未分类' }}</span>
+          </div>
+          <span class="tx-amount {{ 'income' if t.amount > 0 else 'expense' }}">
+            {{ '+' if t.amount > 0 else '' }}{{ "%.2f"|format(t.amount) }}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="empty">本月还没有账单。<br>用 <code>python3 main.py import 微信账单.csv</code> 导入，或稍后加手动记账。</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

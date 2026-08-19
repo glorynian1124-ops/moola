@@ -1,0 +1,5 @@
+<selector xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:state_checked="true" android:color="?7F0400BA" android:alpha="0.200000"/>
+  <item android:color="@android:0106000D" app:state_dragged="true"/>
+  <item android:state_checked="false" android:color="?7F0400B9" android:alpha="0.200000"/>
+</selector>

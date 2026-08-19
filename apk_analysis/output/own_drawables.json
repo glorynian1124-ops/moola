@@ -1,0 +1,877 @@
+[
+  {
+    "name": "about",
+    "rid": "0x7f08005d",
+    "file": "res/8y.png"
+  },
+  {
+    "name": "accountbook",
+    "rid": "0x7f08005e",
+    "file": "res/sk.png"
+  },
+  {
+    "name": "accounts",
+    "rid": "0x7f08005f",
+    "file": "res/vz.png"
+  },
+  {
+    "name": "accounts2",
+    "rid": "0x7f080060",
+    "file": "res/t9.png"
+  },
+  {
+    "name": "add",
+    "rid": "0x7f080061",
+    "file": "res/2b.png"
+  },
+  {
+    "name": "additem",
+    "rid": "0x7f080062",
+    "file": "res/_g.png"
+  },
+  {
+    "name": "alipay",
+    "rid": "0x7f080063",
+    "file": "res/27.png"
+  },
+  {
+    "name": "app",
+    "rid": "0x7f080064",
+    "file": "res/2U.png"
+  },
+  {
+    "name": "apple",
+    "rid": "0x7f080065",
+    "file": "res/nk.png"
+  },
+  {
+    "name": "avatar",
+    "rid": "0x7f080066",
+    "file": "res/aW.png"
+  },
+  {
+    "name": "baby",
+    "rid": "0x7f080069",
+    "file": "res/RZ.png"
+  },
+  {
+    "name": "back_arrow",
+    "rid": "0x7f08006a",
+    "file": "res/0Z.png"
+  },
+  {
+    "name": "borrow",
+    "rid": "0x7f08006b",
+    "file": "res/o3.png"
+  },
+  {
+    "name": "botdlgbg",
+    "rid": "0x7f08006c",
+    "file": "res/0z.xml"
+  },
+  {
+    "name": "btnbg",
+    "rid": "0x7f080075",
+    "file": "res/Uf.xml"
+  },
+  {
+    "name": "bus",
+    "rid": "0x7f080076",
+    "file": "res/ls.png"
+  },
+  {
+    "name": "calendar",
+    "rid": "0x7f080077",
+    "file": "res/yw.png"
+  },
+  {
+    "name": "camera",
+    "rid": "0x7f080078",
+    "file": "res/77.png"
+  },
+  {
+    "name": "camera2",
+    "rid": "0x7f080079",
+    "file": "res/93.png"
+  },
+  {
+    "name": "carrot",
+    "rid": "0x7f08007a",
+    "file": "res/54.png"
+  },
+  {
+    "name": "chart",
+    "rid": "0x7f08007b",
+    "file": "res/Nn.png"
+  },
+  {
+    "name": "chat",
+    "rid": "0x7f08007c",
+    "file": "res/eK.png"
+  },
+  {
+    "name": "check_boxs",
+    "rid": "0x7f08007d",
+    "file": "res/yT.xml"
+  },
+  {
+    "name": "checkbox",
+    "rid": "0x7f08007e",
+    "file": "res/mF.xml"
+  },
+  {
+    "name": "checkbox0",
+    "rid": "0x7f08007f",
+    "file": "res/dA.xml"
+  },
+  {
+    "name": "close",
+    "rid": "0x7f080080",
+    "file": "res/zA.png"
+  },
+  {
+    "name": "cloth",
+    "rid": "0x7f080081",
+    "file": "res/Zk.png"
+  },
+  {
+    "name": "color",
+    "rid": "0x7f080082",
+    "file": "res/HJ.png"
+  },
+  {
+    "name": "cookie",
+    "rid": "0x7f080083",
+    "file": "res/3Z.png"
+  },
+  {
+    "name": "custom",
+    "rid": "0x7f080084",
+    "file": "res/h0.png"
+  },
+  {
+    "name": "del",
+    "rid": "0x7f080086",
+    "file": "res/lk.png"
+  },
+  {
+    "name": "delete",
+    "rid": "0x7f080087",
+    "file": "res/3G.png"
+  },
+  {
+    "name": "delivery",
+    "rid": "0x7f080088",
+    "file": "res/io.png"
+  },
+  {
+    "name": "diamond",
+    "rid": "0x7f08008f",
+    "file": "res/sL.png"
+  },
+  {
+    "name": "dog",
+    "rid": "0x7f080090",
+    "file": "res/F7.png"
+  },
+  {
+    "name": "donat",
+    "rid": "0x7f080091",
+    "file": "res/36.png"
+  },
+  {
+    "name": "dot",
+    "rid": "0x7f080092",
+    "file": "res/lq.xml"
+  },
+  {
+    "name": "drawback",
+    "rid": "0x7f080093",
+    "file": "res/R_.png"
+  },
+  {
+    "name": "drink",
+    "rid": "0x7f080094",
+    "file": "res/80.png"
+  },
+  {
+    "name": "dropdown",
+    "rid": "0x7f080095",
+    "file": "res/yU.png"
+  },
+  {
+    "name": "drug",
+    "rid": "0x7f080096",
+    "file": "res/fh.png"
+  },
+  {
+    "name": "dumbell",
+    "rid": "0x7f080097",
+    "file": "res/Oe.png"
+  },
+  {
+    "name": "edit",
+    "rid": "0x7f080098",
+    "file": "res/-M.png"
+  },
+  {
+    "name": "electricity",
+    "rid": "0x7f080099",
+    "file": "res/OO.png"
+  },
+  {
+    "name": "email",
+    "rid": "0x7f08009a",
+    "file": "res/ju.png"
+  },
+  {
+    "name": "empty",
+    "rid": "0x7f08009b",
+    "file": "res/8e.png"
+  },
+  {
+    "name": "eraser",
+    "rid": "0x7f08009c",
+    "file": "res/ng.png"
+  },
+  {
+    "name": "export",
+    "rid": "0x7f08009d",
+    "file": "res/jV.png"
+  },
+  {
+    "name": "eye",
+    "rid": "0x7f08009e",
+    "file": "res/l9.png"
+  },
+  {
+    "name": "film",
+    "rid": "0x7f08009f",
+    "file": "res/Zy.png"
+  },
+  {
+    "name": "fingerprint",
+    "rid": "0x7f0800a0",
+    "file": "res/jl.png"
+  },
+  {
+    "name": "firstday",
+    "rid": "0x7f0800a1",
+    "file": "res/fa.png"
+  },
+  {
+    "name": "forward",
+    "rid": "0x7f0800a2",
+    "file": "res/LO.png"
+  },
+  {
+    "name": "fp",
+    "rid": "0x7f0800a3",
+    "file": "res/Vc.png"
+  },
+  {
+    "name": "fridge",
+    "rid": "0x7f0800a4",
+    "file": "res/xX.png"
+  },
+  {
+    "name": "furniture",
+    "rid": "0x7f0800a5",
+    "file": "res/e7.png"
+  },
+  {
+    "name": "game",
+    "rid": "0x7f0800a6",
+    "file": "res/L4.png"
+  },
+  {
+    "name": "gift",
+    "rid": "0x7f0800a9",
+    "file": "res/Ri.png"
+  },
+  {
+    "name": "handshake",
+    "rid": "0x7f0800aa",
+    "file": "res/8C.png"
+  },
+  {
+    "name": "home",
+    "rid": "0x7f0800ab",
+    "file": "res/bC.png"
+  },
+  {
+    "name": "ic_calendar_black_24dp",
+    "rid": "0x7f0800ac",
+    "file": "res/sh.xml"
+  },
+  {
+    "name": "ic_clear_black_24dp",
+    "rid": "0x7f0800ad",
+    "file": "res/k3.xml"
+  },
+  {
+    "name": "ic_edit_black_24dp",
+    "rid": "0x7f0800ae",
+    "file": "res/ks.xml"
+  },
+  {
+    "name": "ic_keyboard_arrow_left_black_24dp",
+    "rid": "0x7f0800af",
+    "file": "res/1W.xml"
+  },
+  {
+    "name": "ic_keyboard_arrow_right_black_24dp",
+    "rid": "0x7f0800b0",
+    "file": "res/B-.xml"
+  },
+  {
+    "name": "ic_launcher_background",
+    "rid": "0x7f0800b1",
+    "file": "res/3N.xml"
+  },
+  {
+    "name": "ic_menu_arrow_down_black_24dp",
+    "rid": "0x7f0800b3",
+    "file": "res/Hp.xml"
+  },
+  {
+    "name": "ic_menu_arrow_up_black_24dp",
+    "rid": "0x7f0800b4",
+    "file": "res/VW.xml"
+  },
+  {
+    "name": "ic_mtrl_checked_circle",
+    "rid": "0x7f0800b5",
+    "file": "res/RT.xml"
+  },
+  {
+    "name": "ic_mtrl_chip_checked_black",
+    "rid": "0x7f0800b6",
+    "file": "res/ID.xml"
+  },
+  {
+    "name": "ic_mtrl_chip_checked_circle",
+    "rid": "0x7f0800b7",
+    "file": "res/2D.xml"
+  },
+  {
+    "name": "ic_mtrl_chip_close_circle",
+    "rid": "0x7f0800b8",
+    "file": "res/rM1.xml"
+  },
+  {
+    "name": "image",
+    "rid": "0x7f0800b9",
+    "file": "res/EB.png"
+  },
+  {
+    "name": "indicator_selected",
+    "rid": "0x7f0800ba",
+    "file": "res/Qj.xml"
+  },
+  {
+    "name": "indicator_unselected",
+    "rid": "0x7f0800bb",
+    "file": "res/24.xml"
+  },
+  {
+    "name": "insurance",
+    "rid": "0x7f0800bc",
+    "file": "res/-J.png"
+  },
+  {
+    "name": "investment",
+    "rid": "0x7f0800bd",
+    "file": "res/R8.png"
+  },
+  {
+    "name": "list",
+    "rid": "0x7f0800be",
+    "file": "res/DY.png"
+  },
+  {
+    "name": "livingexpn",
+    "rid": "0x7f0800bf",
+    "file": "res/Qh.png"
+  },
+  {
+    "name": "loading",
+    "rid": "0x7f0800c0",
+    "file": "res/qx.png"
+  },
+  {
+    "name": "lock",
+    "rid": "0x7f0800c1",
+    "file": "res/bo.png"
+  },
+  {
+    "name": "logo",
+    "rid": "0x7f0800c2",
+    "file": "res/nm.png"
+  },
+  {
+    "name": "medical",
+    "rid": "0x7f0800c3",
+    "file": "res/MG.png"
+  },
+  {
+    "name": "menubk1",
+    "rid": "0x7f0800c4",
+    "file": "res/ZS8.xml"
+  },
+  {
+    "name": "menubk2",
+    "rid": "0x7f0800c5",
+    "file": "res/ZS7.xml"
+  },
+  {
+    "name": "menubk3",
+    "rid": "0x7f0800c6",
+    "file": "res/ZS6.xml"
+  },
+  {
+    "name": "menubk4",
+    "rid": "0x7f0800c7",
+    "file": "res/ZS5.xml"
+  },
+  {
+    "name": "menubk5",
+    "rid": "0x7f0800c8",
+    "file": "res/ZS4.xml"
+  },
+  {
+    "name": "menubk6",
+    "rid": "0x7f0800c9",
+    "file": "res/ZS3.xml"
+  },
+  {
+    "name": "menubk7",
+    "rid": "0x7f0800ca",
+    "file": "res/ZS2.xml"
+  },
+  {
+    "name": "menubk8",
+    "rid": "0x7f0800cb",
+    "file": "res/ZS1.xml"
+  },
+  {
+    "name": "merge",
+    "rid": "0x7f0800cc",
+    "file": "res/z2.png"
+  },
+  {
+    "name": "mirror",
+    "rid": "0x7f0800cd",
+    "file": "res/CK.png"
+  },
+  {
+    "name": "moments",
+    "rid": "0x7f0800ce",
+    "file": "res/_N.png"
+  },
+  {
+    "name": "money",
+    "rid": "0x7f0800cf",
+    "file": "res/nI.png"
+  },
+  {
+    "name": "moneybag",
+    "rid": "0x7f0800d0",
+    "file": "res/fZ.png"
+  },
+  {
+    "name": "more",
+    "rid": "0x7f0800d1",
+    "file": "res/6h.png"
+  },
+  {
+    "name": "moresetting",
+    "rid": "0x7f0800d2",
+    "file": "res/P6.png"
+  },
+  {
+    "name": "mycheckbox",
+    "rid": "0x7f0800dc",
+    "file": "res/bB.xml"
+  },
+  {
+    "name": "navigation_empty_icon",
+    "rid": "0x7f0800dd",
+    "file": "res/lR.xml"
+  },
+  {
+    "name": "oldman",
+    "rid": "0x7f0800ea",
+    "file": "res/3f.png"
+  },
+  {
+    "name": "paper",
+    "rid": "0x7f0800eb",
+    "file": "res/Tf.png"
+  },
+  {
+    "name": "park",
+    "rid": "0x7f0800ec",
+    "file": "res/4_.png"
+  },
+  {
+    "name": "partjob",
+    "rid": "0x7f0800ed",
+    "file": "res/DS.png"
+  },
+  {
+    "name": "phone",
+    "rid": "0x7f0800ee",
+    "file": "res/nL.png"
+  },
+  {
+    "name": "photo",
+    "rid": "0x7f0800ef",
+    "file": "res/_F.png"
+  },
+  {
+    "name": "plane",
+    "rid": "0x7f0800f0",
+    "file": "res/me.png"
+  },
+  {
+    "name": "profile",
+    "rid": "0x7f0800f1",
+    "file": "res/y3.png"
+  },
+  {
+    "name": "profile2",
+    "rid": "0x7f0800f2",
+    "file": "res/tm.png"
+  },
+  {
+    "name": "protocal",
+    "rid": "0x7f0800f3",
+    "file": "res/hM.png"
+  },
+  {
+    "name": "purchasebtn",
+    "rid": "0x7f0800f4",
+    "file": "res/0T.xml"
+  },
+  {
+    "name": "radio_selector_text",
+    "rid": "0x7f0800f5",
+    "file": "res/g6.xml"
+  },
+  {
+    "name": "rect1",
+    "rid": "0x7f0800f6",
+    "file": "res/zo.xml"
+  },
+  {
+    "name": "redbag",
+    "rid": "0x7f0800f7",
+    "file": "res/fW.png"
+  },
+  {
+    "name": "redirect",
+    "rid": "0x7f0800f8",
+    "file": "res/n4.png"
+  },
+  {
+    "name": "refuel",
+    "rid": "0x7f0800f9",
+    "file": "res/Qg.png"
+  },
+  {
+    "name": "refund",
+    "rid": "0x7f0800fa",
+    "file": "res/DZ.png"
+  },
+  {
+    "name": "region",
+    "rid": "0x7f0800fb",
+    "file": "res/qr.png"
+  },
+  {
+    "name": "reimburse",
+    "rid": "0x7f0800fc",
+    "file": "res/5x.png"
+  },
+  {
+    "name": "remind",
+    "rid": "0x7f0800fd",
+    "file": "res/Kn.png"
+  },
+  {
+    "name": "remove",
+    "rid": "0x7f0800fe",
+    "file": "res/a6.png"
+  },
+  {
+    "name": "repair0",
+    "rid": "0x7f0800ff",
+    "file": "res/Un.png"
+  },
+  {
+    "name": "restaurant",
+    "rid": "0x7f080100",
+    "file": "res/Bs.png"
+  },
+  {
+    "name": "reward",
+    "rid": "0x7f080101",
+    "file": "res/_n.png"
+  },
+  {
+    "name": "rice",
+    "rid": "0x7f080102",
+    "file": "res/ts.png"
+  },
+  {
+    "name": "road",
+    "rid": "0x7f080103",
+    "file": "res/gY.png"
+  },
+  {
+    "name": "roundrect",
+    "rid": "0x7f080104",
+    "file": "res/8V.xml"
+  },
+  {
+    "name": "roundrect1",
+    "rid": "0x7f080105",
+    "file": "res/BX.xml"
+  },
+  {
+    "name": "roundrect3",
+    "rid": "0x7f080106",
+    "file": "res/hA.xml"
+  },
+  {
+    "name": "safe",
+    "rid": "0x7f080107",
+    "file": "res/hp.png"
+  },
+  {
+    "name": "salary",
+    "rid": "0x7f080108",
+    "file": "res/CT.png"
+  },
+  {
+    "name": "scroll",
+    "rid": "0x7f080109",
+    "file": "res/eH.png"
+  },
+  {
+    "name": "sdk",
+    "rid": "0x7f08010a",
+    "file": "res/qQ.png"
+  },
+  {
+    "name": "search",
+    "rid": "0x7f08010b",
+    "file": "res/Rc.png"
+  },
+  {
+    "name": "secret",
+    "rid": "0x7f08010c",
+    "file": "res/hl.png"
+  },
+  {
+    "name": "select",
+    "rid": "0x7f08010d",
+    "file": "res/qi.png"
+  },
+  {
+    "name": "selector_pickerview_btn",
+    "rid": "0x7f08010e",
+    "file": "res/8p.xml"
+  },
+  {
+    "name": "shape_sku",
+    "rid": "0x7f08010f",
+    "file": "res/ZJ.xml"
+  },
+  {
+    "name": "shape_sku_normal",
+    "rid": "0x7f080110",
+    "file": "res/qC.xml"
+  },
+  {
+    "name": "share",
+    "rid": "0x7f080111",
+    "file": "res/yg.png"
+  },
+  {
+    "name": "sharelogo",
+    "rid": "0x7f080112",
+    "file": "res/Ln.png"
+  },
+  {
+    "name": "shopping",
+    "rid": "0x7f080113",
+    "file": "res/fM.png"
+  },
+  {
+    "name": "smoking",
+    "rid": "0x7f080114",
+    "file": "res/6p.png"
+  },
+  {
+    "name": "sorting",
+    "rid": "0x7f080115",
+    "file": "res/fU.png"
+  },
+  {
+    "name": "star",
+    "rid": "0x7f080116",
+    "file": "res/Oh1.png"
+  },
+  {
+    "name": "statistics",
+    "rid": "0x7f080117",
+    "file": "res/6A.png"
+  },
+  {
+    "name": "statistics2",
+    "rid": "0x7f080118",
+    "file": "res/65.png"
+  },
+  {
+    "name": "study",
+    "rid": "0x7f080119",
+    "file": "res/Oh.png"
+  },
+  {
+    "name": "swtch",
+    "rid": "0x7f08011a",
+    "file": "res/B3.png"
+  },
+  {
+    "name": "sync",
+    "rid": "0x7f08011b",
+    "file": "res/SP.png"
+  },
+  {
+    "name": "taxi",
+    "rid": "0x7f08011c",
+    "file": "res/ok.png"
+  },
+  {
+    "name": "theme",
+    "rid": "0x7f08011e",
+    "file": "res/vl.png"
+  },
+  {
+    "name": "train",
+    "rid": "0x7f080121",
+    "file": "res/fP.png"
+  },
+  {
+    "name": "transparentbk",
+    "rid": "0x7f080122",
+    "file": "res/mH.xml"
+  },
+  {
+    "name": "types",
+    "rid": "0x7f080123",
+    "file": "res/gu.png"
+  },
+  {
+    "name": "update",
+    "rid": "0x7f080124",
+    "file": "res/7n.png"
+  },
+  {
+    "name": "user",
+    "rid": "0x7f080125",
+    "file": "res/jU.png"
+  },
+  {
+    "name": "vibrate",
+    "rid": "0x7f080126",
+    "file": "res/W_.png"
+  },
+  {
+    "name": "vip",
+    "rid": "0x7f080127",
+    "file": "res/ci.png"
+  },
+  {
+    "name": "vipflag",
+    "rid": "0x7f080128",
+    "file": "res/Qj.png"
+  },
+  {
+    "name": "wechat",
+    "rid": "0x7f080129",
+    "file": "res/Vb.png"
+  },
+  {
+    "name": "white_radius",
+    "rid": "0x7f08012a",
+    "file": "res/Xk.xml"
+  },
+  {
+    "name": "widget",
+    "rid": "0x7f08012b",
+    "file": "res/Zl.png"
+  },
+  {
+    "name": "widgetbk",
+    "rid": "0x7f08012c",
+    "file": "res/Hs.JPG"
+  },
+  {
+    "name": "widgetpreview",
+    "rid": "0x7f08012d",
+    "file": "res/CV.PNG"
+  },
+  {
+    "name": "wine",
+    "rid": "0x7f08012e",
+    "file": "res/c4.png"
+  },
+  {
+    "name": "wxlogin",
+    "rid": "0x7f08012f",
+    "file": "res/E4.png"
+  },
+  {
+    "name": "notify_panel_notification_icon_bg",
+    "rid": "0x7f0800e9",
+    "file": "res/Qv.png"
+  },
+  {
+    "name": "gdt_ic_express_pause",
+    "rid": "0x7f0800a7",
+    "file": "res/33.png"
+  },
+  {
+    "name": "gdt_ic_express_play",
+    "rid": "0x7f0800a8",
+    "file": "res/43.png"
+  },
+  {
+    "name": "notify_panel_notification_icon_bg",
+    "rid": "0x7f0800e9",
+    "file": "res/Qv.png"
+  },
+  {
+    "name": "notify_panel_notification_icon_bg",
+    "rid": "0x7f0800e9",
+    "file": "res/Qv.png"
+  },
+  {
+    "name": "gdt_ic_express_pause",
+    "rid": "0x7f0800a7",
+    "file": "res/33.png"
+  },
+  {
+    "name": "gdt_ic_express_play",
+    "rid": "0x7f0800a8",
+    "file": "res/43.png"
+  },
+  {
+    "name": "ic_launcher_foreground",
+    "rid": "0x7f0800b2",
+    "file": "res/qm.xml"
+  }
+]

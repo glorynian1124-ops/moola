@@ -1,0 +1,12 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@7F0900A1" android:visible="false" android:title="@7F100031" app:showAsAction="0x00000001"/>
+  <item android:id="@7F0900A2" android:title="@7F100032" app:showAsAction="0x00000001"/>
+  <item android:id="@7F09009E" android:title="@7F10002E" app:showAsAction="0x00000001">
+    <menu>
+      <item android:id="@7F09009F" android:title="@7F10002F"/>
+      <item android:id="@7F0900A0" android:title="@7F100030"/>
+    </menu>
+  </item>
+  <item android:id="@7F0900C5" android:title="原图" app:showAsAction="0x00000002"/>
+  <item android:id="@7F09009D" android:title="@7F10002D" app:showAsAction="0x00000002"/>
+</menu>

@@ -1,0 +1,4 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+  <objectAnimator android:interpolator="@7F0B0008" android:duration="200" android:startOffset="0" android:propertyName="width"/>
+  <objectAnimator android:interpolator="@7F0B0008" android:duration="200" android:startOffset="0" android:propertyName="height"/>
+</set>

@@ -1,0 +1,9 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="0" android:id="@7F090126" android:background="#FFFFFFFF" android:paddingTop="8.000000dip" android:paddingBottom="8.000000dip" android:layout_width="-1" android:layout_height="40.000000dip" android:minHeight="40.000000dip">
+  <TextView android:textSize="12.000000sp" android:textColor="#FF333333" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F1000C1" android:layout_weight="1.000000"/>
+  <TextView android:textSize="12.000000sp" android:textColor="#FF333333" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F10006A" android:layout_weight="1.000000"/>
+  <TextView android:textSize="12.000000sp" android:textColor="#FF333333" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F1000C7" android:layout_weight="1.000000"/>
+  <TextView android:textSize="12.000000sp" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F1000D2" android:layout_weight="1.000000"/>
+  <TextView android:textSize="12.000000sp" android:textColor="#FF333333" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F1000C4" android:layout_weight="1.000000"/>
+  <TextView android:textSize="12.000000sp" android:textColor="#FF333333" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F10004C" android:layout_weight="1.000000"/>
+  <TextView android:textSize="12.000000sp" android:textColor="#FF333333" android:gravity="0x00000011" android:layout_width="0.000000dip" android:layout_height="-1" android:text="@7F1000B7" android:layout_weight="1.000000"/>
+</merge>

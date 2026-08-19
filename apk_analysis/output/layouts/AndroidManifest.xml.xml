@@ -1,0 +1,95 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="189" android:versionName="1.8.9" android:compileSdkVersion="30" android:compileSdkVersionCodename="11" platformBuildVersionName="11" platformBuildVersionCode="30" package="com.yhqx.account">
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.READ_LOGS"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.GET_TASKS"/>
+  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+  <uses-permission android:name="android.permission.READ_CALENDAR"/>
+  <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.MAIN"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.LAUNCHER"/>
+    </intent>
+  </queries>
+  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+  <uses-permission android:name="android.permission.REORDER_TASKS"/>
+  <application android:theme="@7F110007" android:label="@7F10001D" android:icon="@7F0800C2" android:name="MyWrapperProxyApplication" android:allowBackup="false" android:hardwareAccelerated="true" android:largeHeap="true" android:supportsRtl="true" android:usesCleartextTraffic="true" android:appComponentFactory="android.app.AppComponentFactory" android:requestLegacyExternalStorage="true" android:preserveLegacyExternalStorage="true">
+    <meta-data android:name="BUGLY_APP_CHANNEL" android:value="unknown"/>
+    <provider android:name="androidx.core.content.FileProvider" android:exported="false" android:authorities="com.yhqx.account.fileprovider" android:grantUriPermissions="true">
+      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@7F130001"/>
+    </provider>
+    <provider android:name="com.qq.e.comm.GDTFileProvider" android:exported="false" android:authorities="com.yhqx.account.gdt.fileprovider" android:grantUriPermissions="true">
+      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@7F130002"/>
+    </provider>
+    <receiver android:name="com.yhqx.account.provider.AccountWidgetProvider">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@7F130000"/>
+    </receiver>
+    <activity android:name="com.yhqx.account.activity.SplashActivity" android:screenOrientation="1" android:configChanges="0x000004B0">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name="com.yhqx.account.activity.MainActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.AccountTypeStatisticActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.AccountTypeStatistic2Activity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.BalanceActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.ImportTypeActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.MonthStatisticActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.SearchActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.PictureActivity" android:screenOrientation="2" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.PurchaseActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.PrivateInfosActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.AboutActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.MoreSettingActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.CalenderActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.EditBookActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.ManageBooksActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.NewAccountActivity" android:screenOrientation="1" android:configChanges="0x000004B0" android:windowSoftInputMode="0x00000020"/>
+    <activity android:name="com.yhqx.account.activity.NewAccountTypeActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.CustomStatisticActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.LoginActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.GesturePwdActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.ProfileActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.SetMobileActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.SetPasswordActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.ManageAccountTypesActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.ChartActivity" android:screenOrientation="0" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.AppListActivity" android:screenOrientation="2" android:configChanges="0x000004B0"/>
+    <activity android:name="com.yhqx.account.activity.HelpActivity" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:theme="@7F11004E" android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
+    <activity android:name="com.alipay.sdk.app.H5PayActivity" android:exported="false" android:screenOrientation="3" android:configChanges="0x000004E0" android:windowSoftInputMode="0x00000012"/>
+    <activity android:name="com.alipay.sdk.app.H5AuthActivity" android:exported="false" android:screenOrientation="3" android:configChanges="0x000000E0" android:windowSoftInputMode="0x00000012"/>
+    <activity android:name="com.yhqx.account.wxapi.WXPayEntryActivity" android:exported="true" android:configChanges="0x000004B0"/>
+    <activity android:theme="@android:0103000F" android:name="com.yhqx.account.wxapi.WXEntryActivity" android:exported="true" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <service android:name="com.qq.e.comm.DownloadService" android:exported="false" android:multiprocess="true"/>
+    <activity android:name="com.qq.e.ads.ADActivity" android:exported="false" android:multiprocess="true" android:configChanges="0x000004B0"/>
+    <activity android:theme="@7F1101D9" android:name="com.yhqx.account.activity.MyADActivity" android:multiprocess="true" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <activity android:theme="@7F1101D9" android:name="com.qq.e.ads.LandscapeADActivity" android:exported="false" android:multiprocess="true" android:screenOrientation="6" android:configChanges="0x000004B0"/>
+    <activity android:theme="@android:0103000D" android:name="com.qq.e.ads.RewardvideoPortraitADActivity" android:exported="false" android:multiprocess="true" android:configChanges="0x000004B0">
+      <meta-data android:name="android.notch_support" android:value="true"/>
+    </activity>
+    <activity android:theme="@android:0103000D" android:name="com.qq.e.ads.RewardvideoLandscapeADActivity" android:exported="false" android:multiprocess="true" android:screenOrientation="0" android:configChanges="0x000004B0">
+      <meta-data android:name="android.notch_support" android:value="true"/>
+    </activity>
+    <activity android:theme="@android:01030011" android:name="com.qq.e.ads.DialogActivity" android:exported="false" android:multiprocess="true"/>
+    <activity android:theme="@android:0103000D" android:name="com.qq.e.ads.PortraitADActivity" android:exported="false" android:multiprocess="true" android:screenOrientation="1" android:configChanges="0x000004B0"/>
+    <meta-data android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule" android:value="GlideModule"/>
+  </application>
+</manifest>

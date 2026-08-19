@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="1" android:layout_width="-1" android:layout_height="-1">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="-1" android:layout_height="50.000000dip">
+    <ImageView android:id="@7F090057" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08006A" android:scaleType="3" android:tint="?7F0402DF"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@7F0901E5" android:layout_width="-2" android:layout_height="-2" android:layout_marginStart="5.000000dip">
+      <TextView android:textSize="16.000000sp" android:textColor="?7F0402DF" android:id="@7F09023E" android:layout_width="-2" android:layout_height="-2" android:layout_marginEnd="8.000000dip"/>
+      <ImageView android:layout_width="12.000000dip" android:layout_height="12.000000dip" android:src="@7F080095" android:scaleType="3" android:tint="?7F0402DF"/>
+    </LinearLayout>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000px" android:layout_weight="1.000000"/>
+    <ImageView android:id="@7F09007C" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="@7F08007B" android:scaleType="3" android:tint="?7F0402DF"/>
+  </LinearLayout>
+  <com.yhqx.account.widget.HorizontalBarView android:id="@7F090110" android:layout_width="-1" android:layout_height="70.000000dip"/>
+  <FrameLayout android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="-2">
+    <com.google.android.material.tabs.TabLayout android:layout_gravity="0x00000001" android:id="@7F090034" android:layout_width="140.000000dip" android:layout_height="42.000000dip" app:tabRippleColor="#00000000" app:tabSelectedTextColor="?7F04031C" app:tabTextAppearance="@7F1100F2" app:tabTextColor="?7F04010D"/>
+  </FrameLayout>
+  <androidx.core.widget.NestedScrollView android:layout_width="-1" android:layout_height="-2" android:overScrollMode="2">
+    <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-2">
+      <com.yhqx.account.widget.PieStatisticView android:id="@7F09019E" android:layout_width="-1" android:layout_height="210.000000dip"/>
+      <TextView android:textSize="12.000000sp" android:textColor="?7F040171" android:gravity="0x00000011" android:layout_width="-1" android:layout_height="-2" android:layout_marginBottom="5.000000dip" android:text="支持手指旋转查看，小于2%不会显示" android:layout_marginEnd="5.000000dip"/>
+      <TextView android:textSize="14.000000sp" android:textColor="?7F04010D" android:gravity="0x00000010" android:id="@7F090125" android:background="#FFEEEEEE" android:layout_width="-1" android:layout_height="28.000000dip" android:paddingStart="7.000000dip"/>
+      <androidx.recyclerview.widget.RecyclerView android:id="@7F09020D" android:layout_width="-1" android:layout_height="-2" android:overScrollMode="2" android:nestedScrollingEnabled="false"/>
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+  <View android:background="?7F0401EF" android:layout_width="-1" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+</LinearLayout>

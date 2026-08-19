@@ -1,0 +1,76 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="1" android:id="@id/root0" android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:gravity="0x00000010" android:orientation="0" android:background="#FFFFFFFF" android:layout_width="match_parent" android:layout_height="50.000000dip">
+    <ImageView android:id="@id/back" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:src="[drawable:back_arrow=res/0Z.png]" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <com.google.android.material.tabs.TabLayout android:id="@id/accounttype" android:layout_width="wrap_content" android:layout_height="48.000000dip" app:tabIndicatorColor="[attr:textColorPrimary=#ff303f9f]" app:tabMode="0" app:tabRippleColor="#00000000" app:tabSelectedTextColor="[attr:textColorPrimary=#ff303f9f]" app:tabTextAppearance="[style:MyTabText]" app:tabTextColor="[attr:dark4clr=#ff444444]"/>
+    <View android:layout_width="0.000000dip" android:layout_height="1.000000dip" android:layout_weight="1.000000"/>
+    <ImageView android:id="@id/manage" android:padding="15.000000dip" android:layout_width="50.000000dip" android:layout_height="50.000000dip" android:foreground="?android:0101030E" android:scaleType="3" android:tint="[attr:textColorPrimary=#ff303f9f]"/>
+  </LinearLayout>
+  <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+  <androidx.recyclerview.widget.RecyclerView android:id="@id/accounttypes" android:scrollbars="0x00000200" android:layout_width="match_parent" android:layout_height="0.000000dip" android:layout_weight="1.000000"/>
+  <LinearLayout android:orientation="1" android:id="@id/calcpanel" android:visibility="2" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+    <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content">
+      <EditText android:textSize="15.500001sp" android:textColor="[attr:dark5clr=#ff555555]" android:textColorHint="[attr:grayaclr=#ffaaaaaa]" android:gravity="0x00000010" android:id="@id/comment" android:background="#00000000" android:layout_width="0.000000dip" android:layout_height="wrap_content" android:minHeight="50.000000dip" android:hint="添加备注..." android:singleLine="false" android:layout_weight="1.000000"/>
+      <View android:background="[attr:sepcolor=#18000000]" android:visibility="2" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+      <TextView android:textSize="24.000000sp" android:textColor="#FFCC0000" android:textColorHint="#FFCC0000" android:ellipsize="1" android:gravity="0x00800015" android:id="@id/money" android:layout_width="wrap_content" android:layout_height="40.000000dip" android:hint="0" android:singleLine="true" android:paddingStart="12.000000dip" android:paddingEnd="12.000000dip"/>
+    </LinearLayout>
+    <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+      <LinearLayout android:gravity="0x00000010" android:orientation="0" android:layout_width="match_parent" android:layout_height="50.000000dip" android:layout_centerVertical="true">
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@id/dateparent" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginStart="15.000000dip">
+          <ImageView android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="[drawable:calendar=res/yw.png]" android:scaleType="3" android:tint="[attr:dark4clr=#ff444444]"/>
+          <TextView android:textSize="17.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/date" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="今天" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="0x00000010" android:orientation="0" android:id="@id/picparent" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginStart="14.000000dip">
+          <ImageView android:padding="0.500000dip" android:layout_width="17.000000dip" android:layout_height="17.000000dip" android:src="[drawable:photo=res/_F.png]" android:scaleType="3" android:tint="[attr:dark4clr=#ff444444]"/>
+          <TextView android:textSize="17.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/pic" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="图片" android:paddingStart="10.000000dip" android:paddingEnd="10.000000dip"/>
+        </LinearLayout>
+      </LinearLayout>
+      <androidx.recyclerview.widget.RecyclerView android:id="@id/pics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:overScrollMode="2" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+    <LinearLayout android:orientation="1" android:id="@id/numpanel" android:layout_width="match_parent" android:layout_height="wrap_content">
+      <LinearLayout android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/seven" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="7" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/eight" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="8" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/nigh" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="9" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <ImageView android:id="@id/del" android:padding="14.000000dip" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:src="[drawable:delete=res/3G.png]" android:scaleType="3" android:tint="[attr:dark4clr=#ff444444]" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/four" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="4" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/five" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="5" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/six" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="6" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/plus" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="+" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/one" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="1" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/two" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="2" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/three" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="3" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/sub" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="-" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+      <LinearLayout android:orientation="0" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/again" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="再记" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/zero" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="0" android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:dark4clr=#ff444444]" android:gravity="0x00000011" android:id="@id/dot" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="." android:layout_weight="1.000000"/>
+        <View android:background="[attr:sepcolor=#18000000]" android:layout_width="1.000000px" android:layout_height="50.000000dip"/>
+        <TextView android:textSize="19.000000sp" android:textColor="[attr:lightfclr=#ffffffff]" android:gravity="0x00000011" android:id="@id/done" android:background="[attr:colorPrimary=#ff303f9f]" android:layout_width="0.000000dip" android:layout_height="50.000000dip" android:text="完成" android:layout_weight="1.000000"/>
+      </LinearLayout>
+      <View android:background="[attr:sepcolor=#18000000]" android:layout_width="match_parent" android:layout_height="1.000000px"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>
