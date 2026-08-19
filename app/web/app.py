@@ -6,6 +6,7 @@ from flask import Flask, jsonify, render_template, request
 from .. import models
 from ..analyzer.report import monthly_report
 from ..db import get_conn
+from .api import api
 
 
 def _available_months() -> list[str]:
@@ -28,6 +29,14 @@ def _available_months() -> list[str]:
 def create_app() -> Flask:
     app = Flask(__name__)
 
+    @app.after_request
+    def add_cors_headers(resp):
+        """允许前端原型（8088）跨域调用本 API（5001）。"""
+        resp.headers.setdefault("Access-Control-Allow-Origin", "*")
+        resp.headers.setdefault("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        resp.headers.setdefault("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        return resp
+
     @app.route("/")
     def index():
         """首页：月度消费概览 + 最近账单（支持 ?month=YYYY-MM 切换）。"""
@@ -43,28 +52,11 @@ def create_app() -> Flask:
             categories=models.list_categories(),
         )
 
-    @app.route("/api/transactions")
-    def api_transactions():
-        month = request.args.get("month", "")
-        rows = models.list_transactions(month=month or None, limit=500)
-        return jsonify(rows)
+    app.register_blueprint(api)
 
-    @app.route("/api/report")
-    def api_report():
-        month = request.args.get("month")
-        return jsonify(monthly_report(month))
-
-    @app.route("/api/transactions", methods=["POST"])
-    def api_add_transaction():
-        data = request.get_json(force=True)
-        added = models.add_transaction(
-            amount=float(data["amount"]),
-            category=data.get("category", "其他支出"),
-            merchant=data.get("merchant", ""),
-            note=data.get("note", ""),
-            trans_time=data.get("trans_time") or date.today().strftime("%Y-%m-%d %H:%M:%S"),
-            source="manual",
-        )
-        return jsonify({"ok": added, "duplicate": not added})
+    @app.route("/api/<path:_path>", methods=["OPTIONS"])
+    def cors_preflight(_path):
+        """跨域预检（OPTIONS）直接放行，交给 after_request 补充 CORS 头。"""
+        return ("", 204)
 
     return app

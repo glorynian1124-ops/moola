@@ -24,8 +24,8 @@ def add_transaction(
     source: str = "manual",
     ledger_id: int = 1,
     raw_data: str = "",
-) -> bool:
-    """插入一笔账单，返回是否新增（False=重复已跳过）。"""
+) -> Optional[int]:
+    """插入一笔账单，返回新记录 id；重复则返回 None。"""
     dedup_key = _hash_dedup(trans_time or "", amount, merchant)
     conn = get_conn()
     try:
@@ -33,15 +33,15 @@ def add_transaction(
             "SELECT id FROM transactions WHERE dedup_key = ?", (dedup_key,)
         )
         if cur.fetchone():
-            return False
-        conn.execute(
+            return None
+        cur = conn.execute(
             """INSERT INTO transactions
                (ledger_id, amount, category, merchant, note, trans_time, source, raw_data, dedup_key)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (ledger_id, amount, category, merchant, note, trans_time, source, raw_data, dedup_key),
         )
         conn.commit()
-        return True
+        return cur.lastrowid
     finally:
         conn.close()
 
@@ -281,11 +281,10 @@ def search_transactions(
         like = f"%{q}%"
         if mode == "category":
             sql += " AND category LIKE ?"
+            params.append(like)
         else:
             sql += " AND (merchant LIKE ? OR note LIKE ? OR category LIKE ?)"
             params += [like, like, like]
-        if mode == "bill":
-            params.append(like)
     col = "trans_time" if sort == "time" else "amount"
     sql += f" ORDER BY {col} {'DESC' if order == 'desc' else 'ASC'}, id DESC LIMIT ?"
     params.append(limit)
