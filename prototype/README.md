@@ -9,7 +9,26 @@
 - `index.html` —— 4 个主 Tab 页 + 9 个覆盖页（记账/日历/搜索/年度统计/私人信息/管理账本/编辑账本/类别管理/新增类别/会员）
 - `style.css` —— 配色/字号/布局（全部从 APK 资源提取）
 - `app.js` —— 交互逻辑（Tab 切换 / 计算器键盘 / 记账 / 统计图表 / 日历 / 搜索）
+- `api.js` —— **后端对接适配层（Phase 1）**：把明细/统计/日历/搜索/记账/删除接入 Flask 5001 真实数据
 - `assets/` —— 从 APK 提取的资源：`DINCond-Bold.otf` 金额字体 + `icons/` 真实图标（CSS mask 上色）
+
+## 后端对接（Phase 1）
+
+前端通过 `api.js` 与后端 Flask API（`python main.py web`，端口 5001）对接：
+
+| 前端功能 | 后端接口 | 说明 |
+|---------|---------|------|
+| 明细页 / 首页概览 | `GET /api/transactions/group?month=` | 数据同构，直接替换内存假数据 |
+| 记账（FAB → 完成） | `POST /api/transactions` | 入库成功返回新记录 id，本地同步 |
+| 搜索 | `GET /api/search?q=&mode=&sort=` | 全库搜索（商家/备注/类别） |
+| 日历（跨月） | `GET /api/transactions/group?month=` | 切月懒加载该月数据 |
+| 详情删除 | `DELETE /api/transactions/<id>` | 捕获阶段先删后端，再本地刷新 |
+| 统计 / 报表 | 基于已加载 `tx` | 数据源真实后自动生效 |
+
+- **对接方式**：通过覆盖 `app.js` 的全局函数 + 捕获阶段监听器实现，**不改动渲染逻辑**；删除 `index.html` 里的 `<script src="api.js">` 即可还原为纯演示模式。
+- **优雅降级**：后端未启动时自动回退到内存假数据（`INITIAL_TX`），前端照常演示。
+- **CORS**：后端已加 `Access-Control-Allow-Origin: *`，前端 8088 静态页可直接 fetch。
+- **注意事项**：`app.js` 顶部有几个写死的日期（如「今天」2026-08-18、月份选择 2026-08），属原型遗留硬编码，不影响真实数据展示。
 
 ## 复刻的页面与交互（对照简约记账）
 
@@ -59,4 +78,4 @@ APK 的 `classes.dex` 为**梆梆加固壳**（MyWrapperProxyApplication + asset
 
 ## 待替换
 - 图标目前用 emoji/符号占位（简约记账原版是矢量 drawable，无法直接复用），后续换成统一 SVG
-- 账单数据是 JS 里的假数据，接入 Flask 后端后改为 API 拉取
+- ~~账单数据是 JS 里的假数据~~ ✅ 已通过 `api.js` 接入 Flask 后端真实数据（Phase 1 完成）

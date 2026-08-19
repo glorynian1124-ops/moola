@@ -1,11 +1,14 @@
 """AI 自动分类：商户名 + 备注 → 分类。
 
-策略（成本优先）：
-1. 先走本地关键词规则库（config.yaml category_rules），命中即用，零成本
-2. 规则未命中的才调大模型 API（DeepSeek，默认每日上限 30 次）
+策略（成本优先，借鉴 actual-ai 工程模式）：
+1. 先走分类规则库（category_rules 表 + config.yaml 兜底），命中即用，零成本
+2. 规则未命中的才调大模型 API（DeepSeek，每日限流保护）
+3. 规则命中会累计 hit_count → 学习权重；用户纠正分类可 learn_from_correction 写库
 """
+import json
 import os
 import re
+from datetime import date
 from pathlib import Path
 from typing import Optional
 
@@ -14,6 +17,7 @@ import yaml
 from .. import models
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+_USAGE_FILE = BASE_DIR / "data" / "llm_usage.json"
 
 
 def _load_config() -> dict:
@@ -23,19 +27,79 @@ def _load_config() -> dict:
     return {}
 
 
-def _rules() -> dict[str, list[str]]:
+# ---------- 简易每日限流器（借鉴 actual-ai：控制 API 费用不失控） ----------
+
+class _DailyLimiter:
+    """按天计数 LLM 调用次数，持久化到 data/llm_usage.json（重启不超）。"""
+
+    def __init__(self) -> None:
+        self._count = 0
+        self._date = ""
+        self._load()
+
+    def _load(self) -> None:
+        today = date.today().isoformat()
+        self._date = today
+        if _USAGE_FILE.exists():
+            try:
+                data = json.loads(_USAGE_FILE.read_text(encoding="utf-8"))
+                self._count = data.get("count", 0)
+                self._date = data.get("date", "")
+            except Exception:  # noqa: BLE001
+                self._count = 0
+        if self._date != today:
+            self._count = 0
+            self._date = today
+
+    def acquire(self, limit: int) -> bool:
+        today = date.today().isoformat()
+        if self._date != today:
+            self._count = 0
+            self._date = today
+        if self._count >= limit:
+            return False
+        self._count += 1
+        _USAGE_FILE.write_text(
+            json.dumps({"date": self._date, "count": self._count}),
+            encoding="utf-8",
+        )
+        return True
+
+
+_LIMITER = _DailyLimiter()
+
+
+def _config_rules() -> dict[str, list[str]]:
+    """config.yaml 里的默认规则（兜底）。"""
     cfg = _load_config()
     return cfg.get("category_rules", {})
 
 
-def _rule_classify(text: str) -> Optional[str]:
-    """关键词规则分类，命中返回分类名，未命中返回 None。"""
+def _match_rule(
+    text: str,
+    db_rules: list[dict],
+    config_rules: dict[str, list[str]],
+) -> tuple[Optional[str], Optional[int]]:
+    """① 数据库规则（用户/AI 学习，优先级高）② config 兜底。返回 (分类名, 规则id)。"""
     text = text or ""
-    for cat, keywords in _rules().items():
+    for r in db_rules:
+        kw = str(r.get("keyword") or "").strip()
+        if kw and kw in text:
+            return r["category"], r["id"]
+    for cat, keywords in config_rules.items():
         for kw in keywords:
+            kw = str(kw).strip()
             if kw and kw in text:
-                return cat
-    return None
+                return cat, None
+    return None, None
+
+
+def learn_from_correction(merchant: str, category: str, source: str = "ai") -> bool:
+    """用户手动纠正分类后调用：把商户关键词写入规则库（"越用越准"）。"""
+    merchant = (merchant or "").strip()
+    if not merchant or len(merchant) < 2:
+        return False
+    return models.add_rule(keyword=merchant, category=category, source=source)
 
 
 def _llm_classify(merchant: str, note: str) -> Optional[str]:
@@ -84,10 +148,9 @@ def classify_unclassified(month: Optional[str] = None) -> int:
 
     conn = get_conn()
     try:
-        rows = conn.execute(
+        rows = [dict(r) for r in conn.execute(
             "SELECT * FROM transactions WHERE category IS NULL OR category = ''"
-        ).fetchall()
-        rows = [dict(r) for r in rows]
+        ).fetchall()]
     finally:
         conn.close()
 
@@ -98,18 +161,31 @@ def classify_unclassified(month: Optional[str] = None) -> int:
         print("没有未分类的记录 ✅")
         return 0
 
-    print(f"待分类 {len(rows)} 笔（规则优先，未命中再调 LLM）")
+    db_rules = models.list_rules()          # 一次加载
+    config_rules = _config_rules()
+    llm_cfg = _load_config().get("llm", {})
+    daily_limit = int(llm_cfg.get("max_calls_per_day", 30))
+    remaining = max(0, daily_limit - _LIMITER._count)
+
+    print(f"待分类 {len(rows)} 笔（规则优先，未命中再调 LLM，今日 LLM 余量 {remaining}）")
     done = 0
     for r in rows:
         text = f"{r['merchant']} {r['note']}"
-        cat = _rule_classify(text)
+        cat, rule_id = _match_rule(text, db_rules, config_rules)
         source = "rule"
         if cat is None:
-            cat = _llm_classify(r["merchant"], r["note"])
-            source = "llm"
-            if cat is None:
-                cat = "其他支出"
-                source = "fallback"
+            if _LIMITER.acquire(daily_limit):
+                cat = _llm_classify(r["merchant"], r["note"])
+                source = "llm"
+                if cat is None:
+                    cat = "其他支出"
+                    source = "fallback"
+            else:
+                print("  ⚠️ 已达今日 LLM 上限，跳过（保留未分类，明天再跑）")
+                continue
+        elif rule_id:
+            models.bump_rule(rule_id)       # 规则命中 → 学习权重
+
         conn = get_conn()
         try:
             conn.execute(
