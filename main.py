@@ -2,9 +2,11 @@
 """Moola CLI 入口：AI 记账 + 个人财务管家。
 
 用法：
-    python3 main.py init                # 初始化数据库
-    python3 main.py import <csv路径>    # 导入微信账单 CSV
+    python3 main.py init                # 初始化数据库（含导入默认分类规则）
+    python3 main.py import <csv> [--source wechat|alipay|auto]
+                                        # 导入微信/支付宝账单 CSV
     python3 main.py classify [月份]      # AI 自动分类（未分类的记录）
+    python3 main.py rules                # 查看分类规则库
     python3 main.py report [月份]       # 月度消费报告
     python3 main.py web                 # 启动本地 Web 界面
 """
@@ -22,9 +24,43 @@ from app import db, models  # noqa: E402
 from app.parser.wechat_csv import parse_wechat_csv  # noqa: E402
 
 
+def _seed_rules() -> int:
+    """把 config.yaml 的默认规则写入 category_rules 表（source=import）。"""
+    import yaml
+
+    cfg_path = BASE_DIR / "config.yaml"
+    if not cfg_path.exists():
+        return 0
+    cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
+    rules = cfg.get("category_rules", {})
+    n = 0
+    for cat, keywords in rules.items():
+        for kw in keywords:
+            if models.add_rule(keyword=kw, category=cat, source="import"):
+                n += 1
+    return n
+
+
 def cmd_init(_args) -> None:
     db.init_db()
+    n = _seed_rules()
     print(f"✅ 数据库已初始化：{db.DB_PATH}")
+    print(f"✅ 已导入默认分类规则 {n} 条")
+
+
+def _detect_source(path: Path) -> str:
+    """根据文件头部内容自动判断 wechat / alipay。"""
+    raw = path.read_bytes()[:2000]
+    head = ""
+    for enc in ("utf-8-sig", "gbk", "utf-8"):
+        try:
+            head = raw.decode(enc)
+            break
+        except UnicodeDecodeError:
+            continue
+    if "支付宝" in head:
+        return "alipay"
+    return "wechat"
 
 
 def cmd_import(args) -> None:
@@ -32,8 +68,16 @@ def cmd_import(args) -> None:
     if not path.exists():
         print(f"❌ 文件不存在：{path}")
         sys.exit(1)
-    print(f"正在解析：{path.name} ...")
-    records = parse_wechat_csv(path)
+    source = args.source or "auto"
+    if source == "auto":
+        source = _detect_source(path)
+        print(f"自动识别来源：{source}")
+    print(f"正在解析：{path.name}（来源 {source}）...")
+    if source == "alipay":
+        from app.parser.alipay_csv import parse_alipay_csv
+        records = parse_alipay_csv(path)
+    else:
+        records = parse_wechat_csv(path)
     print(f"解析到 {len(records)} 笔交易，写入数据库 ...")
     added, skipped = models.add_many(records)
     print(f"✅ 新增 {added} 笔，跳过重复 {skipped} 笔")
@@ -48,6 +92,20 @@ def cmd_classify(args) -> None:
     month = args.month
     n = classify_unclassified(month=month)
     print(f"✅ 已分类 {n} 笔（未分类的）")
+
+
+def cmd_rules(_args) -> None:
+    rows = models.list_rules()
+    if not rows:
+        print("暂无分类规则（可运行 `python3 main.py init` 从 config.yaml 导入）")
+        return
+    by_cat: dict[str, list[dict]] = {}
+    for r in rows:
+        by_cat.setdefault(r["category"], []).append(r)
+    print(f"分类规则共 {len(rows)} 条（关键词·命中次数）：")
+    for cat, rs in sorted(by_cat.items()):
+        kws = ", ".join(f"{r['keyword']}({r['hit_count']})" for r in rs)
+        print(f"  {cat}: {kws}")
 
 
 def cmd_report(args) -> None:
@@ -87,13 +145,20 @@ def main() -> None:
     p_init = sub.add_parser("init", help="初始化数据库")
     p_init.set_defaults(fn=cmd_init)
 
-    p_import = sub.add_parser("import", help="导入微信账单 CSV")
+    p_import = sub.add_parser("import", help="导入微信/支付宝账单 CSV")
     p_import.add_argument("csv", help="CSV 文件路径")
+    p_import.add_argument(
+        "--source", choices=["wechat", "alipay", "auto"], default="auto",
+        help="账单来源（默认 auto 自动识别）",
+    )
     p_import.set_defaults(fn=cmd_import)
 
     p_classify = sub.add_parser("classify", help="AI 自动分类")
     p_classify.add_argument("month", nargs="?", default=None, help="月份 YYYY-MM（默认全部未分类）")
     p_classify.set_defaults(fn=cmd_classify)
+
+    p_rules = sub.add_parser("rules", help="查看分类规则库")
+    p_rules.set_defaults(fn=cmd_rules)
 
     p_report = sub.add_parser("report", help="月度消费报告")
     p_report.add_argument("month", nargs="?", default=None, help="月份 YYYY-MM（默认最近有数据的月份）")
