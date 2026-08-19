@@ -61,10 +61,16 @@
 
 ---
 
-## 5. 文件分工（避免冲突）
+## 5. 前后端分工（边界必须遵守）
 
-- **glorynian1124-ops** 优先：`prototype/`（index.html / style.css / app.js）。
-- **suran6688aa-maker** 优先：`app/`、`apk_analysis/`、`data/`、`main.py`。
+- **前端 = `prototype/`**（index.html / style.css / app.js / assets/）—— 由 **glorynian1124-ops** 负责。
+- **后端 = `app/`、`apk_analysis/`、`data/`、`main.py`、`config.yaml`** —— 由 **suran6688aa-maker** 负责。
+
+规则：
+- **前端任务**：只修改 `prototype/` 下的文件，不碰后端目录。
+- **后端任务**：只修改后端目录下的文件，不碰 `prototype/`。
+- 需要同时动前后端的改动（如数据字段变化）：先在 issue / 评论中说明，再各自在自己的职责范围内改。
+- 前端通过**数据格式约定**与后端衔接；`prototype/` 内的示例数据格式以后端输出为准，改动前先与后端确认。
 - 高风险同改文件：`prototype/index.html`、`prototype/style.css`、`prototype/app.js`、`requirements.txt`。**同一文件同一区域，同一时间只允许一方修改。**
 
 ---

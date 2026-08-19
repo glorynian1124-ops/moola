@@ -134,22 +134,22 @@ git push origin dev
 
 ---
 
-## 5. 文件分工建议（避免冲突的核心）
+## 5. 前后端分工（边界必须遵守）
 
-两人尽量避开同时改**同一个文件**。推荐分工：
+**前后端彻底分家**，各自负责自己的目录，互不越界：
 
-| 协作者 | 优先负责的目录/文件 |
-|---|---|
-| **glorynian1124-ops** | `prototype/`（前端 UI：index.html / style.css / app.js） |
-| **suran6688aa-maker** | `app/`、`apk_analysis/`、`data/`、`main.py`（后端与分析） |
+| 端 | 目录 | 负责人 |
+|---|---|---|
+| **前端** | `prototype/`（index.html / style.css / app.js / assets/） | **glorynian1124-ops**（你） |
+| **后端** | `app/`、`apk_analysis/`、`data/`、`main.py`、`config.yaml` | **suran6688aa-maker**（朋友） |
 
-**高风险文件**（两人都想改时先打招呼，别同时动）：
-- `prototype/index.html`
-- `prototype/style.css`
-- `prototype/app.js`
-- `requirements.txt`（改依赖前先说明）
+规则：
+1. **前端任务只动 `prototype/`，后端任务只动后端目录**，不越界。
+2. 需要同时动前后端的改动（如数据字段变化）：先在 issue / 群里说明，各自在自己的职责范围内改。
+3. 前端与后端通过**数据格式约定**衔接；`prototype/` 内示例数据格式以后端输出为准，改动前先与后端确认。
+4. 两人都想改的文件（边界文件）：`requirements.txt`（依赖）、`README.md`、`GIT_GUIDE.md`、`AGENTS.md` —— 先打招呼再改。
 
-> 规则：同一文件的同一区域，**同一时间只允许一个人改**。改前可先在群里/评论里说一声"我改 app.js 的渲染部分"。
+> 这样你俩几乎永远不会"左脚踩右脚"：你改前端，他改后端，git 自动合并互不冲突。
 
 ---
 
