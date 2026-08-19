@@ -200,6 +200,7 @@ function renderTxList() {
       </div>`;
   }).join('');
   list.innerHTML = groups || emptyHtml();
+  list.classList.toggle('has-empty', !groups); // 空状态时去掉底部内边距，让"暂无数据"真正居中
   updateOverview();
 }
 

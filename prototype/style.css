@@ -156,7 +156,10 @@ body {
 /* 账单列表 */
 .tx-list {
   flex: 1; overflow-y: auto; background: var(--bg); padding-bottom: 90px;
+  display: flex; flex-direction: column;
 }
+/* 空状态：去掉底部内边距，让"暂无数据"在空白页正中 */
+.tx-list.has-empty { padding-bottom: 0; }
 .tx-group { background: var(--card); border: 1px solid var(--card-border); margin: 10px 0 0; }
 .tx-group-head {
   display: flex; align-items: center; justify-content: space-between;
