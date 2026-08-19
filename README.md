@@ -35,9 +35,10 @@ pip install -r requirements.txt
 # 2. 初始化数据库（建表 + 导入默认分类规则）
 python main.py init
 
-# 3. 导入微信 / 支付宝账单（auto 自动识别来源）
+# 3. 导入微信 / 支付宝账单（auto 自动识别来源，支持 CSV 与微信 Excel）
 python main.py import 微信账单.csv
 python main.py import --source alipay 支付宝账单.csv
+python main.py import 微信支付账单流水文件(...).xlsx   # 微信官方 Excel 账单同样支持
 
 # 4. AI 自动分类（规则优先，未命中再调大模型，每日限流）
 python main.py classify 2026-07
@@ -59,7 +60,7 @@ python main.py web
 ├── app/
 │   ├── db.py            SQLite 连接 + 建表（v2 schema：6 核心表）
 │   ├── models.py        数据访问层（交易 CRUD/分组/搜索、分类规则、画像、报告）
-│   ├── parser/          账单解析器（wechat_csv.py / alipay_csv.py）
+│   ├── parser/          账单解析器（wechat_csv.py / wechat_xlsx.py / alipay_csv.py）
 │   ├── analyzer/        分析引擎（report.py 月度报告 / classify.py AI 分类）
 │   └── web/             Flask Web 服务（可托管前端原型 + API）
 ├── prototype/           高保真前端原型（简约记账 APK 复刻，交互完整可操作）
