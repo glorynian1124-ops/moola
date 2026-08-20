@@ -253,10 +253,11 @@ body {
 .stat-body { flex: 1; overflow-y: auto; }
 .stat-body > * { flex-shrink: 0; }
 .stat-no-data {
-  display: flex; align-items: center; justify-content: center;
-  height: 100%; min-height: 100px;
-  color: var(--ink-9); font-size: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; height: 100%; min-height: 100px;
+  color: var(--primary);
 }
+.stat-no-data .ic { opacity: 0.15; }
 
 /* 柱状图 */
 .chart-block { height: 160px; background: #fff; position: relative; padding: 15px 10px 0; }
@@ -661,7 +662,7 @@ body {
 }
 
 /* ============ 新增：账单统计 ============ */
-.billstat-list { flex: 1; overflow-y: auto; background: #fff; }
+.billstat-list { flex: 1; overflow-y: auto; background: #fff; display: flex; flex-direction: column; }
 .billstat-list .tx-item { min-height: 52px; }
 
 /* ============ 新增：图表页 / 自定义统计 ============ */

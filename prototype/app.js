@@ -157,6 +157,7 @@ $$('.tabbar .tab').forEach(tab => {
   tab.addEventListener('click', () => {
     $$('.tabbar .tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
+    state.tab = tab.dataset.page; // 记录当前主页面，覆盖页退出时返回上一级
     showPage(tab.dataset.page);
   });
 });
@@ -246,6 +247,11 @@ function updateOverview() {
 /* ================= 统计页 ================= */
 const PIE_COLORS = ['#303f9f', '#ee6c8c', '#d2691e', '#a52a2a', '#8b008b', '#008000', '#303030', '#753c2c', '#4c9aff', '#6c9f3f', '#e0673c', '#8e6cd8'];
 
+// 统计页各栏空状态（与明细页一致：空箱子图标 + 暂无数据）
+function statNoDataHtml() {
+  return '<div class="stat-no-data"><i class="ic ic50" style="--mask:url(assets/icons/ic_empty.png)"></i><div class="empty-text">暂无数据</div></div>';
+}
+
 function statData() {
   const sign = state.statCat === 'expense' ? -1 : 1;
   const items = tx.flatMap(g => g.items.map(it => ({ ...it, date: g.date })))
@@ -256,7 +262,7 @@ function statData() {
 function renderBarChart() {
   const data = statData();
   const box = $('#trend-chart');
-  if (!data.length) { box.innerHTML = '<div class="stat-no-data">暂无数据</div>'; return; }
+  if (!data.length) { box.innerHTML = statNoDataHtml(); return; }
 
   const period = state.statPeriod; // week / month / year
   const dates = [...new Set(data.map(i => i.date))].sort();
@@ -353,9 +359,11 @@ function pieRotation(container) {
 function renderPie() {
   const data = statData();
   const pie = $('#pie-chart');
+  // 无数据时隐藏旋转提示，有数据时显示
+  $('#pie-hint').style.display = data.length ? '' : 'none';
   if (!data.length) {
-    pie.innerHTML = '<div class="stat-no-data">暂无数据</div>';
-    $('#stat-list').innerHTML = '<div class="stat-no-data">暂无数据</div>';
+    pie.innerHTML = statNoDataHtml();
+    $('#stat-list').innerHTML = statNoDataHtml();
     return;
   }
 
