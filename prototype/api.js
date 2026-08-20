@@ -168,6 +168,7 @@
       return;
     }
     const remark = ($('#note-input').value.trim() || state.naType);
+    const curBook = books[state.selectedBook];
     let row = null;
     try {
       const r = await apiPost('/transactions', {
@@ -177,6 +178,7 @@
         note: '',
         trans_time: txDate + ' 12:00:00',
         source: 'manual',
+        ledger_id: curBook && curBook.id, // 写入当前账本
       });
       if (!r || !(r.ok || r.duplicate)) {
         alert('记账失败：' + ((r && r.error) || '未知错误'));
