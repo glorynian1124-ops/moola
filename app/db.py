@@ -9,10 +9,12 @@ DATA_DIR = BASE_DIR / "data"
 DB_PATH = DATA_DIR / "moola.db"
 
 SCHEMA = """
--- 账本（预留多账本支持，MVP 单账本）
+-- 账本（多账本：name/type/icon 与前端账本卡片一致）
 CREATE TABLE IF NOT EXISTS ledgers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL DEFAULT '默认账本',
+    type TEXT NOT NULL DEFAULT '标准账本',
+    icon TEXT NOT NULL DEFAULT 'ic_accounts.png',
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
@@ -119,15 +121,29 @@ def get_conn() -> sqlite3.Connection:
 
 
 def init_db() -> None:
-    """建表 + 写入默认账本和默认分类。"""
+    """建表 + 迁移旧库 + 写入默认账本和默认分类。"""
     conn = get_conn()
     try:
         conn.executescript(SCHEMA)
+        _migrate(conn)
         _seed_ledger(conn)
         _seed_categories(conn)
         conn.commit()
     finally:
         conn.close()
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """轻量迁移：为旧库 ledgers 表补齐 type / icon 列。"""
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(ledgers)").fetchall()}
+    if "type" not in cols:
+        conn.execute(
+            "ALTER TABLE ledgers ADD COLUMN type TEXT NOT NULL DEFAULT '标准账本'"
+        )
+    if "icon" not in cols:
+        conn.execute(
+            "ALTER TABLE ledgers ADD COLUMN icon TEXT NOT NULL DEFAULT 'ic_accounts.png'"
+        )
 
 
 def _seed_ledger(conn: sqlite3.Connection) -> None:

@@ -5,6 +5,7 @@
 import tempfile
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 from flask import Blueprint, jsonify, request
 
@@ -14,6 +15,74 @@ from ..analyzer import stats as stats_mod
 api = Blueprint("api", __name__, url_prefix="/api")
 
 
+def _ledger_id(value: object) -> Optional[int]:
+    """解析并校验 ledger_id。空值/None → None（全库，向后兼容）。
+    非法值抛 ValueError；账本不存在抛 LookupError。"""
+    if value in (None, ""):
+        return None
+    try:
+        lid = int(value)
+    except (TypeError, ValueError):
+        raise ValueError("ledger_id 必须为整数")
+    if not models.get_ledger(lid):
+        raise LookupError("账本不存在")
+    return lid
+
+
+# ---------- 账本 ----------
+
+@api.get("/ledgers")
+def list_ledgers():
+    return jsonify({"ledgers": models.list_ledgers()})
+
+
+@api.post("/ledgers")
+def add_ledger():
+    data = request.get_json(force=True)
+    name = str(data.get("name") or "").strip()
+    if not name:
+        return jsonify({"ok": False, "error": "name 必填"}), 400
+    new_id = models.add_ledger(
+        name=name,
+        type=str(data.get("type") or "标准账本"),
+        icon=str(data.get("icon") or "ic_accounts.png"),
+    )
+    return jsonify({"ok": True, "id": new_id, "row": models.get_ledger(new_id)}), 201
+
+
+@api.get("/ledgers/<int:ledger_id>")
+def get_ledger(ledger_id: int):
+    row = models.get_ledger(ledger_id)
+    return jsonify(row) if row else (jsonify({"ok": False, "error": "账本不存在"}), 404)
+
+
+@api.put("/ledgers/<int:ledger_id>")
+def update_ledger(ledger_id: int):
+    data = request.get_json(force=True)
+    name = data.get("name")
+    if name is not None and not str(name).strip():
+        return jsonify({"ok": False, "error": "name 不能为空"}), 400
+    ok = models.update_ledger(
+        ledger_id,
+        name=str(name).strip() if name else None,
+        type=data.get("type"),
+        icon=data.get("icon"),
+    )
+    if not ok:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    return jsonify({"ok": True, "row": models.get_ledger(ledger_id)})
+
+
+@api.delete("/ledgers/<int:ledger_id>")
+def delete_ledger(ledger_id: int):
+    if models.ledger_count() <= 1:
+        return jsonify({"ok": False, "error": "至少保留一个账本"}), 400
+    deleted = models.delete_ledger(ledger_id)
+    if deleted is None:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    return jsonify({"ok": True, "deleted_transactions": deleted})
+
+
 # ---------- 账单 ----------
 
 @api.get("/transactions")
@@ -21,14 +90,27 @@ def list_transactions():
     month = request.args.get("month", "") or None
     category = request.args.get("category", "") or None
     limit = int(request.args.get("limit", 500))
-    return jsonify(models.list_transactions(month=month, category=category, limit=limit))
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
+    return jsonify(models.list_transactions(
+        ledger_id=ledger_id, month=month, category=category, limit=limit))
 
 
 @api.get("/transactions/group")
 def transactions_group():
-    """按日期分组，喂给前端明细页（数据同构）。"""
+    """按日期分组，喂给前端明细页（数据同构）。支持 ledger_id。"""
     month = request.args.get("month", "") or None
-    return jsonify(models.list_transactions_grouped(month=month))
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
+    return jsonify(models.list_transactions_grouped(ledger_id=ledger_id, month=month))
 
 
 @api.get("/transactions/<int:tx_id>")
@@ -44,6 +126,12 @@ def add_transaction():
         amount = float(data["amount"])
     except (KeyError, ValueError):
         return jsonify({"ok": False, "error": "amount 必填且为数字"}), 400
+    try:
+        ledger_id = _ledger_id(data.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
     new_id = models.add_transaction(
         amount=amount,
         category=data.get("category", "其他支出"),
@@ -51,6 +139,7 @@ def add_transaction():
         note=data.get("note", ""),
         trans_time=data.get("trans_time") or datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         source=data.get("source", "manual"),
+        ledger_id=ledger_id or 1,
     )
     if new_id is None:
         return jsonify({"ok": False, "duplicate": True})
@@ -61,6 +150,13 @@ def add_transaction():
 @api.put("/transactions/<int:tx_id>")
 def update_transaction(tx_id: int):
     data = request.get_json(force=True)
+    if "ledger_id" in data and data["ledger_id"] is not None:
+        try:
+            data["ledger_id"] = _ledger_id(data["ledger_id"])
+        except LookupError:
+            return jsonify({"ok": False, "error": "账本不存在"}), 404
+        except ValueError as exc:
+            return jsonify({"ok": False, "error": str(exc)}), 400
     return jsonify({"ok": models.update_transaction(tx_id, **data)})
 
 
@@ -73,31 +169,59 @@ def delete_transaction(tx_id: int):
 
 @api.get("/stats/trend")
 def stats_trend():
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
     return jsonify(stats_mod.trend(
         period=request.args.get("period", "week"),
         cat=request.args.get("cat", "expense"),
         end=request.args.get("end"),
+        ledger_id=ledger_id,
     ))
 
 
 @api.get("/stats/category")
 def stats_category():
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
     return jsonify(stats_mod.category_share(
         month=request.args.get("month", "") or None,
         cat=request.args.get("cat", "expense"),
+        ledger_id=ledger_id,
     ))
 
 
 @api.get("/calendar")
 def api_calendar():
-    return jsonify(stats_mod.daily_calendar(request.args.get("month", "") or None))
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
+    return jsonify(stats_mod.daily_calendar(
+        request.args.get("month", "") or None, ledger_id=ledger_id))
 
 
 # ---------- 搜索 ----------
 
 @api.get("/search")
 def api_search():
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
     return jsonify(models.search_transactions(
+        ledger_id=ledger_id,
         q=request.args.get("q", ""),
         mode=request.args.get("mode", "bill"),
         sort=request.args.get("sort", "time"),
@@ -151,4 +275,11 @@ def import_csv(source: str):
 @api.get("/report")
 def api_report():
     from ..analyzer.report import monthly_report
-    return jsonify(monthly_report(request.args.get("month", "") or None))
+    try:
+        ledger_id = _ledger_id(request.args.get("ledger_id"))
+    except LookupError:
+        return jsonify({"ok": False, "error": "账本不存在"}), 404
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
+    return jsonify(monthly_report(
+        request.args.get("month", "") or None, ledger_id=ledger_id))

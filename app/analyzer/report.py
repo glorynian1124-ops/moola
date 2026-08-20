@@ -6,17 +6,19 @@ from typing import Optional
 from .. import models
 
 
-def _latest_month_with_data() -> Optional[str]:
-    rows = models.list_transactions(limit=1)
+def _latest_month_with_data(ledger_id: Optional[int] = None) -> Optional[str]:
+    rows = models.list_transactions(ledger_id=ledger_id, limit=1)
     if not rows or not rows[0].get("trans_time"):
         return date.today().strftime("%Y-%m")
     return rows[0]["trans_time"][:7]
 
 
-def monthly_report(month: Optional[str] = None) -> Optional[dict]:
-    """生成月度报告。返回 None 表示该月无数据。"""
-    month = month or _latest_month_with_data()
-    rows = models.list_transactions(month=month, limit=10000)
+def monthly_report(
+    month: Optional[str] = None, ledger_id: Optional[int] = None
+) -> Optional[dict]:
+    """生成月度报告。返回 None 表示该月无数据。ledger_id=None 表示全库。"""
+    month = month or _latest_month_with_data(ledger_id)
+    rows = models.list_transactions(ledger_id=ledger_id, month=month, limit=10000)
 
     total_expense = 0.0
     total_income = 0.0

@@ -13,6 +13,100 @@ def _hash_dedup(trans_time: str, amount: float, merchant: str) -> str:
     return hashlib.md5(raw).hexdigest()
 
 
+# ---------- 账本 ledgers ----------
+
+def list_ledgers() -> list[dict]:
+    """全部账本：id / name / type / icon / created_at。"""
+    conn = get_conn()
+    try:
+        return [dict(r) for r in conn.execute(
+            "SELECT * FROM ledgers ORDER BY id").fetchall()]
+    finally:
+        conn.close()
+
+
+def get_ledger(ledger_id: int) -> Optional[dict]:
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT * FROM ledgers WHERE id = ?", (ledger_id,)
+        ).fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def ledger_count() -> int:
+    conn = get_conn()
+    try:
+        return conn.execute("SELECT COUNT(*) FROM ledgers").fetchone()[0]
+    finally:
+        conn.close()
+
+
+def add_ledger(
+    name: str, type: str = "标准账本", icon: str = "ic_accounts.png"
+) -> Optional[int]:
+    """新建账本，返回新账本 id。"""
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            "INSERT INTO ledgers(name, type, icon) VALUES(?, ?, ?)",
+            (name, type, icon),
+        )
+        conn.commit()
+        return cur.lastrowid
+    finally:
+        conn.close()
+
+
+def update_ledger(
+    ledger_id: int,
+    *,
+    name: Optional[str] = None,
+    type: Optional[str] = None,
+    icon: Optional[str] = None,
+) -> bool:
+    """更新账本可选字段（None 表示不改）；返回账本是否存在。"""
+    if get_ledger(ledger_id) is None:
+        return False
+    sets, params = [], []
+    for key, val in (("name", name), ("type", type), ("icon", icon)):
+        if val is not None:
+            sets.append(f"{key} = ?")
+            params.append(val)
+    if not sets:
+        return True
+    params.append(ledger_id)
+    conn = get_conn()
+    try:
+        conn.execute(f"UPDATE ledgers SET {', '.join(sets)} WHERE id = ?", params)
+        conn.commit()
+        return True
+    finally:
+        conn.close()
+
+
+def delete_ledger(ledger_id: int) -> Optional[int]:
+    """删除账本，并在同一事务内级联删除该账本全部账单。
+    返回删除的账单数；账本不存在返回 None。"""
+    conn = get_conn()
+    try:
+        if not conn.execute(
+            "SELECT id FROM ledgers WHERE id = ?", (ledger_id,)
+        ).fetchone():
+            return None
+        cur = conn.execute(
+            "DELETE FROM transactions WHERE ledger_id = ?", (ledger_id,)
+        )
+        deleted = cur.rowcount
+        conn.execute("DELETE FROM ledgers WHERE id = ?", (ledger_id,))
+        conn.commit()
+        return deleted
+    finally:
+        conn.close()
+
+
 # ---------- 账单 transactions ----------
 
 def add_transaction(
@@ -86,13 +180,18 @@ def add_many(rows: Sequence[dict]) -> tuple[int, int]:
 
 
 def list_transactions(
+    ledger_id: Optional[int] = None,
     month: Optional[str] = None,
     category: Optional[str] = None,
     limit: int = 500,
 ) -> list[dict]:
-    """查询账单。month='YYYY-MM'；倒序（最新在前）。"""
+    """查询账单。ledger_id=None 表示全库（向后兼容）；
+    month='YYYY-MM'；倒序（最新在前）。"""
     sql = "SELECT * FROM transactions WHERE 1=1"
     params: list = []
+    if ledger_id is not None:
+        sql += " AND ledger_id = ?"
+        params.append(ledger_id)
     if month:
         sql += " AND substr(trans_time, 1, 7) = ?"
         params.append(month)
@@ -201,7 +300,7 @@ def get_transaction(tx_id: int) -> Optional[dict]:
 
 def update_transaction(tx_id: int, **fields) -> bool:
     """按白名单更新账单字段，返回是否存在该记录。"""
-    allowed = {"amount", "category", "merchant", "note", "trans_time", "source"}
+    allowed = {"amount", "category", "merchant", "note", "trans_time", "source", "ledger_id"}
     sets, params = [], []
     for k, v in fields.items():
         if k in allowed:
@@ -231,12 +330,14 @@ def delete_transaction(tx_id: int) -> bool:
         conn.close()
 
 
-def list_transactions_grouped(month: Optional[str] = None) -> dict:
+def list_transactions_grouped(
+    ledger_id: Optional[int] = None, month: Optional[str] = None
+) -> dict:
     """按日期分组账单，返回前端明细页同构数据：
     {month, summary:{expense,income,balance},
      groups:[{date, spend, income, items:[{type, remark, money}]}]}
     """
-    rows = list_transactions(month=month, limit=10000)
+    rows = list_transactions(ledger_id=ledger_id, month=month, limit=10000)
     groups: dict[str, dict] = {}
     for r in rows:
         day = r["trans_time"][:10] if r["trans_time"] else ""
@@ -268,15 +369,19 @@ def list_transactions_grouped(month: Optional[str] = None) -> dict:
 
 
 def search_transactions(
+    ledger_id: Optional[int] = None,
     q: str = "",
     mode: str = "bill",          # bill | category
     sort: str = "time",          # time | amount
     order: str = "desc",         # desc | asc
     limit: int = 200,
 ) -> list[dict]:
-    """搜索账单。q 匹配 merchant/note/category。"""
+    """搜索账单。q 匹配 merchant/note/category。ledger_id=None 表示全库。"""
     sql = "SELECT * FROM transactions WHERE 1=1"
     params: list = []
+    if ledger_id is not None:
+        sql += " AND ledger_id = ?"
+        params.append(ledger_id)
     if q:
         like = f"%{q}%"
         if mode == "category":
