@@ -88,6 +88,17 @@
     return apiDelete('/ledgers/' + id);
   }
 
+  // 暴露给 app.js 的账本对接接口（无 api.js 时 app.js 走本地演示数据）
+  window.bookAPI = {
+    loadLedgerMonth,
+    fetchLedgers,
+    createLedger,
+    updateLedger,
+    deleteLedger,
+    currentMonth,
+    prevMonth,
+  };
+
   function currentMonth() {
     const d = new Date();
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
@@ -97,12 +108,26 @@
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
   }
 
-  /* ---------- 启动：加载当前月 + 上月，重渲染明细页 ---------- */
+  /* ---------- 启动：拉账本 → 重建 books → 加载默认账本数据 ---------- */
   async function initBackend() {
     try {
+      // 1) 后端账本列表 → 重建全局 books（每项带后端 id）
+      let ledgers = await fetchLedgers();
+      if (!ledgers.length) {
+        await createLedger({ name: '默认账本', type: '标准账本', icon: 'ic_accounts.png' });
+        ledgers = await fetchLedgers();
+      }
+      books = ledgers.map(l => ({ id: l.id, name: l.name, icon: l.icon, type: l.type, tx: [] }));
+      state.selectedBook = 0;
+      // 2) 加载默认账本 当前月 + 上月
       const cur = currentMonth();
-      await Promise.all([loadMonth(cur), loadMonth(prevMonth(cur))]);
-      // 默认显示「最近有数据的月份」（当前月可能还没有账单），并同步顶部月份按钮与滚轮
+      const [c, p] = await Promise.all([
+        loadLedgerMonth(books[0].id, cur),
+        loadLedgerMonth(books[0].id, prevMonth(cur)),
+      ]);
+      books[0].tx = c.concat(p);
+      tx = books[0].tx;
+      // 3) 默认显示「最近有数据的月份」，同步顶部月份按钮与滚轮
       const dates = tx.map(g => g.date).filter(Boolean).sort();
       if (dates.length) {
         const latest = dates[dates.length - 1].slice(0, 7);
@@ -114,11 +139,10 @@
           if (label) label.textContent = `${yy}年${mm}月`;
         }
       }
-      renderTxList();
+      renderBooks(); renderTxList(); renderStat(); renderCalendar();
     } catch (e) {
-      // 不用假数据：清空内存演示数据，明确提示后端未连接
+      // 后端不可用：保留本地 books（演示数据），仅提示
       console.warn('[api.js] 后端连接失败：', e);
-      tx = [];
       renderTxList();
       const hint = document.createElement('div');
       hint.style.cssText = 'margin:12px;padding:10px 14px;border-radius:8px;background:#fff3f3;' +
@@ -221,10 +245,18 @@
     clone.addEventListener('click', () => window.runSearch());
   })();
 
-  /* ---------- 日历：切月前懒加载该月数据 ---------- */
+  /* ---------- 日历：切月前懒加载该月数据（按当前账本） ---------- */
   window.renderCalendar = async function renderCalendar() {
     const month = state.calYear + '-' + String(state.calMonth).padStart(2, '0');
-    try { await loadMonth(month); } catch (e) { /* 后端不可用则保持现状 */ }
+    const b = books[state.selectedBook];
+    try {
+      if (b && b.id) {
+        const mtx = await loadLedgerMonth(b.id, month);
+        tx = tx.filter(g => !g.date.startsWith(month)).concat(mtx);
+      } else {
+        await loadMonth(month);
+      }
+    } catch (e) { /* 后端不可用则保持现状 */ }
     origRenderCalendar();
   };
 

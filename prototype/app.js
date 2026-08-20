@@ -1691,10 +1691,29 @@ function openBookSheet() {
 }
 function closeBookSheet() { $('#book-sheet').classList.remove('show'); }
 
-// 切换账本：切换数据源并刷新各页面
-function switchBook(i) {
+// 上一个月字符串（YYYY-MM）
+function prevMonthStr(m) {
+  const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 2, 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+// 切换账本：切换数据源并刷新各页面（有后端对接层时按账本异步加载）
+async function switchBook(i) {
   state.selectedBook = i;
-  tx = books[i].tx;
+  const b = books[i];
+  tx = b.tx;
+  // 后端对接层可用且该账本有后端 id：异步加载该账本 当前月 + 上月
+  if (window.bookAPI && b.id) {
+    try {
+      const cur = acctYM || (new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0'));
+      const [c, p] = await Promise.all([
+        window.bookAPI.loadLedgerMonth(b.id, cur),
+        window.bookAPI.loadLedgerMonth(b.id, prevMonthStr(cur)),
+      ]);
+      b.tx = c.concat(p);
+      tx = b.tx;
+    } catch (e) { /* 后端不可用保持现状 */ }
+  }
   renderBookSheet();
   renderBooks();
   renderTxList();
