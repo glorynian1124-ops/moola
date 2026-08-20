@@ -935,6 +935,18 @@ body {
   border-bottom: 1px solid var(--sep); font-size: 16px; color: var(--ink-4);
 }
 .sheet-book-item.checked { color: var(--text-primary); font-weight: 600; }
+.sheet-book-item { position: relative; }
+.sheet-book-item .book-name { transition: transform .18s; }
+.sheet-book-item.managing .book-name { animation: book-jitter .3s linear infinite; }
+@keyframes book-jitter {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1.5px); }
+  75% { transform: translateX(1.5px); }
+}
+.book-manage { display: none; align-items: center; gap: 2px; margin-left: auto; }
+.sheet-book-item.managing .book-manage { display: flex; }
+.book-manage-del { color: #e53935; padding: 8px; }
+.book-manage-edit { color: #333333; padding: 8px; }
 
 /* ============ 选择账本弹窗：编辑入口 ============ */
 .book-sheet-edit {

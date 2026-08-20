@@ -1674,13 +1674,18 @@ $('#balance-kind-group').addEventListener('click', (e) => {
 /* ================= 选择账本弹窗（res_K1） ================= */
 function renderBookSheet() {
   $('#book-sheet-list').innerHTML = books.map((b, i) => `
-    <div class="sheet-book-item ${i === state.selectedBook ? 'checked' : ''}" data-i="${i}">
+    <div class="sheet-book-item ${i === state.selectedBook ? 'checked' : ''} ${bookManaging ? 'managing' : ''}" data-i="${i}">
       <span class="cell-icon">${icIcon(b.icon, 'ic20')}</span>
-      <span>${b.name}</span>
+      <span class="book-name">${b.name}</span>
+      <span class="book-manage">
+        <i class="ic ic20 book-manage-del" data-del="${i}" style="--mask:url(assets/icons/ic_close.png)"></i>
+        <i class="ic ic20 book-manage-edit" data-edit="${i}" style="--mask:url(assets/icons/cate_more.png)"></i>
+      </span>
     </div>`).join('');
 }
 
 function openBookSheet() {
+  bookManaging = false;
   renderBookSheet();
   $('#book-sheet').classList.add('show');
 }
@@ -1697,33 +1702,92 @@ function switchBook(i) {
   renderCalendar();
 }
 
+// 长按账本 → 进入管理模式（文字抖动 + 显示红叉/三点）
+let bookManaging = false;
+let bookPressTimer = null;
+let suppressBookClick = false;
+$('#book-sheet-list').addEventListener('pointerdown', (e) => {
+  if (bookManaging || !e.target.closest('.sheet-book-item')) return;
+  clearTimeout(bookPressTimer);
+  bookPressTimer = setTimeout(() => {
+    bookManaging = true;
+    suppressBookClick = true;
+    renderBookSheet();
+  }, 600);
+});
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+  document.addEventListener(ev, () => { clearTimeout(bookPressTimer); bookPressTimer = null; }, true));
+
 $('#book-sheet-list').addEventListener('click', (e) => {
+  if (suppressBookClick) { suppressBookClick = false; return; }
+  const delBtn = e.target.closest('.book-manage-del');
+  if (delBtn) { bookManaging = false; confirmDeleteBook(Number(delBtn.dataset.del)); return; }
+  const editBtn = e.target.closest('.book-manage-edit');
+  if (editBtn) { bookManaging = false; closeBookSheet(); openBookEditor(Number(editBtn.dataset.edit), false); return; }
   const item = e.target.closest('.sheet-book-item');
   if (!item) return;
+  if (bookManaging) { bookManaging = false; renderBookSheet(); return; }
   switchBook(Number(item.dataset.i));
   toast('已切换到「' + books[state.selectedBook].name + '」');
   setTimeout(closeBookSheet, 500);
 });
-$('#book-sheet-cancel').addEventListener('click', closeBookSheet);
+$('#book-sheet-cancel').addEventListener('click', () => {
+  if (bookManaging) { bookManaging = false; renderBookSheet(); return; }
+  closeBookSheet();
+});
 $('#balance-book-btn').addEventListener('click', openBookSheet);
 
-/* ================= 编辑账本（添加 / 删除） ================= */
-let editBookMode = 'edit'; // edit | add
+/* ================= 编辑/新建账本（新建入口 + 长按三点编辑） ================= */
+let editBookMode = 'add';  // add | edit
+let editBookIndex = -1;    // 编辑模式下当前账本索引
 
-function openEditBook() {
-  editBookMode = 'edit';
-  const b = books[state.selectedBook];
-  $('#book-name').value = b.name;
-  $('#book-type').textContent = b.type + ' ›';
-  renderBookIconGrid(b.icon);
+function refreshBooks() {
+  renderBookSheet(); renderBooks(); renderMainbook();
+  renderTxList(); renderStat(); renderCalendar();
+}
+
+// 根据模式渲染底部操作按钮（新建：取消；编辑：添加/删除）
+function renderBookEditorActions() {
+  const addBtn = $('#btn-book-add');
+  const delBtn = $('#btn-book-del');
+  if (editBookMode === 'add') {
+    addBtn.style.display = 'none';
+    delBtn.className = 'btn-cancel';
+    delBtn.innerHTML = '<span>取消</span>';
+  } else {
+    addBtn.style.display = 'flex';
+    addBtn.innerHTML = '<i class="ic ic18" style="--mask:url(assets/icons/ic_add.png)"></i>添加账本';
+    delBtn.className = 'btn-danger';
+    delBtn.innerHTML = '<i class="ic ic18" style="--mask:url(assets/icons/ic_delete.png)"></i>删除账本';
+  }
+}
+
+// 打开账本编辑器：isNew=true 新建模式，否则编辑 books[idx]
+function openBookEditor(idx, isNew) {
+  editBookMode = isNew ? 'add' : 'edit';
+  editBookIndex = idx;
+  $('#book-editor-title').textContent = isNew ? '新建账本' : '编辑账本';
+  if (isNew) {
+    $('#book-name').value = '';
+    $('#book-type').textContent = '标准账本 ›';
+    renderBookIconGrid('ic_accounts.png');
+  } else {
+    const b = books[idx];
+    $('#book-name').value = b.name;
+    $('#book-type').textContent = (b.type || '标准账本') + ' ›';
+    renderBookIconGrid(b.icon);
+  }
+  renderBookEditorActions();
   openOverlay('page-editbook');
 }
+
 function renderBookIconGrid(sel) {
   $('#book-icon-grid').innerHTML = BOOK_ICONS.map(ic => `
     <div class="book-icon-opt ${ic === sel ? 'selected' : ''}" data-ic="${ic}">${icIcon(ic, 'ic22')}</div>`).join('');
 }
 
-$('#book-sheet-edit').addEventListener('click', () => { closeBookSheet(); openEditBook(); });
+// 选择账本弹窗 → "新建账本"入口
+$('#book-sheet-edit').addEventListener('click', () => { closeBookSheet(); openBookEditor(-1, true); });
 
 $('#book-icon-grid').addEventListener('click', (e) => {
   const o = e.target.closest('.book-icon-opt');
@@ -1747,32 +1811,39 @@ $('#booktype-list').addEventListener('click', (e) => {
 });
 $('#booktype-cancel').addEventListener('click', () => $('#booktype-sheet').classList.remove('show'));
 
-// 添加账本：清空表单进入新增模式
+// 编辑模式："添加账本" → 清空表单进入新建模式
 $('#btn-book-add').addEventListener('click', () => {
   editBookMode = 'add';
   $('#book-name').value = '';
   $('#book-type').textContent = '标准账本 ›';
   renderBookIconGrid('ic_accounts.png');
+  $('#book-editor-title').textContent = '新建账本';
+  renderBookEditorActions();
   $('#book-name').focus();
   toast('填写名称后点保存，创建新账本');
 });
 
-// 删除账本：二次确认弹窗
+// 底部操作按钮：新建模式=取消（放弃新建）；编辑模式=删除账本（二次确认）
 $('#btn-book-del').addEventListener('click', () => {
-  const b = books[state.selectedBook];
-  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, () => {
-    if (books.length <= 1) { toast('至少保留一个账本'); return; }
-    books.splice(state.selectedBook, 1);
-    if (state.selectedBook >= books.length) state.selectedBook = books.length - 1;
-    tx = books[state.selectedBook].tx;
-    renderBookSheet(); renderBooks(); renderMainbook();
-    renderTxList(); renderStat(); renderCalendar();
-    closeOverlay();
-    toast('账本已删除');
-  });
+  if (editBookMode === 'add') { closeOverlay(); return; }
+  confirmDeleteBook(editBookIndex);
 });
 
-// 保存（编辑 / 新增）
+// 删除账本通用（二次确认弹窗）
+function confirmDeleteBook(i) {
+  const b = books[i];
+  if (!b) return;
+  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, () => {
+    if (books.length <= 1) { toast('至少保留一个账本'); return; }
+    books.splice(i, 1);
+    if (state.selectedBook >= books.length) state.selectedBook = books.length - 1;
+    tx = books[state.selectedBook].tx;
+    refreshBooks();
+    toast('账本已删除');
+  });
+}
+
+// 保存（编辑 / 新建）
 function saveEditBook() {
   const name = $('#book-name').value.trim();
   if (!name) { toast('请输入账本名称'); return; }
@@ -1785,12 +1856,11 @@ function saveEditBook() {
     tx = books[state.selectedBook].tx;
     toast('账本「' + name + '」已创建');
   } else {
-    const b = books[state.selectedBook];
+    const b = books[editBookIndex];
     b.name = name; b.icon = icon; b.type = type;
     toast('账本已保存');
   }
-  renderBookSheet(); renderBooks(); renderMainbook();
-  renderTxList(); renderStat(); renderCalendar();
+  refreshBooks();
   closeOverlay();
 }
 
