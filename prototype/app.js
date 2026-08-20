@@ -1848,12 +1848,18 @@ $('#btn-book-cancel').addEventListener('click', closeOverlay);
 // 名称输入变化 → 更新 取消/保存 显示
 $('#book-name').addEventListener('input', updateBookSaveUI);
 
-// 删除账本通用（二次确认弹窗）
+// 删除账本通用（二次确认弹窗，有后端对接层时走后端级联删除）
 function confirmDeleteBook(i) {
   const b = books[i];
   if (!b) return;
-  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, () => {
+  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, async () => {
     if (books.length <= 1) { toast('至少保留一个账本'); return; }
+    try {
+      if (window.bookAPI && b.id) await window.bookAPI.deleteLedger(b.id);
+    } catch (e) {
+      toast('后端删除失败：' + ((e && e.message) || '未知错误'));
+      return;
+    }
     books.splice(i, 1);
     if (state.selectedBook >= books.length) state.selectedBook = books.length - 1;
     tx = books[state.selectedBook].tx;
@@ -1862,22 +1868,35 @@ function confirmDeleteBook(i) {
   });
 }
 
-// 保存（编辑 / 新建）
-function saveEditBook() {
+// 保存（编辑 / 新建，有后端对接层时走后端持久化）
+async function saveEditBook() {
   const name = $('#book-name').value.trim();
   if (!name) { toast('请输入账本名称'); return; }
   const type = $('#book-type').textContent.replace(' ›', '');
   const iconEl = $('#book-icon-grid .book-icon-opt.selected');
   const icon = iconEl ? iconEl.dataset.ic : 'ic_accounts.png';
-  if (editBookMode === 'add') {
-    books.push({ name, icon, type, tx: [] });
-    state.selectedBook = books.length - 1;
-    tx = books[state.selectedBook].tx;
-    toast('账本「' + name + '」已创建');
-  } else {
-    const b = books[editBookIndex];
-    b.name = name; b.icon = icon; b.type = type;
-    toast('账本已保存');
+  try {
+    if (editBookMode === 'add') {
+      let id;
+      if (window.bookAPI) {
+        const r = await window.bookAPI.createLedger({ name, type, icon });
+        id = r && r.id;
+      }
+      books.push({ id, name, icon, type, tx: [] });
+      state.selectedBook = books.length - 1;
+      tx = books[state.selectedBook].tx;
+      toast('账本「' + name + '」已创建');
+    } else {
+      const b = books[editBookIndex];
+      if (window.bookAPI && b.id) {
+        await window.bookAPI.updateLedger(b.id, { name, type, icon });
+      }
+      b.name = name; b.icon = icon; b.type = type;
+      toast('账本已保存');
+    }
+  } catch (e) {
+    toast('后端操作失败：' + ((e && e.message) || '未知错误'));
+    return;
   }
   refreshBooks();
   closeOverlay();
