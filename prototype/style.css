@@ -281,25 +281,8 @@ body {
   display: flex; align-items: center; gap: 10px;
   min-height: 52px; padding: 6px 10px;
   border-bottom: 1px solid var(--sep);
-  cursor: pointer;
 }
-.stat-item:active { background: #f5f5fa; }
 .stat-item:last-child { border-bottom: none; }
-
-/* 统计页：分类明细覆盖页 */
-#page-stat-detail { display: flex; flex-direction: column; }
-.stat-detail-head {
-  display: flex; align-items: center; gap: 10px;
-  min-height: 56px; padding: 0 16px;
-  background: #fff; border-bottom: 1px solid var(--sep); flex-shrink: 0;
-}
-.stat-detail-name { flex: 1; font-size: 16px; color: var(--ink-4); }
-.stat-detail-amt {
-  font-size: 17px; font-weight: 600; color: var(--ink-4);
-  font-family: 'DINCond', sans-serif; font-variant-numeric: tabular-nums;
-}
-.stat-detail-count { font-size: 13px; color: var(--ink-9); }
-#stat-detail-list { padding-bottom: 20px; }
 .stat-ic {
   width: 24px; height: 24px; flex-shrink: 0;
   border-radius: 50%; background-color: #f0f0f5;

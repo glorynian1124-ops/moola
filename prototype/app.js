@@ -439,7 +439,7 @@ function renderPie() {
   const list = $('#stat-list');
   list.innerHTML = arcs.map(a => {
     const pct = a.frac * 100;
-    return `<div class="stat-item" data-name="${a.name}">
+    return `<div class="stat-item">
       <span class="stat-ic" style="color:${a.fill}"><i class="ic ic16" style="--mask:url(assets/icons/${txIconFile(a.name)})"></i></span>
       <span class="stat-name">${a.name}</span>
       <span class="stat-amt">${fmt(a.val)}</span>
@@ -477,105 +477,6 @@ $('#period-group').addEventListener('click', (e) => {
 
 $('#btn-charttype').addEventListener('click', () => openBillStat());
 $('#btn-region').addEventListener('click', () => openChartPage());
-
-/* ================= 统计页：分类明细（点分类进入，可修改） ================= */
-let statDetailCat = '';
-
-// 与统计柱状图一致的周期日期集合（以最后一条账的日期为基准）
-function statDetailPeriodDays() {
-  const data = statData();
-  if (!data.length) return new Set();
-  const dates = [...new Set(data.map(i => i.date))].sort();
-  const last = new Date(dates[dates.length - 1].replace(/-/g, '/'));
-  const lastY = last.getFullYear(), lastM = last.getMonth() + 1;
-  const pad = n => String(n).padStart(2, '0');
-  const key = (y, m, d) => `${y}-${pad(m)}-${pad(d)}`;
-  const days = new Set();
-  if (state.statPeriod === 'week') {
-    const mon = new Date(last);
-    mon.setDate(mon.getDate() - ((last.getDay() + 6) % 7));
-    for (let i = 0; i < 7; i++) {
-      const dd = new Date(mon); dd.setDate(mon.getDate() + i);
-      days.add(key(dd.getFullYear(), dd.getMonth() + 1, dd.getDate()));
-    }
-  } else if (state.statPeriod === 'month') {
-    for (let d = 1; d <= new Date(lastY, lastM, 0).getDate(); d++) days.add(key(lastY, lastM, d));
-  } else {
-    for (let m = 1; m <= 12; m++) {
-      for (let d = 1; d <= new Date(lastY, m, 0).getDate(); d++) days.add(key(lastY, m, d));
-    }
-  }
-  return days;
-}
-
-function renderStatDetail() {
-  const cat = statDetailCat;
-  const sign = state.statCat === 'expense' ? -1 : 1;
-  const perName = { week: '本周', month: '本月', year: '本年' }[state.statPeriod] || '本周';
-  $('#stat-detail-title').textContent = cat + ' · ' + perName;
-  $('#stat-detail-name').textContent = cat;
-  $('#stat-detail-ic').innerHTML = icIcon(txIconFile(cat), 'ic16');
-  const days = statDetailPeriodDays();
-
-  let total = 0, count = 0;
-  const groups = [];
-  tx.forEach(g => {
-    if (!days.has(g.date)) return;
-    const items = [];
-    g.items.forEach((it, idx) => {
-      if (Math.sign(it.money) === sign && it.type === cat) {
-        total += Math.abs(it.money); count++;
-        items.push({ it, idx });
-      }
-    });
-    if (items.length) groups.push({ date: g.date, items });
-  });
-  groups.sort((a, b) => b.date.localeCompare(a.date));
-
-  $('#stat-detail-amt').textContent = fmt(total);
-  $('#stat-detail-count').textContent = count + ' 笔';
-
-  const list = $('#stat-detail-list');
-  list.innerHTML = groups.map(g => {
-    const spend = -g.items.reduce((s, x) => s + Math.min(x.it.money, 0), 0);
-    const income = g.items.reduce((s, x) => s + Math.max(x.it.money, 0), 0);
-    const [y, m, d] = g.date.split('-');
-    return `
-      <div class="tx-group">
-        <div class="tx-group-head">
-          <span>${y}年${+m}月${+d}日 星期${weekDayCN(g.date)}</span>
-          <span>支出:${fmt(spend)} 收入:${fmt(income)}</span>
-        </div>
-        ${g.items.map(x => `
-          <div class="tx-item" data-date="${g.date}" data-idx="${x.idx}">
-            <div class="tx-icon">${icIcon(txIconFile(x.it.type), 'ic20')}</div>
-            <div class="tx-mid">
-              <div class="tx-type">${x.it.type}</div>
-              <div class="tx-remark">${x.it.remark}</div>
-            </div>
-            ${x.it.pic ? `<div class="tx-thumb"><i class="ic ic14" style="--mask:url(assets/icons/ic_photo.png)"></i></div>` : ''}
-            <div class="tx-money ${moneyClass(x.it.money)}">${x.it.money > 0 ? '+' : '-'}${fmt(Math.abs(x.it.money))}</div>
-          </div>`).join('')}
-      </div>`;
-  }).join('') || emptyHtml();
-  list.classList.toggle('has-empty', !groups.length);
-}
-
-// 统计页分类项 → 分类明细页
-$('#stat-list').addEventListener('click', (e) => {
-  const item = e.target.closest('.stat-item');
-  if (!item || !item.dataset.name) return;
-  statDetailCat = item.dataset.name;
-  renderStatDetail();
-  openOverlay('page-stat-detail');
-});
-
-// 分类明细页条目 → 账单详情（可修改/删除）
-$('#stat-detail-list').addEventListener('click', (e) => {
-  const item = e.target.closest('.tx-item');
-  if (!item) return;
-  openDetail(item.dataset.date, Number(item.dataset.idx));
-});
 
 /* ================= 记账页 ================= */
 let calcAcc = 0;        // 连加累计值
@@ -1281,7 +1182,7 @@ function renderPieTo(container, listContainer, items, title) {
   container.__pcat.textContent = title;
   listContainer.innerHTML = arcs.map(a => {
     const pct = a.frac * 100;
-    return `<div class="stat-item" data-name="${a.name}">
+    return `<div class="stat-item">
       <span class="stat-ic" style="color:${a.fill}"><i class="ic ic16" style="--mask:url(assets/icons/${txIconFile(a.name)})"></i></span>
       <span class="stat-name">${a.name}</span>
       <span class="stat-amt">${fmt(a.val)}</span>
