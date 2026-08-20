@@ -254,6 +254,11 @@
     <div class="form-card">
       <div class="form-row"><span class="form-label">账本名称</span><input class="form-input" id="book-name" placeholder="点此输入..."></div>
       <div class="form-row"><span class="form-label">账本类型</span><span class="form-val" id="book-type">标准账本 ›</span></div>
+      <div class="form-row book-icon-row"><span class="form-label">账本图标</span><div class="book-icon-grid" id="book-icon-grid"></div></div>
+    </div>
+    <div class="book-actions">
+      <button class="btn-cancel" id="btn-book-add"><i class="ic ic18" style="--mask:url(assets/icons/ic_add.png)"></i>添加账本</button>
+      <button class="btn-danger" id="btn-book-del"><i class="ic ic18" style="--mask:url(assets/icons/ic_delete.png)"></i>删除账本</button>
     </div>
   </div>
 
@@ -746,7 +751,15 @@
   <div class="sheet" id="book-sheet">
     <div class="sheet-title">选择账本</div>
     <div class="sheet-list" id="book-sheet-list"></div>
+    <div class="book-sheet-edit" id="book-sheet-edit"><i class="ic ic18" style="--mask:url(assets/icons/menu_setting.png)"></i><span>编辑账本</span></div>
     <button class="btn-cancel" id="book-sheet-cancel" style="margin:0;border-radius:0;border:none">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：账本类型选择（编辑账本） ============ -->
+  <div class="sheet" id="booktype-sheet">
+    <div class="sheet-title">选择账本类型</div>
+    <div class="sheet-list" id="booktype-list"></div>
+    <button class="btn-cancel" id="booktype-cancel" style="margin:0;border-radius:0;border:none">取消</button>
   </div>
 
   <!-- ============ 覆盖页：注册（LoginActivity 注册流程） ============ -->

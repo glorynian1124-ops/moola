@@ -936,6 +936,31 @@ body {
 }
 .sheet-book-item.checked { color: var(--text-primary); font-weight: 600; }
 
+/* ============ 选择账本弹窗：编辑入口 ============ */
+.book-sheet-edit {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  height: 52px; border-top: 1px solid var(--sep); color: var(--text-primary);
+  font-size: 16px; cursor: pointer;
+}
+.book-sheet-edit:active { background: #f0f0f0; }
+
+/* ============ 编辑账本：图标网格 + 操作按钮 ============ */
+.book-icon-row { align-items: flex-start; padding-top: 12px; padding-bottom: 12px; }
+.book-icon-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.book-icon-opt {
+  height: 46px; border-radius: 10px; background: #f5f5fa;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-4); cursor: pointer;
+}
+.book-icon-opt.selected { background: var(--primary); color: #fff; }
+.book-actions { display: flex; margin: 20px 12px; gap: 10px; }
+.book-actions button {
+  flex: 1; height: 46px; display: flex; align-items: center; justify-content: center;
+  gap: 6px; font-size: 16px; cursor: pointer;
+}
+.btn-danger { background: #fff; color: #cc0000; border: 1px solid #cc0000; border-radius: 6px; }
+.btn-danger:active { background: #fdeaea; }
+
 /* ============ 验证码行 / 注册 ============ */
 .vcode-row { display: flex; gap: 10px; }
 .vcode-row .login-input { flex: 1; }

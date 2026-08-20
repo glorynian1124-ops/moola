@@ -87,7 +87,15 @@ const INITIAL_TX = [
   ]},
 ];
 
-let tx = JSON.parse(JSON.stringify(INITIAL_TX));
+// 账本集合：每个账本拥有独立的账单数据（tx）
+let books = [
+  { name: '默认账本', icon: 'ic_accounts.png', type: '标准账本', tx: JSON.parse(JSON.stringify(INITIAL_TX)) },
+  { name: '旅行账本', icon: 'ic_plane.png', type: '旅行', tx: [] },
+  { name: '家庭账本', icon: 'cate_home.png', type: '家庭', tx: [] },
+];
+let tx = books[0].tx; // 全局 tx 指向当前账本数据
+const BOOK_ICONS = ['ic_accounts.png', 'ic_plane.png', 'cate_home.png', 'cate_salary.png', 'cate_shopping.png', 'cate_moneybag.png'];
+const BOOK_TYPES = ['标准账本', '旅行', '家庭', '生意', '人情', '其他'];
 
 // 状态
 const state = {
@@ -794,14 +802,10 @@ function renderYearStat() {
 
 /* ================= 管理账本 ================= */
 function renderBooks() {
-  const books = [
-    { name: '默认账本', desc: '标准账本 · 2026年创建', icon: 'ic_accounts.png' },
-    { name: '旅行账本', desc: '旅行账本 · 2026年创建', icon: 'ic_plane.png' },
-  ];
   $('#book-list').innerHTML = books.map((b, i) => `
     <div class="book-item ${i === state.selectedBook ? 'checked' : ''}" data-i="${i}">
       <div class="book-icon">${icIcon(b.icon, 'ic22')}</div>
-      <div class="book-info"><div class="book-name">${b.name}</div><div class="book-desc">${b.desc}</div></div>
+      <div class="book-info"><div class="book-name">${b.name}</div><div class="book-desc">${b.type} · 2026年创建</div></div>
       <div class="book-check"></div>
     </div>`).join('');
 }
@@ -809,8 +813,7 @@ function renderBooks() {
 $('#book-list').addEventListener('click', (e) => {
   const item = e.target.closest('.book-item');
   if (!item) return;
-  state.selectedBook = Number(item.dataset.i);
-  renderBooks();
+  switchBook(Number(item.dataset.i));
 });
 
 /* ================= 类别管理 ================= */
@@ -867,11 +870,10 @@ $('#widget-cancel').addEventListener('click', () => $('#widget-sheet').classList
 
 /* ================= 选择主账本弹窗 ================= */
 function renderMainbook() {
-  const books = ['默认账本', '旅行账本', '家庭账本'];
   $('#mainbook-list').innerHTML = books.map((b, i) => `
     <div class="sheet-book-item ${i === 0 ? 'checked' : ''}" data-i="${i}">
-      <span class="cell-icon">${icIcon(['ic_accounts.png', 'ic_plane.png', 'cate_home.png'][i], 'ic20')}</span>
-      <span>${b}</span>
+      <span class="cell-icon">${icIcon(b.icon, 'ic20')}</span>
+      <span>${b.name}</span>
     </div>`).join('');
 }
 $('#btn-merge').addEventListener('click', () => {
@@ -972,7 +974,7 @@ $('#btn-newtype-save').addEventListener('click', () => {
   renderTypeGrid();
   closeOverlay();
 });
-$('#btn-book-save').addEventListener('click', closeOverlay);
+$('#btn-book-save').addEventListener('click', saveEditBook);
 
 /* ================= 账单详情（res_xv） ================= */
 let detailTx = null;
@@ -1671,11 +1673,6 @@ $('#balance-kind-group').addEventListener('click', (e) => {
 
 /* ================= 选择账本弹窗（res_K1） ================= */
 function renderBookSheet() {
-  const books = [
-    { name: '默认账本', icon: 'ic_accounts.png' },
-    { name: '旅行账本', icon: 'ic_plane.png' },
-    { name: '家庭账本', icon: 'cate_home.png' },
-  ];
   $('#book-sheet-list').innerHTML = books.map((b, i) => `
     <div class="sheet-book-item ${i === state.selectedBook ? 'checked' : ''}" data-i="${i}">
       <span class="cell-icon">${icIcon(b.icon, 'ic20')}</span>
@@ -1689,16 +1686,113 @@ function openBookSheet() {
 }
 function closeBookSheet() { $('#book-sheet').classList.remove('show'); }
 
+// 切换账本：切换数据源并刷新各页面
+function switchBook(i) {
+  state.selectedBook = i;
+  tx = books[i].tx;
+  renderBookSheet();
+  renderBooks();
+  renderTxList();
+  renderStat();
+  renderCalendar();
+}
+
 $('#book-sheet-list').addEventListener('click', (e) => {
   const item = e.target.closest('.sheet-book-item');
   if (!item) return;
-  state.selectedBook = Number(item.dataset.i);
-  renderBookSheet();
-  toast('已切换到' + item.textContent.trim());
+  switchBook(Number(item.dataset.i));
+  toast('已切换到「' + books[state.selectedBook].name + '」');
   setTimeout(closeBookSheet, 500);
 });
 $('#book-sheet-cancel').addEventListener('click', closeBookSheet);
 $('#balance-book-btn').addEventListener('click', openBookSheet);
+
+/* ================= 编辑账本（添加 / 删除） ================= */
+let editBookMode = 'edit'; // edit | add
+
+function openEditBook() {
+  editBookMode = 'edit';
+  const b = books[state.selectedBook];
+  $('#book-name').value = b.name;
+  $('#book-type').textContent = b.type + ' ›';
+  renderBookIconGrid(b.icon);
+  openOverlay('page-editbook');
+}
+function renderBookIconGrid(sel) {
+  $('#book-icon-grid').innerHTML = BOOK_ICONS.map(ic => `
+    <div class="book-icon-opt ${ic === sel ? 'selected' : ''}" data-ic="${ic}">${icIcon(ic, 'ic22')}</div>`).join('');
+}
+
+$('#book-sheet-edit').addEventListener('click', () => { closeBookSheet(); openEditBook(); });
+
+$('#book-icon-grid').addEventListener('click', (e) => {
+  const o = e.target.closest('.book-icon-opt');
+  if (!o) return;
+  $$('#book-icon-grid .book-icon-opt').forEach(x => x.classList.remove('selected'));
+  o.classList.add('selected');
+});
+
+// 账本类型选择弹窗
+$('#book-type').addEventListener('click', () => {
+  const cur = $('#book-type').textContent.replace(' ›', '');
+  $('#booktype-list').innerHTML = BOOK_TYPES.map(t => `
+    <div class="sheet-book-item ${t === cur ? 'checked' : ''}" data-t="${t}"><span>${t}</span></div>`).join('');
+  $('#booktype-sheet').classList.add('show');
+});
+$('#booktype-list').addEventListener('click', (e) => {
+  const it = e.target.closest('.sheet-book-item');
+  if (!it) return;
+  $('#book-type').textContent = it.dataset.t + ' ›';
+  $('#booktype-sheet').classList.remove('show');
+});
+$('#booktype-cancel').addEventListener('click', () => $('#booktype-sheet').classList.remove('show'));
+
+// 添加账本：清空表单进入新增模式
+$('#btn-book-add').addEventListener('click', () => {
+  editBookMode = 'add';
+  $('#book-name').value = '';
+  $('#book-type').textContent = '标准账本 ›';
+  renderBookIconGrid('ic_accounts.png');
+  $('#book-name').focus();
+  toast('填写名称后点保存，创建新账本');
+});
+
+// 删除账本：二次确认弹窗
+$('#btn-book-del').addEventListener('click', () => {
+  const b = books[state.selectedBook];
+  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, () => {
+    if (books.length <= 1) { toast('至少保留一个账本'); return; }
+    books.splice(state.selectedBook, 1);
+    if (state.selectedBook >= books.length) state.selectedBook = books.length - 1;
+    tx = books[state.selectedBook].tx;
+    renderBookSheet(); renderBooks(); renderMainbook();
+    renderTxList(); renderStat(); renderCalendar();
+    closeOverlay();
+    toast('账本已删除');
+  });
+});
+
+// 保存（编辑 / 新增）
+function saveEditBook() {
+  const name = $('#book-name').value.trim();
+  if (!name) { toast('请输入账本名称'); return; }
+  const type = $('#book-type').textContent.replace(' ›', '');
+  const iconEl = $('#book-icon-grid .book-icon-opt.selected');
+  const icon = iconEl ? iconEl.dataset.ic : 'ic_accounts.png';
+  if (editBookMode === 'add') {
+    books.push({ name, icon, type, tx: [] });
+    state.selectedBook = books.length - 1;
+    tx = books[state.selectedBook].tx;
+    toast('账本「' + name + '」已创建');
+  } else {
+    const b = books[state.selectedBook];
+    b.name = name; b.icon = icon; b.type = type;
+    toast('账本已保存');
+  }
+  renderBookSheet(); renderBooks(); renderMainbook();
+  renderTxList(); renderStat(); renderCalendar();
+  closeOverlay();
+}
 
 /* ================= 图片大图查看（res_OH） ================= */
 let picTransform = { rot: 0, flip: false };
