@@ -92,9 +92,15 @@ def cmd_import(args) -> None:
     added, skipped = models.add_many(records)
     print(f"✅ 新增 {added} 笔，跳过重复 {skipped} 笔")
     print(f"数据库现有 {models.transaction_count()} 笔记录")
-    # 解析后提示分类
+    # 导入后自动分类（可用 --no-classify 关闭）
     if added:
-        print("提示：运行 `python3 main.py classify` 进行 AI 自动分类")
+        if args.no_classify:
+            print("提示：运行 `python3 main.py classify` 进行 AI 自动分类")
+        else:
+            print("🔄 导入完成，自动分类新账单 ...")
+            from app.analyzer.classify import classify_unclassified
+            n = classify_unclassified()
+            print(f"✅ 自动分类完成，共处理 {n} 笔")
 
 
 def cmd_classify(args) -> None:
@@ -160,6 +166,10 @@ def main() -> None:
     p_import.add_argument(
         "--source", choices=["wechat", "alipay", "auto"], default="auto",
         help="账单来源（默认 auto 自动识别）",
+    )
+    p_import.add_argument(
+        "--no-classify", action="store_true",
+        help="导入后不自动分类（默认自动分类）",
     )
     p_import.set_defaults(fn=cmd_import)
 

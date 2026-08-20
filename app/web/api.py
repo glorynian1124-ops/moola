@@ -267,7 +267,15 @@ def import_csv(source: str):
         tmp.unlink(missing_ok=True)
 
     added, skipped = models.add_many(records)
-    return jsonify({"ok": True, "parsed": len(records), "added": added, "skipped": skipped})
+    classified = 0
+    if added:
+        # 导入即自动分类（规则优先，LLM 受限流保护）
+        from ..analyzer.classify import classify_unclassified
+        classified = classify_unclassified()
+    return jsonify({
+        "ok": True, "parsed": len(records), "added": added, "skipped": skipped,
+        "classified": classified,
+    })
 
 
 # ---------- 报告（复用现有） ----------
