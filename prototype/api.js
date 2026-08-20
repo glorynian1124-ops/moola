@@ -51,6 +51,11 @@
   /* ---------- 数据装载：后端 group -> 前端 tx 结构 ---------- */
   const loadedMonths = new Set(); // 已从后端加载的月份
 
+  // 按日期降序（最新在前），与后端 group 顺序一致；避免合并时 concat 打乱顺序导致详情点击错位
+  function sortTxDesc(arr) {
+    return arr.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  }
+
   function groupToTx(groups) {
     return (groups || []).map(g => ({
       date: g.date,
@@ -64,7 +69,7 @@
     loadedMonths.add(month);
     const data = await apiGet('/transactions/group?month=' + encodeURIComponent(month));
     const monthTx = groupToTx(data.groups);
-    tx = tx.filter(g => !g.date.startsWith(month)).concat(monthTx);
+    tx = sortTxDesc(tx.filter(g => !g.date.startsWith(month)).concat(monthTx));
   }
 
   // 按账本 + 月份加载（返回该账本该月的 tx 数组，不写全局 tx）
@@ -267,7 +272,7 @@
     try {
       if (b && b.id) {
         const mtx = await loadLedgerMonth(b.id, month);
-        tx = tx.filter(g => !g.date.startsWith(month)).concat(mtx);
+        tx = sortTxDesc(tx.filter(g => !g.date.startsWith(month)).concat(mtx));
       } else {
         await loadMonth(month);
       }

@@ -191,7 +191,7 @@ function renderTxList() {
     const income = g.items.filter(i => i.money > 0).reduce((s, i) => s + i.money, 0);
     const [y, m, d] = g.date.split('-');
     return `
-      <div class="tx-group">
+      <div class="tx-group" data-date="${g.date}">
         <div class="tx-group-head">
           <span>${y}年${+m}月${+d}日 星期${weekDayCN(g.date)}</span>
           <span>支出:${fmt(spend)} 收入:${fmt(income)}</span>
@@ -948,12 +948,11 @@ $('#tx-list').addEventListener('click', (e) => {
   const item = e.target.closest('.tx-item');
   if (!item) return;
   const groupEl = item.closest('.tx-group');
-  const groups = $$('#tx-list .tx-group');
-  const gi = groups.indexOf(groupEl);
-  const items = $$('#tx-list .tx-group')[gi] ? $$('#tx-list .tx-group')[gi].querySelectorAll('.tx-item') : [];
+  const items = groupEl ? groupEl.querySelectorAll('.tx-item') : [];
   const ii = Array.from(items).indexOf(item);
-  const date = tx[gi] && tx[gi].date;
-  if (date !== undefined) openDetail(date, ii);
+  // 直接从 DOM 读日期，不再用 tx[gi] 索引（渲染顺序与数组顺序可能不一致）
+  const date = groupEl && groupEl.dataset.date;
+  if (date) openDetail(date, ii);
 });
 
 /* ================= 主页按钮 ================= */
