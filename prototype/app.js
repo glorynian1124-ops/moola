@@ -256,7 +256,7 @@ function statData() {
 function renderBarChart() {
   const data = statData();
   const box = $('#trend-chart');
-  if (!data.length) return;
+  if (!data.length) { box.innerHTML = '<div class="stat-no-data">暂无数据</div>'; return; }
 
   const period = state.statPeriod; // week / month / year
   const dates = [...new Set(data.map(i => i.date))].sort();
@@ -353,7 +353,11 @@ function pieRotation(container) {
 function renderPie() {
   const data = statData();
   const pie = $('#pie-chart');
-  if (!data.length) return;
+  if (!data.length) {
+    pie.innerHTML = '<div class="stat-no-data">暂无数据</div>';
+    $('#stat-list').innerHTML = '<div class="stat-no-data">暂无数据</div>';
+    return;
+  }
 
   // 按类别聚合
   const map = {};
@@ -451,10 +455,8 @@ function renderPie() {
 function renderStat() {
   renderBarChart();
   renderPie();
-  // 空状态切换（原版：无数据才显示「暂无数据」）
-  const hasData = statData().length > 0;
-  $('#stat-empty').hidden = hasData;
-  $('#stat-body').style.display = hasData ? '' : 'none';
+  // 空数据时保持三栏结构（统计/消费结构/明细），各栏内显示「暂无数据」
+  $('#stat-empty').style.display = 'none';
 }
 
 $('#stat-cat-tabs').addEventListener('click', (e) => {
