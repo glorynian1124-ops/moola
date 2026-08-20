@@ -958,7 +958,7 @@ $('#fab-add').addEventListener('click', () => {
 $('#btn-book').addEventListener('click', () => openBookSheet());
 $('#btn-search').addEventListener('click', () => openOverlay('page-search'));
 $('#btn-calendar').addEventListener('click', () => openOverlay('page-calendar'));
-$('#btn-report').addEventListener('click', () => openOverlay('page-yearstat'));
+$('#btn-report').addEventListener('click', () => { renderYearStat(); openOverlay('page-yearstat'); });
 $('#na-back').addEventListener('click', closeOverlay);
 $('#na-manage').addEventListener('click', () => openOverlay('page-types'));
 $('#btn-books-cancel').addEventListener('click', closeOverlay);
