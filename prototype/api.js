@@ -33,6 +33,15 @@
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     return resp.json();
   }
+  async function apiPut(path, body) {
+    const resp = await fetch(API_BASE + path, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    return resp.json();
+  }
   async function apiDelete(path) {
     const resp = await fetch(API_BASE + path, { method: 'DELETE' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -56,6 +65,27 @@
     const data = await apiGet('/transactions/group?month=' + encodeURIComponent(month));
     const monthTx = groupToTx(data.groups);
     tx = tx.filter(g => !g.date.startsWith(month)).concat(monthTx);
+  }
+
+  // 按账本 + 月份加载（返回该账本该月的 tx 数组，不写全局 tx）
+  async function loadLedgerMonth(ledgerId, month) {
+    const data = await apiGet('/transactions/group?ledger_id=' + ledgerId + '&month=' + encodeURIComponent(month));
+    return groupToTx(data.groups);
+  }
+
+  /* ---------- 账本 CRUD 封装 ---------- */
+  async function fetchLedgers() {
+    const data = await apiGet('/ledgers');
+    return data.ledgers || [];
+  }
+  async function createLedger(payload) {
+    return apiPost('/ledgers', payload);
+  }
+  async function updateLedger(id, payload) {
+    return apiPut('/ledgers/' + id, payload);
+  }
+  async function deleteLedger(id) {
+    return apiDelete('/ledgers/' + id);
   }
 
   function currentMonth() {
