@@ -109,51 +109,64 @@
   }
 
   /* ---------- 启动：拉账本 → 重建 books → 加载默认账本数据 ---------- */
+  // 以后端数据库为准：成功则全量用后端数据；失败则清空为"无数据"并提示，
+  // 不再回退到本地 INITIAL_TX 演示数据，避免明细/统计等页面数据源不一致。
   async function initBackend() {
+    let ledgers = [];
     try {
-      // 1) 后端账本列表 → 重建全局 books（每项带后端 id）
-      let ledgers = await fetchLedgers();
+      ledgers = await fetchLedgers();
       if (!ledgers.length) {
         await createLedger({ name: '默认账本', type: '标准账本', icon: 'ic_accounts.png' });
         ledgers = await fetchLedgers();
       }
-      books = ledgers.map(l => ({ id: l.id, name: l.name, icon: l.icon, type: l.type, tx: [] }));
-      state.selectedBook = 0;
-      // 2) 加载默认账本 当前月 + 上月
-      const cur = currentMonth();
-      const [c, p] = await Promise.all([
-        loadLedgerMonth(books[0].id, cur),
-        loadLedgerMonth(books[0].id, prevMonth(cur)),
-      ]);
-      books[0].tx = c.concat(p);
-      tx = books[0].tx;
-      // 3) 默认显示「最近有数据的月份」，同步顶部月份按钮与滚轮
-      const dates = tx.map(g => g.date).filter(Boolean).sort();
-      if (dates.length) {
-        const latest = dates[dates.length - 1].slice(0, 7);
-        if (latest !== acctYM) {
-          acctYM = latest;
-          const [yy, mm] = latest.split('-').map(Number);
-          wheelYear = yy; wheelMonth = mm;
-          const label = $('#month-label');
-          if (label) label.textContent = `${yy}年${mm}月`;
-        }
-      }
-      renderBooks(); renderTxList(); renderStat(); renderCalendar();
     } catch (e) {
-      // 后端不可用：保留本地 books（演示数据），仅提示
       console.warn('[api.js] 后端连接失败：', e);
-      renderTxList();
-      const hint = document.createElement('div');
-      hint.style.cssText = 'margin:12px;padding:10px 14px;border-radius:8px;background:#fff3f3;' +
-        'color:#c00;font-size:13px;line-height:1.6;';
-      hint.innerHTML = '⚠️ 后端未连接，无法加载真实账单。<br>' +
-        '请先启动 <code>python main.py web</code>（端口 5001）后刷新页面。';
-      const list = $('#tx-list');
-      if (list && list.parentNode) {
-        list.insertAdjacentElement('beforebegin', hint);
-        setTimeout(() => hint.remove(), 8000);
+      ledgers = [];
+    }
+    // 无论成败都用后端账本重建 books（失败则为空列表）
+    books = ledgers.map(l => ({ id: l.id, name: l.name, icon: l.icon, type: l.type, tx: [] }));
+    state.selectedBook = 0;
+
+    if (books.length) {
+      try {
+        // 加载默认账本 当前月 + 上月
+        const cur = currentMonth();
+        const [c, p] = await Promise.all([
+          loadLedgerMonth(books[0].id, cur),
+          loadLedgerMonth(books[0].id, prevMonth(cur)),
+        ]);
+        books[0].tx = c.concat(p);
+        tx = books[0].tx;
+        // 默认显示「最近有数据的月份」，同步顶部月份按钮与滚轮
+        const dates = tx.map(g => g.date).filter(Boolean).sort();
+        if (dates.length) {
+          const latest = dates[dates.length - 1].slice(0, 7);
+          if (latest !== acctYM) {
+            acctYM = latest;
+            const [yy, mm] = latest.split('-').map(Number);
+            wheelYear = yy; wheelMonth = mm;
+            const label = $('#month-label');
+            if (label) label.textContent = `${yy}年${mm}月`;
+          }
+        }
+        renderBooks(); renderTxList(); renderStat(); renderCalendar();
+        return;
+      } catch (e) {
+        console.warn('[api.js] 加载账本数据失败：', e);
       }
+    }
+    // 后端不可用 / 无账本：空数据 + 提示（保持各页面一致）
+    tx = [];
+    renderBooks(); renderTxList(); renderStat();
+    const hint = document.createElement('div');
+    hint.style.cssText = 'margin:12px;padding:10px 14px;border-radius:8px;background:#fff3f3;' +
+      'color:#c00;font-size:13px;line-height:1.6;';
+    hint.innerHTML = '⚠️ 后端未连接，无法加载真实账单。<br>' +
+      '请先启动 <code>python main.py web</code>（端口 5001）后刷新页面。';
+    const list = $('#tx-list');
+    if (list && list.parentNode) {
+      list.insertAdjacentElement('beforebegin', hint);
+      setTimeout(() => hint.remove(), 8000);
     }
   }
   initBackend();
