@@ -936,25 +936,24 @@ body {
 }
 .sheet-book-item.checked { color: var(--text-primary); font-weight: 600; }
 .sheet-book-item { position: relative; }
-.sheet-book-item .book-name { transition: transform .18s; }
-.sheet-book-item.managing .book-name { animation: book-jitter .3s linear infinite; }
-@keyframes book-jitter {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-1.5px); }
-  75% { transform: translateX(1.5px); }
-}
-.book-manage { display: none; align-items: center; gap: 2px; margin-left: auto; }
+.book-manage { display: none; align-items: center; gap: 16px; margin-left: auto; }
 .sheet-book-item.managing .book-manage { display: flex; }
-.book-manage-del { color: #e53935; padding: 8px; }
-.book-manage-edit { color: #333333; padding: 8px; }
+.book-manage-del, .book-manage-edit {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.book-manage-del { color: #e53935; }
+.book-manage-edit { color: #333333; }
 
 /* ============ 选择账本弹窗：编辑入口 ============ */
 .book-sheet-edit {
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  height: 52px; border-top: 1px solid var(--sep); color: var(--text-primary);
+  height: 44px; border-top: 1px solid var(--sep); color: var(--text-primary);
   font-size: 16px; cursor: pointer;
 }
 .book-sheet-edit:active { background: #f0f0f0; }
+.book-sheet-sep { height: 1px; background: var(--sep); }
 
 /* ============ 编辑账本：图标网格 + 操作按钮 ============ */
 .book-icon-row { align-items: flex-start; padding-top: 12px; padding-bottom: 12px; }
