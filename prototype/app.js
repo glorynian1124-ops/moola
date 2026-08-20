@@ -1678,8 +1678,8 @@ function renderBookSheet() {
       <span class="cell-icon">${icIcon(b.icon, 'ic20')}</span>
       <span class="book-name">${b.name}</span>
       <span class="book-manage">
-        <i class="ic ic16 book-manage-del" data-del="${i}" style="--mask:url(assets/icons/ic_close.png)"></i>
-        <i class="ic ic20 book-manage-edit" data-edit="${i}" style="--mask:url(assets/icons/cate_more.png)"></i>
+        <i class="ic ic14 book-manage-del" data-del="${i}" style="--mask:url(assets/icons/ic_close.png)"></i>
+        <i class="ic ic16 book-manage-edit" data-edit="${i}" style="--mask:url(assets/icons/cate_more.png)"></i>
       </span>
     </div>`).join('');
 }
