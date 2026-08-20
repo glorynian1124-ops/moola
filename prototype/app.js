@@ -461,6 +461,8 @@ function renderPie() {
 }
 
 function renderStat() {
+  // 趋势栏标题随收支分类变化：支出→消费趋势，收入→收入趋势
+  $('#stat-title').textContent = state.statCat === 'income' ? '收入趋势' : '消费趋势';
   renderBarChart();
   renderPie();
   // 空数据时保持三栏结构（统计/消费结构/明细），各栏内显示「暂无数据」
