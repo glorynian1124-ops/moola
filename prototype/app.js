@@ -939,6 +939,60 @@ window.aiCfg = (function () {
   });
 })();
 
+/* ================= 经济分析（AI 聊天） ================= */
+(function initAIChat() {
+  const msgs = $('#ai-msgs');
+  const input = $('#ai-input');
+  const sendBtn = $('#ai-send');
+  if (!msgs || !input) return;
+  const welcome = $('#ai-welcome');
+
+  function addMsg(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'ai-msg ' + role;
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return bubble;
+  }
+
+  // 快捷提问
+  $$('#ai-sugs .ai-sug').forEach(s => {
+    s.addEventListener('click', () => { input.value = s.dataset.q; doSend(); });
+  });
+
+  // 新对话：清空消息并恢复欢迎语
+  $('#ai-new').addEventListener('click', () => {
+    $$('#ai-msgs .ai-msg').forEach(m => m.remove());
+    welcome.hidden = false;
+  });
+
+  function doSend() {
+    const text = input.value.trim();
+    if (!text) return;
+    welcome.hidden = true;
+    input.value = '';
+    addMsg('user', text);
+    const aiBubble = addMsg('ai', '思考中…');
+    aiBubble.classList.add('thinking');
+    const ai = window.aiAPI;
+    const p = ai && ai.chat ? ai.chat(text) : Promise.reject(new Error('AI 服务未接入'));
+    p.then(reply => {
+      aiBubble.textContent = reply || '（空回复）';
+      aiBubble.classList.remove('thinking');
+    }).catch(err => {
+      aiBubble.textContent = '⚠️ ' + (err && err.message ? err.message : 'AI 服务暂不可用');
+      aiBubble.classList.remove('thinking');
+    }).then(() => { msgs.scrollTop = msgs.scrollHeight; });
+  }
+
+  sendBtn.addEventListener('click', doSend);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') doSend(); });
+})();
+
 /* ================= 小部件设置弹窗 ================= */
 $$('#widget-sheet .wr-choice').forEach(c => {
   c.addEventListener('click', () => {

@@ -76,6 +76,30 @@
     </div>
   </div>
 
+  <!-- ============ 页面 5：经济分析（AI 聊天） ============ -->
+  <div class="page" id="page-ai">
+    <div class="ai-topbar">
+      <span class="toolbar-title">经济分析</span>
+      <button class="ai-new" id="ai-new">新对话</button>
+    </div>
+    <div class="ai-msgs" id="ai-msgs">
+      <div class="ai-welcome" id="ai-welcome">
+        <i class="ic ic50" style="--mask:url(assets/icons/tab_ai.png);color:var(--primary)"></i>
+        <div class="ai-welcome-title">AI 经济分析师</div>
+        <div class="ai-welcome-sub">我可以帮你分析消费结构、生成消费者画像、给出存钱建议。</div>
+        <div class="ai-sugs" id="ai-sugs">
+          <span class="ai-sug" data-q="分析我最近的消费结构">分析最近的消费结构</span>
+          <span class="ai-sug" data-q="帮我生成消费者画像">生成消费者画像</span>
+          <span class="ai-sug" data-q="给我一些存钱建议">给我存钱建议</span>
+        </div>
+      </div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="ai-input" type="text" placeholder="输入问题…">
+      <button class="ai-send" id="ai-send"><i class="ic ic24" style="--mask:url(assets/icons/ic_chat.png)"></i></button>
+    </div>
+  </div>
+
   <!-- ============ 页面 4：我的（ProfileActivity） ============ -->
   <div class="page" id="page-profile">
     <div class="profile-head" id="profile-head">
@@ -889,6 +913,7 @@
   <nav class="tabbar">
     <div class="tab active" data-page="page-account"><i class="ic ic24" style="--mask:url(assets/icons/tab_list.png)"></i><span class="tab-name">明细</span></div>
     <div class="tab" data-page="page-stat"><i class="ic ic24" style="--mask:url(assets/icons/tab_stat.png)"></i><span class="tab-name">统计</span></div>
+    <div class="tab" data-page="page-ai"><i class="ic ic24" style="--mask:url(assets/icons/tab_ai.png)"></i><span class="tab-name">经济分析</span></div>
     <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">经济简讯</span></div>
     <div class="tab" data-page="page-profile"><i class="ic ic24" style="--mask:url(assets/icons/tab_profile.png)"></i><span class="tab-name">我的</span></div>
   </nav>
