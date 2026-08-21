@@ -157,6 +157,7 @@ $$('.tabbar .tab').forEach(tab => {
   tab.addEventListener('click', () => {
     $$('.tabbar .tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
+    state.tab = tab.dataset.page; // 记录当前主页面，覆盖页退出时返回上一级
     showPage(tab.dataset.page);
   });
 });
@@ -190,7 +191,7 @@ function renderTxList() {
     const income = g.items.filter(i => i.money > 0).reduce((s, i) => s + i.money, 0);
     const [y, m, d] = g.date.split('-');
     return `
-      <div class="tx-group">
+      <div class="tx-group" data-date="${g.date}">
         <div class="tx-group-head">
           <span>${y}年${+m}月${+d}日 星期${weekDayCN(g.date)}</span>
           <span>支出:${fmt(spend)} 收入:${fmt(income)}</span>
@@ -246,6 +247,11 @@ function updateOverview() {
 /* ================= 统计页 ================= */
 const PIE_COLORS = ['#303f9f', '#ee6c8c', '#d2691e', '#a52a2a', '#8b008b', '#008000', '#303030', '#753c2c', '#4c9aff', '#6c9f3f', '#e0673c', '#8e6cd8'];
 
+// 统计页各栏空状态（与明细页一致：空箱子图标 + 暂无数据）
+function statNoDataHtml() {
+  return '<div class="stat-no-data"><i class="ic ic50" style="--mask:url(assets/icons/ic_empty.png)"></i><div class="empty-text">暂无数据</div></div>';
+}
+
 function statData() {
   const sign = state.statCat === 'expense' ? -1 : 1;
   const items = tx.flatMap(g => g.items.map(it => ({ ...it, date: g.date })))
@@ -256,7 +262,7 @@ function statData() {
 function renderBarChart() {
   const data = statData();
   const box = $('#trend-chart');
-  if (!data.length) return;
+  if (!data.length) { box.innerHTML = statNoDataHtml(); return; }
 
   const period = state.statPeriod; // week / month / year
   const dates = [...new Set(data.map(i => i.date))].sort();
@@ -353,7 +359,13 @@ function pieRotation(container) {
 function renderPie() {
   const data = statData();
   const pie = $('#pie-chart');
-  if (!data.length) return;
+  // 无数据时隐藏旋转提示，有数据时显示
+  $('#pie-hint').style.display = data.length ? '' : 'none';
+  if (!data.length) {
+    pie.innerHTML = statNoDataHtml();
+    $('#stat-list').innerHTML = statNoDataHtml();
+    return;
+  }
 
   // 按类别聚合
   const map = {};
@@ -449,12 +461,12 @@ function renderPie() {
 }
 
 function renderStat() {
+  // 趋势栏标题随收支分类变化：支出→消费趋势，收入→收入趋势
+  $('#stat-title').textContent = state.statCat === 'income' ? '收入趋势' : '消费趋势';
   renderBarChart();
   renderPie();
-  // 空状态切换（原版：无数据才显示「暂无数据」）
-  const hasData = statData().length > 0;
-  $('#stat-empty').hidden = hasData;
-  $('#stat-body').style.display = hasData ? '' : 'none';
+  // 空数据时保持三栏结构（统计/消费结构/明细），各栏内显示「暂无数据」
+  $('#stat-empty').style.display = 'none';
 }
 
 $('#stat-cat-tabs').addEventListener('click', (e) => {
@@ -849,7 +861,7 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
       vip: 'page-vip', types: 'page-types', sync: 'page-backup',
       settings: 'page-setting', export: 'page-vip',
       gesture: 'page-gesture', theme: 'page-theme',
-      about: 'page-about',
+      about: 'page-about', ai: 'page-api-config',
     };
     if (nav === 'export') { toast('Excel 导出功能（演示）'); return; }
     if (nav === 'widget') { $('#widget-sheet').classList.add('show'); return; }
@@ -857,6 +869,129 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
     if (map[nav]) openOverlay(map[nav]);
   });
 });
+
+/* ================= AI 服务配置（直连 DeepSeek / 平台托管） ================= */
+// 配置持久化在 localStorage，供配置页 UI 与 api.js 的 aiAPI 共用。
+// 注意：仓库为公开仓库，Key 不写入代码，仅存本机浏览器。
+window.aiCfg = (function () {
+  const KEY = 'moola.aiConfig';
+  const DEFAULTS = {
+    mode: 'direct',                            // direct | platform
+    baseUrl: 'https://api.deepseek.com/v1',    // OpenAI 兼容地址
+    model: 'deepseek-v4-flash',                // flash 版：响应快
+    key: '',                                   // 直连模式：DeepSeek API Key
+    platformUrl: '',                           // 平台托管：管理平台地址
+    token: '',                                 // 平台托管：管理员分配 Token
+  };
+  function load() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      return Object.assign({}, DEFAULTS, saved);
+    } catch (e) { return Object.assign({}, DEFAULTS); }
+  }
+  function save(cfg) {
+    localStorage.setItem(KEY, JSON.stringify(Object.assign({}, DEFAULTS, cfg)));
+  }
+  function reset() { localStorage.removeItem(KEY); return Object.assign({}, DEFAULTS); }
+  return { KEY, DEFAULTS, load, save, reset };
+})();
+
+(function initAiCfgUI() {
+  const cfg = aiCfg.load();
+  const modeItems = $$('#aicfg-mode .aicfg-mode-item');
+  const panelDirect = $('#aicfg-panel-direct');
+  const panelPlatform = $('#aicfg-panel-platform');
+  const keyInput = $('#aicfg-key');
+  const urlInput = $('#aicfg-platform-url');
+  const tokenInput = $('#aicfg-platform-token');
+  if (!keyInput) return;
+
+  function applyMode(mode) {
+    modeItems.forEach(m => m.classList.toggle('active', m.dataset.mode === mode));
+    panelDirect.hidden = mode !== 'direct';
+    panelPlatform.hidden = mode !== 'platform';
+  }
+
+  // 载入已保存配置
+  applyMode(cfg.mode);
+  keyInput.value = cfg.key || '';
+  urlInput.value = cfg.platformUrl || '';
+  tokenInput.value = cfg.token || '';
+
+  modeItems.forEach(m => m.addEventListener('click', () => applyMode(m.dataset.mode)));
+
+  $('#aicfg-save').addEventListener('click', () => {
+    const activeMode = [...modeItems].find(m => m.classList.contains('active')).dataset.mode;
+    aiCfg.save({
+      mode: activeMode,
+      key: keyInput.value.trim(),
+      platformUrl: urlInput.value.trim(),
+      token: tokenInput.value.trim(),
+    });
+    toast('AI 配置已保存');
+  });
+
+  $('#aicfg-reset').addEventListener('click', () => {
+    aiCfg.reset();
+    keyInput.value = ''; urlInput.value = ''; tokenInput.value = '';
+    applyMode(aiCfg.DEFAULTS.mode);
+    toast('已恢复默认');
+  });
+})();
+
+/* ================= 经济分析（AI 聊天） ================= */
+(function initAIChat() {
+  const msgs = $('#ai-msgs');
+  const input = $('#ai-input');
+  const sendBtn = $('#ai-send');
+  if (!msgs || !input) return;
+  const welcome = $('#ai-welcome');
+
+  function addMsg(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'ai-msg ' + role;
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return bubble;
+  }
+
+  // 快捷提问
+  $$('#ai-sugs .ai-sug').forEach(s => {
+    s.addEventListener('click', () => { input.value = s.dataset.q; doSend(); });
+  });
+
+  // 新对话：清空消息并恢复欢迎语
+  $('#ai-new').addEventListener('click', () => {
+    $$('#ai-msgs .ai-msg').forEach(m => m.remove());
+    welcome.hidden = false;
+  });
+
+  function doSend() {
+    const text = input.value.trim();
+    if (!text) return;
+    welcome.hidden = true;
+    input.value = '';
+    addMsg('user', text);
+    const aiBubble = addMsg('ai', '思考中…');
+    aiBubble.classList.add('thinking');
+    const ai = window.aiAPI;
+    const p = ai && ai.chat ? ai.chat(text) : Promise.reject(new Error('AI 服务未接入'));
+    p.then(reply => {
+      aiBubble.textContent = reply || '（空回复）';
+      aiBubble.classList.remove('thinking');
+    }).catch(err => {
+      aiBubble.textContent = '⚠️ ' + (err && err.message ? err.message : 'AI 服务暂不可用');
+      aiBubble.classList.remove('thinking');
+    }).then(() => { msgs.scrollTop = msgs.scrollHeight; });
+  }
+
+  sendBtn.addEventListener('click', doSend);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') doSend(); });
+})();
 
 /* ================= 小部件设置弹窗 ================= */
 $$('#widget-sheet .wr-choice').forEach(c => {
@@ -936,12 +1071,11 @@ $('#tx-list').addEventListener('click', (e) => {
   const item = e.target.closest('.tx-item');
   if (!item) return;
   const groupEl = item.closest('.tx-group');
-  const groups = $$('#tx-list .tx-group');
-  const gi = groups.indexOf(groupEl);
-  const items = $$('#tx-list .tx-group')[gi] ? $$('#tx-list .tx-group')[gi].querySelectorAll('.tx-item') : [];
+  const items = groupEl ? groupEl.querySelectorAll('.tx-item') : [];
   const ii = Array.from(items).indexOf(item);
-  const date = tx[gi] && tx[gi].date;
-  if (date !== undefined) openDetail(date, ii);
+  // 直接从 DOM 读日期，不再用 tx[gi] 索引（渲染顺序与数组顺序可能不一致）
+  const date = groupEl && groupEl.dataset.date;
+  if (date) openDetail(date, ii);
 });
 
 /* ================= 主页按钮 ================= */
@@ -958,7 +1092,7 @@ $('#fab-add').addEventListener('click', () => {
 $('#btn-book').addEventListener('click', () => openBookSheet());
 $('#btn-search').addEventListener('click', () => openOverlay('page-search'));
 $('#btn-calendar').addEventListener('click', () => openOverlay('page-calendar'));
-$('#btn-report').addEventListener('click', () => openOverlay('page-yearstat'));
+$('#btn-report').addEventListener('click', () => { renderYearStat(); openOverlay('page-yearstat'); });
 $('#na-back').addEventListener('click', closeOverlay);
 $('#na-manage').addEventListener('click', () => openOverlay('page-types'));
 $('#btn-books-cancel').addEventListener('click', closeOverlay);
@@ -1691,10 +1825,29 @@ function openBookSheet() {
 }
 function closeBookSheet() { $('#book-sheet').classList.remove('show'); }
 
-// 切换账本：切换数据源并刷新各页面
-function switchBook(i) {
+// 上一个月字符串（YYYY-MM）
+function prevMonthStr(m) {
+  const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 2, 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+// 切换账本：切换数据源并刷新各页面（有后端对接层时按账本异步加载）
+async function switchBook(i) {
   state.selectedBook = i;
-  tx = books[i].tx;
+  const b = books[i];
+  tx = b.tx;
+  // 后端对接层可用且该账本有后端 id：异步加载该账本 当前月 + 上月
+  if (window.bookAPI && b.id) {
+    try {
+      const cur = acctYM || (new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0'));
+      const [c, p] = await Promise.all([
+        window.bookAPI.loadLedgerMonth(b.id, cur),
+        window.bookAPI.loadLedgerMonth(b.id, prevMonthStr(cur)),
+      ]);
+      b.tx = c.concat(p);
+      tx = b.tx;
+    } catch (e) { /* 后端不可用保持现状 */ }
+  }
   renderBookSheet();
   renderBooks();
   renderTxList();
@@ -1829,12 +1982,18 @@ $('#btn-book-cancel').addEventListener('click', closeOverlay);
 // 名称输入变化 → 更新 取消/保存 显示
 $('#book-name').addEventListener('input', updateBookSaveUI);
 
-// 删除账本通用（二次确认弹窗）
+// 删除账本通用（二次确认弹窗，有后端对接层时走后端级联删除）
 function confirmDeleteBook(i) {
   const b = books[i];
   if (!b) return;
-  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, () => {
+  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, async () => {
     if (books.length <= 1) { toast('至少保留一个账本'); return; }
+    try {
+      if (window.bookAPI && b.id) await window.bookAPI.deleteLedger(b.id);
+    } catch (e) {
+      toast('后端删除失败：' + ((e && e.message) || '未知错误'));
+      return;
+    }
     books.splice(i, 1);
     if (state.selectedBook >= books.length) state.selectedBook = books.length - 1;
     tx = books[state.selectedBook].tx;
@@ -1843,22 +2002,35 @@ function confirmDeleteBook(i) {
   });
 }
 
-// 保存（编辑 / 新建）
-function saveEditBook() {
+// 保存（编辑 / 新建，有后端对接层时走后端持久化）
+async function saveEditBook() {
   const name = $('#book-name').value.trim();
   if (!name) { toast('请输入账本名称'); return; }
   const type = $('#book-type').textContent.replace(' ›', '');
   const iconEl = $('#book-icon-grid .book-icon-opt.selected');
   const icon = iconEl ? iconEl.dataset.ic : 'ic_accounts.png';
-  if (editBookMode === 'add') {
-    books.push({ name, icon, type, tx: [] });
-    state.selectedBook = books.length - 1;
-    tx = books[state.selectedBook].tx;
-    toast('账本「' + name + '」已创建');
-  } else {
-    const b = books[editBookIndex];
-    b.name = name; b.icon = icon; b.type = type;
-    toast('账本已保存');
+  try {
+    if (editBookMode === 'add') {
+      let id;
+      if (window.bookAPI) {
+        const r = await window.bookAPI.createLedger({ name, type, icon });
+        id = r && r.id;
+      }
+      books.push({ id, name, icon, type, tx: [] });
+      state.selectedBook = books.length - 1;
+      tx = books[state.selectedBook].tx;
+      toast('账本「' + name + '」已创建');
+    } else {
+      const b = books[editBookIndex];
+      if (window.bookAPI && b.id) {
+        await window.bookAPI.updateLedger(b.id, { name, type, icon });
+      }
+      b.name = name; b.icon = icon; b.type = type;
+      toast('账本已保存');
+    }
+  } catch (e) {
+    toast('后端操作失败：' + ((e && e.message) || '未知错误'));
+    return;
   }
   refreshBooks();
   closeOverlay();

@@ -13,6 +13,100 @@ def _hash_dedup(trans_time: str, amount: float, merchant: str) -> str:
     return hashlib.md5(raw).hexdigest()
 
 
+# ---------- 账本 ledgers ----------
+
+def list_ledgers() -> list[dict]:
+    """全部账本：id / name / type / icon / created_at。"""
+    conn = get_conn()
+    try:
+        return [dict(r) for r in conn.execute(
+            "SELECT * FROM ledgers ORDER BY id").fetchall()]
+    finally:
+        conn.close()
+
+
+def get_ledger(ledger_id: int) -> Optional[dict]:
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT * FROM ledgers WHERE id = ?", (ledger_id,)
+        ).fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def ledger_count() -> int:
+    conn = get_conn()
+    try:
+        return conn.execute("SELECT COUNT(*) FROM ledgers").fetchone()[0]
+    finally:
+        conn.close()
+
+
+def add_ledger(
+    name: str, type: str = "标准账本", icon: str = "ic_accounts.png"
+) -> Optional[int]:
+    """新建账本，返回新账本 id。"""
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            "INSERT INTO ledgers(name, type, icon) VALUES(?, ?, ?)",
+            (name, type, icon),
+        )
+        conn.commit()
+        return cur.lastrowid
+    finally:
+        conn.close()
+
+
+def update_ledger(
+    ledger_id: int,
+    *,
+    name: Optional[str] = None,
+    type: Optional[str] = None,
+    icon: Optional[str] = None,
+) -> bool:
+    """更新账本可选字段（None 表示不改）；返回账本是否存在。"""
+    if get_ledger(ledger_id) is None:
+        return False
+    sets, params = [], []
+    for key, val in (("name", name), ("type", type), ("icon", icon)):
+        if val is not None:
+            sets.append(f"{key} = ?")
+            params.append(val)
+    if not sets:
+        return True
+    params.append(ledger_id)
+    conn = get_conn()
+    try:
+        conn.execute(f"UPDATE ledgers SET {', '.join(sets)} WHERE id = ?", params)
+        conn.commit()
+        return True
+    finally:
+        conn.close()
+
+
+def delete_ledger(ledger_id: int) -> Optional[int]:
+    """删除账本，并在同一事务内级联删除该账本全部账单。
+    返回删除的账单数；账本不存在返回 None。"""
+    conn = get_conn()
+    try:
+        if not conn.execute(
+            "SELECT id FROM ledgers WHERE id = ?", (ledger_id,)
+        ).fetchone():
+            return None
+        cur = conn.execute(
+            "DELETE FROM transactions WHERE ledger_id = ?", (ledger_id,)
+        )
+        deleted = cur.rowcount
+        conn.execute("DELETE FROM ledgers WHERE id = ?", (ledger_id,))
+        conn.commit()
+        return deleted
+    finally:
+        conn.close()
+
+
 # ---------- 账单 transactions ----------
 
 def add_transaction(
@@ -86,13 +180,18 @@ def add_many(rows: Sequence[dict]) -> tuple[int, int]:
 
 
 def list_transactions(
+    ledger_id: Optional[int] = None,
     month: Optional[str] = None,
     category: Optional[str] = None,
     limit: int = 500,
 ) -> list[dict]:
-    """查询账单。month='YYYY-MM'；倒序（最新在前）。"""
+    """查询账单。ledger_id=None 表示全库（向后兼容）；
+    month='YYYY-MM'；倒序（最新在前）。"""
     sql = "SELECT * FROM transactions WHERE 1=1"
     params: list = []
+    if ledger_id is not None:
+        sql += " AND ledger_id = ?"
+        params.append(ledger_id)
     if month:
         sql += " AND substr(trans_time, 1, 7) = ?"
         params.append(month)
@@ -201,7 +300,7 @@ def get_transaction(tx_id: int) -> Optional[dict]:
 
 def update_transaction(tx_id: int, **fields) -> bool:
     """按白名单更新账单字段，返回是否存在该记录。"""
-    allowed = {"amount", "category", "merchant", "note", "trans_time", "source"}
+    allowed = {"amount", "category", "merchant", "note", "trans_time", "source", "ledger_id"}
     sets, params = [], []
     for k, v in fields.items():
         if k in allowed:
@@ -231,12 +330,14 @@ def delete_transaction(tx_id: int) -> bool:
         conn.close()
 
 
-def list_transactions_grouped(month: Optional[str] = None) -> dict:
+def list_transactions_grouped(
+    ledger_id: Optional[int] = None, month: Optional[str] = None
+) -> dict:
     """按日期分组账单，返回前端明细页同构数据：
     {month, summary:{expense,income,balance},
      groups:[{date, spend, income, items:[{type, remark, money}]}]}
     """
-    rows = list_transactions(month=month, limit=10000)
+    rows = list_transactions(ledger_id=ledger_id, month=month, limit=10000)
     groups: dict[str, dict] = {}
     for r in rows:
         day = r["trans_time"][:10] if r["trans_time"] else ""
@@ -268,15 +369,19 @@ def list_transactions_grouped(month: Optional[str] = None) -> dict:
 
 
 def search_transactions(
+    ledger_id: Optional[int] = None,
     q: str = "",
     mode: str = "bill",          # bill | category
     sort: str = "time",          # time | amount
     order: str = "desc",         # desc | asc
     limit: int = 200,
 ) -> list[dict]:
-    """搜索账单。q 匹配 merchant/note/category。"""
+    """搜索账单。q 匹配 merchant/note/category。ledger_id=None 表示全库。"""
     sql = "SELECT * FROM transactions WHERE 1=1"
     params: list = []
+    if ledger_id is not None:
+        sql += " AND ledger_id = ?"
+        params.append(ledger_id)
     if q:
         like = f"%{q}%"
         if mode == "category":
@@ -428,5 +533,126 @@ def list_reports(kind: Optional[str] = None, limit: int = 20) -> list[dict]:
                 "SELECT * FROM analysis_reports ORDER BY id DESC LIMIT ?", (limit,)
             ).fetchall()
         return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+# ---------- AI 服务 Key（管理平台可读写） ----------
+
+def mask_key(key: str) -> str:
+    """脱敏：长 Key 留前 5 后 4，中间 ***；短 Key 只留前 3。"""
+    key = (key or "").strip()
+    if not key:
+        return ""
+    if len(key) <= 12:
+        return key[:3] + "***"
+    return key[:5] + "***" + key[-4:]
+
+
+def list_ai_keys(scope: Optional[str] = None) -> list[dict]:
+    """AI Key 列表（api_key 脱敏，供管理平台/前端展示）。"""
+    conn = get_conn()
+    try:
+        if scope:
+            rows = conn.execute(
+                "SELECT * FROM ai_keys WHERE scope = ? ORDER BY id", (scope,)
+            ).fetchall()
+        else:
+            rows = conn.execute("SELECT * FROM ai_keys ORDER BY id").fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["api_key"] = mask_key(d.get("api_key"))
+            out.append(d)
+        return out
+    finally:
+        conn.close()
+
+
+def get_ai_key(key_id: int) -> Optional[dict]:
+    """AI Key 详情（含真实 api_key，仅限管理端/内部使用）。"""
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT * FROM ai_keys WHERE id = ?", (key_id,)
+        ).fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def get_active_ai_key(provider: str = "deepseek") -> Optional[dict]:
+    """取启用的 Key（供后端 AI 调用使用，含真实 api_key）。"""
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT * FROM ai_keys WHERE provider = ? AND status = 1 "
+            "ORDER BY (scope = 'system') DESC, id LIMIT 1",
+            (provider,),
+        ).fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def add_ai_key(
+    name: str,
+    api_key: str,
+    provider: str = "deepseek",
+    base_url: str = "https://api.deepseek.com/v1",
+    model: str = "deepseek-v4-flash",
+    scope: str = "user",
+    user_ref: str = "",
+    status: int = 1,
+    quota: float = 0,
+    note: str = "",
+) -> int:
+    """新增 AI Key，返回新 id。"""
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            """INSERT INTO ai_keys
+               (name, provider, base_url, model, api_key, scope, user_ref,
+                status, quota, note)
+               VALUES(?,?,?,?,?,?,?,?,?,?)""",
+            (name, provider, base_url, model, api_key, scope, user_ref,
+             status, quota, note),
+        )
+        conn.commit()
+        return cur.lastrowid
+    finally:
+        conn.close()
+
+
+def update_ai_key(key_id: int, **fields) -> bool:
+    """按需更新字段；Key 不存在返回 False。"""
+    allowed = {"name", "provider", "base_url", "model", "api_key",
+               "scope", "user_ref", "status", "quota", "note"}
+    sets, params = [], []
+    for k, v in fields.items():
+        if k in allowed and v is not None:
+            sets.append(f"{k} = ?")
+            params.append(v)
+    if not sets:
+        return get_ai_key(key_id) is not None
+    sets.append("updated_at = datetime('now','localtime')")
+    params.append(key_id)
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            f"UPDATE ai_keys SET {', '.join(sets)} WHERE id = ?", params
+        )
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
+def delete_ai_key(key_id: int) -> bool:
+    conn = get_conn()
+    try:
+        cur = conn.execute("DELETE FROM ai_keys WHERE id = ?", (key_id,))
+        conn.commit()
+        return cur.rowcount > 0
     finally:
         conn.close()

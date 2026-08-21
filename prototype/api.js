@@ -33,6 +33,15 @@
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     return resp.json();
   }
+  async function apiPut(path, body) {
+    const resp = await fetch(API_BASE + path, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    return resp.json();
+  }
   async function apiDelete(path) {
     const resp = await fetch(API_BASE + path, { method: 'DELETE' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -41,6 +50,11 @@
 
   /* ---------- 数据装载：后端 group -> 前端 tx 结构 ---------- */
   const loadedMonths = new Set(); // 已从后端加载的月份
+
+  // 按日期降序（最新在前），与后端 group 顺序一致；避免合并时 concat 打乱顺序导致详情点击错位
+  function sortTxDesc(arr) {
+    return arr.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  }
 
   function groupToTx(groups) {
     return (groups || []).map(g => ({
@@ -55,8 +69,40 @@
     loadedMonths.add(month);
     const data = await apiGet('/transactions/group?month=' + encodeURIComponent(month));
     const monthTx = groupToTx(data.groups);
-    tx = tx.filter(g => !g.date.startsWith(month)).concat(monthTx);
+    tx = sortTxDesc(tx.filter(g => !g.date.startsWith(month)).concat(monthTx));
   }
+
+  // 按账本 + 月份加载（返回该账本该月的 tx 数组，不写全局 tx）
+  async function loadLedgerMonth(ledgerId, month) {
+    const data = await apiGet('/transactions/group?ledger_id=' + ledgerId + '&month=' + encodeURIComponent(month));
+    return groupToTx(data.groups);
+  }
+
+  /* ---------- 账本 CRUD 封装 ---------- */
+  async function fetchLedgers() {
+    const data = await apiGet('/ledgers');
+    return data.ledgers || [];
+  }
+  async function createLedger(payload) {
+    return apiPost('/ledgers', payload);
+  }
+  async function updateLedger(id, payload) {
+    return apiPut('/ledgers/' + id, payload);
+  }
+  async function deleteLedger(id) {
+    return apiDelete('/ledgers/' + id);
+  }
+
+  // 暴露给 app.js 的账本对接接口（无 api.js 时 app.js 走本地演示数据）
+  window.bookAPI = {
+    loadLedgerMonth,
+    fetchLedgers,
+    createLedger,
+    updateLedger,
+    deleteLedger,
+    currentMonth,
+    prevMonth,
+  };
 
   function currentMonth() {
     const d = new Date();
@@ -67,39 +113,65 @@
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
   }
 
-  /* ---------- 启动：加载当前月 + 上月，重渲染明细页 ---------- */
+  /* ---------- 启动：拉账本 → 重建 books → 加载默认账本数据 ---------- */
+  // 以后端数据库为准：成功则全量用后端数据；失败则清空为"无数据"并提示，
+  // 不再回退到本地 INITIAL_TX 演示数据，避免明细/统计等页面数据源不一致。
   async function initBackend() {
+    let ledgers = [];
     try {
-      const cur = currentMonth();
-      await Promise.all([loadMonth(cur), loadMonth(prevMonth(cur))]);
-      // 默认显示「最近有数据的月份」（当前月可能还没有账单），并同步顶部月份按钮与滚轮
-      const dates = tx.map(g => g.date).filter(Boolean).sort();
-      if (dates.length) {
-        const latest = dates[dates.length - 1].slice(0, 7);
-        if (latest !== acctYM) {
-          acctYM = latest;
-          const [yy, mm] = latest.split('-').map(Number);
-          wheelYear = yy; wheelMonth = mm;
-          const label = $('#month-label');
-          if (label) label.textContent = `${yy}年${mm}月`;
-        }
+      ledgers = await fetchLedgers();
+      if (!ledgers.length) {
+        await createLedger({ name: '默认账本', type: '标准账本', icon: 'ic_accounts.png' });
+        ledgers = await fetchLedgers();
       }
-      renderTxList();
     } catch (e) {
-      // 不用假数据：清空内存演示数据，明确提示后端未连接
       console.warn('[api.js] 后端连接失败：', e);
-      tx = [];
-      renderTxList();
-      const hint = document.createElement('div');
-      hint.style.cssText = 'margin:12px;padding:10px 14px;border-radius:8px;background:#fff3f3;' +
-        'color:#c00;font-size:13px;line-height:1.6;';
-      hint.innerHTML = '⚠️ 后端未连接，无法加载真实账单。<br>' +
-        '请先启动 <code>python main.py web</code>（端口 5001）后刷新页面。';
-      const list = $('#tx-list');
-      if (list && list.parentNode) {
-        list.insertAdjacentElement('beforebegin', hint);
-        setTimeout(() => hint.remove(), 8000);
+      ledgers = [];
+    }
+    // 无论成败都用后端账本重建 books（失败则为空列表）
+    books = ledgers.map(l => ({ id: l.id, name: l.name, icon: l.icon, type: l.type, tx: [] }));
+    state.selectedBook = 0;
+
+    if (books.length) {
+      try {
+        // 加载默认账本 当前月 + 上月
+        const cur = currentMonth();
+        const [c, p] = await Promise.all([
+          loadLedgerMonth(books[0].id, cur),
+          loadLedgerMonth(books[0].id, prevMonth(cur)),
+        ]);
+        books[0].tx = c.concat(p);
+        tx = books[0].tx;
+        // 默认显示「最近有数据的月份」，同步顶部月份按钮与滚轮
+        const dates = tx.map(g => g.date).filter(Boolean).sort();
+        if (dates.length) {
+          const latest = dates[dates.length - 1].slice(0, 7);
+          if (latest !== acctYM) {
+            acctYM = latest;
+            const [yy, mm] = latest.split('-').map(Number);
+            wheelYear = yy; wheelMonth = mm;
+            const label = $('#month-label');
+            if (label) label.textContent = `${yy}年${mm}月`;
+          }
+        }
+        renderBooks(); renderTxList(); renderStat(); renderCalendar();
+        return;
+      } catch (e) {
+        console.warn('[api.js] 加载账本数据失败：', e);
       }
+    }
+    // 后端不可用 / 无账本：空数据 + 提示（保持各页面一致）
+    tx = [];
+    renderBooks(); renderTxList(); renderStat();
+    const hint = document.createElement('div');
+    hint.style.cssText = 'margin:12px;padding:10px 14px;border-radius:8px;background:#fff3f3;' +
+      'color:#c00;font-size:13px;line-height:1.6;';
+    hint.innerHTML = '⚠️ 后端未连接，无法加载真实账单。<br>' +
+      '请先启动 <code>python main.py web</code>（端口 5001）后刷新页面。';
+    const list = $('#tx-list');
+    if (list && list.parentNode) {
+      list.insertAdjacentElement('beforebegin', hint);
+      setTimeout(() => hint.remove(), 8000);
     }
   }
   initBackend();
@@ -114,6 +186,7 @@
       return;
     }
     const remark = ($('#note-input').value.trim() || state.naType);
+    const curBook = books[state.selectedBook];
     let row = null;
     try {
       const r = await apiPost('/transactions', {
@@ -123,6 +196,7 @@
         note: '',
         trans_time: txDate + ' 12:00:00',
         source: 'manual',
+        ledger_id: curBook && curBook.id, // 写入当前账本
       });
       if (!r || !(r.ok || r.duplicate)) {
         alert('记账失败：' + ((r && r.error) || '未知错误'));
@@ -191,10 +265,18 @@
     clone.addEventListener('click', () => window.runSearch());
   })();
 
-  /* ---------- 日历：切月前懒加载该月数据 ---------- */
+  /* ---------- 日历：切月前懒加载该月数据（按当前账本） ---------- */
   window.renderCalendar = async function renderCalendar() {
     const month = state.calYear + '-' + String(state.calMonth).padStart(2, '0');
-    try { await loadMonth(month); } catch (e) { /* 后端不可用则保持现状 */ }
+    const b = books[state.selectedBook];
+    try {
+      if (b && b.id) {
+        const mtx = await loadLedgerMonth(b.id, month);
+        tx = sortTxDesc(tx.filter(g => !g.date.startsWith(month)).concat(mtx));
+      } else {
+        await loadMonth(month);
+      }
+    } catch (e) { /* 后端不可用则保持现状 */ }
     origRenderCalendar();
   };
 
@@ -237,5 +319,87 @@
   $('#detail-edit').addEventListener('click', function () {
     delBackend(detailItem());
   }, true);
+
+  /* ============================================================
+   * AI 模块（经济分析）—— 双通道接入
+   *   1) 后端代理（方案 A，正式路径）：POST /api/ai/chat，由后端
+   *      统一转发到 DeepSeek 或你的管理平台，Key 不暴露在前端。
+   *   2) 直连 DeepSeek（自用/测试兜底）：后端未实现/未启动时，
+   *      用本机 localStorage 里的 Key 直接调用 api.deepseek.com。
+   *   Key 通过 window.aiCfg（localStorage）随时更换。
+   * ============================================================ */
+  function loadAiCfg() {
+    return (window.aiCfg && window.aiCfg.load) ? window.aiCfg.load()
+      : { mode: 'direct', baseUrl: 'https://api.deepseek.com/v1', model: 'deepseek-v4-flash', key: '', token: '' };
+  }
+
+  // 直连 DeepSeek（OpenAI 兼容接口）
+  async function directChat(text, cfg) {
+    cfg = cfg || loadAiCfg();
+    if (cfg.mode === 'platform') {
+      throw new Error('平台托管模式待后端接入，可先在 AI 服务配置里切换为直连 DeepSeek');
+    }
+    if (!cfg.key) {
+      throw new Error('未配置 API Key，请到 我的 → AI 服务配置 填写 DeepSeek API Key');
+    }
+    const baseUrl = (cfg.baseUrl || 'https://api.deepseek.com/v1').replace(/\/+$/, '');
+    let resp;
+    try {
+      resp = await fetch(baseUrl + '/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + cfg.key,
+        },
+        body: JSON.stringify({
+          model: cfg.model || 'deepseek-v4-flash',
+          messages: [{ role: 'user', content: text }],
+          stream: false,
+        }),
+      });
+    } catch (e) {
+      throw new Error('无法连接 AI 服务（' + baseUrl + '）' + (e.message ? '：' + e.message : ''));
+    }
+    if (!resp.ok) {
+      let msg = '直连失败（HTTP ' + resp.status + '）';
+      try {
+        const j = await resp.json();
+        if (j && j.error && j.error.message) msg += '：' + j.error.message;
+      } catch (_) { /* ignore */ }
+      throw new Error(msg);
+    }
+    const data = await resp.json();
+    const reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if (!reply) throw new Error('AI 返回为空');
+    return reply;
+  }
+
+  // 对外 AI 接口
+  window.aiAPI = {
+    // 聊天：后端代理优先，不可用时直连 DeepSeek
+    async chat(text) {
+      const cfg = loadAiCfg();
+      // 1) 后端代理（正式路径）
+      try {
+        const r = await apiPost('/ai/chat', {
+          messages: [{ role: 'user', content: text }],
+          model: cfg.model || 'deepseek-v4-flash',
+          mode: cfg.mode || 'direct',
+        });
+        if (r && typeof r.reply === 'string' && r.reply) return r.reply;
+        if (r && r.ok === false) throw new Error(r.error || 'AI 服务返回错误');
+        // 后端在但格式不符 → 走直连兜底
+      } catch (e) {
+        if (e && e.message && e.message.indexOf('AI 服务') === 0) throw e; // 后端业务错误，不兜底
+      }
+      // 2) 直连兜底（后端未实现 / 未启动）
+      return directChat(text, cfg);
+    },
+    // 测试连接（预留，供配置页后期接入）
+    async testConnection() {
+      const cfg = loadAiCfg();
+      return directChat('你好', cfg);
+    },
+  };
 
 })();

@@ -51,11 +51,12 @@
       <span class="period" data-p="year">年</span>
     </div>
     <div class="stat-body" id="stat-body">
+      <div class="sec-title" id="stat-title">统计</div>
       <div class="chart-block" id="trend-chart"></div>
       <div class="sec-title" id="pie-title">消费结构</div>
       <div class="pie-wrap">
         <div class="pie-canvas" id="pie-chart"></div>
-        <div class="pie-hint">支持手指旋转查看，小于2%不会显示</div>
+        <div class="pie-hint" id="pie-hint">支持手指旋转查看，小于2%不会显示</div>
       </div>
       <div class="sec-title" id="list-title">明细</div>
       <div class="stat-list" id="stat-list"></div>
@@ -72,6 +73,30 @@
     <div class="empty-state">
       <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
       <div class="empty-text">暂无数据</div>
+    </div>
+  </div>
+
+  <!-- ============ 页面 5：经济分析（AI 聊天） ============ -->
+  <div class="page" id="page-ai">
+    <div class="ai-topbar">
+      <span class="toolbar-title">经济分析</span>
+      <button class="ai-new" id="ai-new">新对话</button>
+    </div>
+    <div class="ai-msgs" id="ai-msgs">
+      <div class="ai-welcome" id="ai-welcome">
+        <i class="ic ic50" style="--mask:url(assets/icons/tab_ai.png);color:var(--primary)"></i>
+        <div class="ai-welcome-title">AI 经济分析师</div>
+        <div class="ai-welcome-sub">我可以帮你分析消费结构、生成消费者画像、给出存钱建议。</div>
+        <div class="ai-sugs" id="ai-sugs">
+          <span class="ai-sug" data-q="分析我最近的消费结构">分析最近的消费结构</span>
+          <span class="ai-sug" data-q="帮我生成消费者画像">生成消费者画像</span>
+          <span class="ai-sug" data-q="给我一些存钱建议">给我存钱建议</span>
+        </div>
+      </div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="ai-input" type="text" placeholder="输入问题…">
+      <button class="ai-send" id="ai-send"><i class="ic ic24" style="--mask:url(assets/icons/ic_chat.png)"></i></button>
     </div>
   </div>
 
@@ -102,6 +127,7 @@
       <div class="cell" data-nav="export"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_export.png)"></i></span><span class="cell-name">导出Excel</span><span class="cell-arrow">›</span></div>
       <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_finger.png)"></i></span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
       <div class="cell" data-nav="gesture"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="ai"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_ai.png)"></i></span><span class="cell-name">AI 服务配置</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
       <div class="cell" data-nav="theme"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_theme.png)"></i></span><span class="cell-name">主题设置</span><span class="cell-arrow">›</span></div>
@@ -523,6 +549,35 @@
     </div>
   </div>
 
+  <!-- ============ 覆盖页：AI 服务配置（直连 DeepSeek / 平台托管） ============ -->
+  <div class="page overlay" id="page-api-config">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">AI 服务配置</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="aicfg-body">
+      <div class="aicfg-desc">为「经济分析」接入 AI 账单分析。默认直连 DeepSeek（flash 模型），只需填写 API Key 即可使用。</div>
+      <div class="aicfg-mode" id="aicfg-mode">
+        <span class="aicfg-mode-item active" data-mode="direct">直连 DeepSeek</span>
+        <span class="aicfg-mode-item" data-mode="platform">平台托管</span>
+      </div>
+      <div class="aicfg-panel" id="aicfg-panel-direct">
+        <div class="form-row"><span class="form-label">API 地址</span><span class="form-val" id="aicfg-baseurl">https://api.deepseek.com/v1</span></div>
+        <div class="form-row"><span class="form-label">模型</span><span class="form-val" id="aicfg-model">deepseek-v4-flash</span></div>
+        <div class="form-row"><span class="form-label">API Key</span><input class="form-input" id="aicfg-key" type="password" placeholder="粘贴你的 DeepSeek API Key"></div>
+        <div class="aicfg-tip">Key 仅保存在本机浏览器（localStorage），请妥善保管，可随时更换。</div>
+      </div>
+      <div class="aicfg-panel" id="aicfg-panel-platform" hidden>
+        <div class="form-row"><span class="form-label">平台地址</span><input class="form-input" id="aicfg-platform-url" type="text" placeholder="https://admin.example.com"></div>
+        <div class="form-row"><span class="form-label">平台 Token</span><input class="form-input" id="aicfg-platform-token" type="password" placeholder="管理员分配的 Token"></div>
+        <div class="aicfg-tip">平台托管用于后期 VIP/充值计费，后端接口已预留，待管理平台上线后启用。</div>
+      </div>
+      <button class="btn-primary" id="aicfg-save" style="width:100%;margin-top:24px">保存</button>
+      <button class="btn-plain" id="aicfg-reset" style="width:100%;margin-top:10px">恢复默认</button>
+    </div>
+  </div>
+
   <!-- ============ 覆盖页：指纹验证（res_c-） ============ -->
   <div class="page overlay" id="page-finger">
     <div class="sub-topbar">
@@ -858,6 +913,7 @@
   <nav class="tabbar">
     <div class="tab active" data-page="page-account"><i class="ic ic24" style="--mask:url(assets/icons/tab_list.png)"></i><span class="tab-name">明细</span></div>
     <div class="tab" data-page="page-stat"><i class="ic ic24" style="--mask:url(assets/icons/tab_stat.png)"></i><span class="tab-name">统计</span></div>
+    <div class="tab" data-page="page-ai"><i class="ic ic24" style="--mask:url(assets/icons/tab_ai.png)"></i><span class="tab-name">经济分析</span></div>
     <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">经济简讯</span></div>
     <div class="tab" data-page="page-profile"><i class="ic ic24" style="--mask:url(assets/icons/tab_profile.png)"></i><span class="tab-name">我的</span></div>
   </nav>

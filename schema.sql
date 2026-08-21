@@ -1,14 +1,22 @@
-"""SQLite 数据库层：初始化 + 连接 + 建表。"""
-import os
-import sqlite3
-from pathlib import Path
+-- ============================================================
+-- Moola 数据库结构（schema-only · 不含任何用户数据）
+--
+-- 本文件是「数据库框架」，由 app/db.py 的 SCHEMA 常量生成，
+-- 与代码保持同步。协作者 clone 后可直接用本文件建库：
+--
+--   方式一（推荐，自动含默认账本/默认分类/规则种子）：
+--       pip install -r requirements.txt
+--       python main.py init
+--
+--   方式二（仅建表结构 + 默认账本，其余数据自填）：
+--       sqlite3 data/moola.db < schema.sql
+--
+-- ⚠️ 隐私说明：data/moola.db 已被 .gitignore 排除，个人账单数据
+--    与 API Key 不会上传；本文件只包含表结构。
+-- ============================================================
 
-# 项目根目录（app/ 的上一级）
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-DB_PATH = DATA_DIR / "moola.db"
+PRAGMA foreign_keys = ON;
 
-SCHEMA = """
 -- 账本（多账本：name/type/icon 与前端账本卡片一致）
 CREATE TABLE IF NOT EXISTS ledgers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -125,70 +133,6 @@ CREATE TABLE IF NOT EXISTS articles (
     fetched_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_articles_url ON articles(url);
-"""
 
-
-def get_conn() -> sqlite3.Connection:
-    """获取数据库连接（每次新建，线程安全简单化）。"""
-    DATA_DIR.mkdir(exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys = ON")
-    return conn
-
-
-def init_db() -> None:
-    """建表 + 迁移旧库 + 写入默认账本和默认分类。"""
-    conn = get_conn()
-    try:
-        conn.executescript(SCHEMA)
-        _migrate(conn)
-        _seed_ledger(conn)
-        _seed_categories(conn)
-        conn.commit()
-    finally:
-        conn.close()
-
-
-def _migrate(conn: sqlite3.Connection) -> None:
-    """轻量迁移：为旧库 ledgers 表补齐 type / icon 列。"""
-    cols = {row[1] for row in conn.execute("PRAGMA table_info(ledgers)").fetchall()}
-    if "type" not in cols:
-        conn.execute(
-            "ALTER TABLE ledgers ADD COLUMN type TEXT NOT NULL DEFAULT '标准账本'"
-        )
-    if "icon" not in cols:
-        conn.execute(
-            "ALTER TABLE ledgers ADD COLUMN icon TEXT NOT NULL DEFAULT 'ic_accounts.png'"
-        )
-
-
-def _seed_ledger(conn: sqlite3.Connection) -> None:
-    """写入默认账本（id=1），保证外键引用有效。"""
-    conn.execute("INSERT OR IGNORE INTO ledgers(id, name) VALUES(1, '默认账本')")
-
-
-def _seed_categories(conn: sqlite3.Connection) -> None:
-    """写入默认分类（已存在则跳过）。"""
-    defaults = [
-        # 支出
-        ("餐饮", "expense"), ("交通", "expense"), ("购物", "expense"),
-        ("居住", "expense"), ("娱乐", "expense"), ("医疗", "expense"),
-        ("教育", "expense"), ("转账", "expense"), ("水果", "expense"),
-        ("零食", "expense"), ("服饰", "expense"), ("日用", "expense"),
-        ("通讯", "expense"), ("其他支出", "expense"),
-        # 收入
-        ("工资", "income"), ("奖金", "income"), ("红包", "income"),
-        ("退款", "income"), ("报销", "income"), ("理财", "income"),
-        ("兼职", "income"), ("其他收入", "income"),
-    ]
-    for name, kind in defaults:
-        conn.execute(
-            "INSERT OR IGNORE INTO categories(name, kind) VALUES(?, ?)",
-            (name, kind),
-        )
-
-
-if __name__ == "__main__":
-    init_db()
-    print(f"✅ 数据库已初始化：{DB_PATH}")
+-- 默认账本（id=1，保证外键引用有效）
+INSERT OR IGNORE INTO ledgers(id, name) VALUES(1, '默认账本');
