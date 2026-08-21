@@ -291,3 +291,65 @@ def api_report():
         return jsonify({"ok": False, "error": str(exc)}), 400
     return jsonify(monthly_report(
         request.args.get("month", "") or None, ledger_id=ledger_id))
+
+
+# ---------- AI 服务 Key（管理平台：查看/分配/修改） ----------
+
+@api.get("/ai-keys")
+def list_ai_keys():
+    """列表（api_key 脱敏）。可 ?scope=system|user 过滤。"""
+    scope = request.args.get("scope") or None
+    return jsonify({"keys": models.list_ai_keys(scope)})
+
+
+@api.post("/ai-keys")
+def add_ai_key():
+    data = request.get_json(force=True)
+    name = str(data.get("name") or "").strip()
+    api_key = str(data.get("api_key") or "").strip()
+    if not name or not api_key:
+        return jsonify({"ok": False, "error": "name 与 api_key 必填"}), 400
+    new_id = models.add_ai_key(
+        name=name,
+        api_key=api_key,
+        provider=str(data.get("provider") or "deepseek"),
+        base_url=str(data.get("base_url") or "https://api.deepseek.com/v1"),
+        model=str(data.get("model") or "deepseek-v4-flash"),
+        scope=str(data.get("scope") or "user"),
+        user_ref=str(data.get("user_ref") or ""),
+        status=1 if int(data.get("status", 1)) else 0,
+        quota=float(data.get("quota") or 0),
+        note=str(data.get("note") or ""),
+    )
+    return jsonify({"ok": True, "id": new_id, "row": models.get_ai_key(new_id)}), 201
+
+
+@api.get("/ai-keys/<int:key_id>")
+def get_ai_key(key_id: int):
+    """详情（含真实 api_key，管理端查看）。"""
+    row = models.get_ai_key(key_id)
+    return jsonify(row) if row else (jsonify({"ok": False, "error": "Key 不存在"}), 404)
+
+
+@api.put("/ai-keys/<int:key_id>")
+def update_ai_key(key_id: int):
+    data = request.get_json(force=True)
+    fields = {k: data.get(k) for k in (
+        "name", "provider", "base_url", "model",
+        "api_key", "scope", "user_ref", "note")}
+    if "status" in data:
+        fields["status"] = 1 if int(data["status"]) else 0
+    if "quota" in data and data["quota"] is not None:
+        fields["quota"] = float(data["quota"])
+    ok = models.update_ai_key(
+        key_id, **{k: v for k, v in fields.items() if v is not None})
+    if not ok:
+        return jsonify({"ok": False, "error": "Key 不存在"}), 404
+    return jsonify({"ok": True, "row": models.get_ai_key(key_id)})
+
+
+@api.delete("/ai-keys/<int:key_id>")
+def delete_ai_key(key_id: int):
+    ok = models.delete_ai_key(key_id)
+    return (jsonify({"ok": True}) if ok
+            else (jsonify({"ok": False, "error": "Key 不存在"}), 404))

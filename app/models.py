@@ -535,3 +535,124 @@ def list_reports(kind: Optional[str] = None, limit: int = 20) -> list[dict]:
         return [dict(r) for r in rows]
     finally:
         conn.close()
+
+
+# ---------- AI 服务 Key（管理平台可读写） ----------
+
+def mask_key(key: str) -> str:
+    """脱敏：长 Key 留前 5 后 4，中间 ***；短 Key 只留前 3。"""
+    key = (key or "").strip()
+    if not key:
+        return ""
+    if len(key) <= 12:
+        return key[:3] + "***"
+    return key[:5] + "***" + key[-4:]
+
+
+def list_ai_keys(scope: Optional[str] = None) -> list[dict]:
+    """AI Key 列表（api_key 脱敏，供管理平台/前端展示）。"""
+    conn = get_conn()
+    try:
+        if scope:
+            rows = conn.execute(
+                "SELECT * FROM ai_keys WHERE scope = ? ORDER BY id", (scope,)
+            ).fetchall()
+        else:
+            rows = conn.execute("SELECT * FROM ai_keys ORDER BY id").fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["api_key"] = mask_key(d.get("api_key"))
+            out.append(d)
+        return out
+    finally:
+        conn.close()
+
+
+def get_ai_key(key_id: int) -> Optional[dict]:
+    """AI Key 详情（含真实 api_key，仅限管理端/内部使用）。"""
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT * FROM ai_keys WHERE id = ?", (key_id,)
+        ).fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def get_active_ai_key(provider: str = "deepseek") -> Optional[dict]:
+    """取启用的 Key（供后端 AI 调用使用，含真实 api_key）。"""
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT * FROM ai_keys WHERE provider = ? AND status = 1 "
+            "ORDER BY (scope = 'system') DESC, id LIMIT 1",
+            (provider,),
+        ).fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def add_ai_key(
+    name: str,
+    api_key: str,
+    provider: str = "deepseek",
+    base_url: str = "https://api.deepseek.com/v1",
+    model: str = "deepseek-v4-flash",
+    scope: str = "user",
+    user_ref: str = "",
+    status: int = 1,
+    quota: float = 0,
+    note: str = "",
+) -> int:
+    """新增 AI Key，返回新 id。"""
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            """INSERT INTO ai_keys
+               (name, provider, base_url, model, api_key, scope, user_ref,
+                status, quota, note)
+               VALUES(?,?,?,?,?,?,?,?,?,?)""",
+            (name, provider, base_url, model, api_key, scope, user_ref,
+             status, quota, note),
+        )
+        conn.commit()
+        return cur.lastrowid
+    finally:
+        conn.close()
+
+
+def update_ai_key(key_id: int, **fields) -> bool:
+    """按需更新字段；Key 不存在返回 False。"""
+    allowed = {"name", "provider", "base_url", "model", "api_key",
+               "scope", "user_ref", "status", "quota", "note"}
+    sets, params = [], []
+    for k, v in fields.items():
+        if k in allowed and v is not None:
+            sets.append(f"{k} = ?")
+            params.append(v)
+    if not sets:
+        return get_ai_key(key_id) is not None
+    sets.append("updated_at = datetime('now','localtime')")
+    params.append(key_id)
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            f"UPDATE ai_keys SET {', '.join(sets)} WHERE id = ?", params
+        )
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
+def delete_ai_key(key_id: int) -> bool:
+    conn = get_conn()
+    try:
+        cur = conn.execute("DELETE FROM ai_keys WHERE id = ?", (key_id,))
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()

@@ -87,6 +87,23 @@ CREATE TABLE IF NOT EXISTS analysis_reports (
     created_at   TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
+-- AI 服务 Key（管理平台可查看/分配/修改；本地数据库保存，不入 git）
+CREATE TABLE IF NOT EXISTS ai_keys (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    name       TEXT NOT NULL,                      -- 名称/用途
+    provider   TEXT NOT NULL DEFAULT 'deepseek',   -- deepseek | openai | platform
+    base_url   TEXT NOT NULL DEFAULT 'https://api.deepseek.com/v1',
+    model      TEXT NOT NULL DEFAULT 'deepseek-v4-flash',
+    api_key    TEXT NOT NULL,                      -- 密钥（明文存本地库）
+    scope      TEXT NOT NULL DEFAULT 'user',       -- system=自有主Key | user=分发给终端用户
+    user_ref   TEXT DEFAULT '',                    -- 平台托管：关联用户标识
+    status     INTEGER NOT NULL DEFAULT 1,         -- 1 启用 0 停用
+    quota      REAL NOT NULL DEFAULT 0,            -- 剩余额度/次数（0=不限）
+    note       TEXT DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+);
+
 -- 订阅源（Feedly 模式，Phase 4）
 CREATE TABLE IF NOT EXISTS feed_sources (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
