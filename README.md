@@ -50,12 +50,22 @@ python main.py report 2026-07
 python main.py web
 ```
 
+> 💡 **协作者 / 新机器初始化**：clone 后只需
+> `pip install -r requirements.txt` + `python main.py init`，即可得到完整数据库框架
+> （10 张表 + 默认账本 + 默认分类 + 分类规则），随后 `python main.py import 你的账单.xlsx`
+> 填充自己的数据即可使用。数据库结构也可单独查看 `schema.sql`。
+>
+> 🔐 **隐私**：`data/moola.db`（个人账单）已在 `.gitignore` 中排除，**不会上传**。
+> AI 自动分类所需的 API Key 请用环境变量 `MOOLA_API_KEY` 配置，**勿写入 `config.yaml`**（该文件会被 Git 跟踪，写入 key 可能泄露）。
+> 已写入的 key 不会进入 Git 历史（当前 `config.yaml` 中 `api_key` 保持为空）。
+
 更多命令见 `python main.py -h`（`init` / `import` / `classify` / `rules` / `report` / `web`）。
 
 ## 📁 目录结构
 
 ```
 ├── main.py              CLI 入口（init/import/classify/rules/report/web）
+├── schema.sql           数据库结构（纯建表 SQL，不含任何数据）
 ├── config.yaml          配置（LLM、分类规则、预算、服务器）
 ├── app/
 │   ├── db.py            SQLite 连接 + 建表（v2 schema：6 核心表）
