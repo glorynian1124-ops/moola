@@ -320,4 +320,86 @@
     delBackend(detailItem());
   }, true);
 
+  /* ============================================================
+   * AI 模块（经济分析）—— 双通道接入
+   *   1) 后端代理（方案 A，正式路径）：POST /api/ai/chat，由后端
+   *      统一转发到 DeepSeek 或你的管理平台，Key 不暴露在前端。
+   *   2) 直连 DeepSeek（自用/测试兜底）：后端未实现/未启动时，
+   *      用本机 localStorage 里的 Key 直接调用 api.deepseek.com。
+   *   Key 通过 window.aiCfg（localStorage）随时更换。
+   * ============================================================ */
+  function loadAiCfg() {
+    return (window.aiCfg && window.aiCfg.load) ? window.aiCfg.load()
+      : { mode: 'direct', baseUrl: 'https://api.deepseek.com/v1', model: 'deepseek-v4-flash', key: '', token: '' };
+  }
+
+  // 直连 DeepSeek（OpenAI 兼容接口）
+  async function directChat(text, cfg) {
+    cfg = cfg || loadAiCfg();
+    if (cfg.mode === 'platform') {
+      throw new Error('平台托管模式待后端接入，可先在 AI 服务配置里切换为直连 DeepSeek');
+    }
+    if (!cfg.key) {
+      throw new Error('未配置 API Key，请到 我的 → AI 服务配置 填写 DeepSeek API Key');
+    }
+    const baseUrl = (cfg.baseUrl || 'https://api.deepseek.com/v1').replace(/\/+$/, '');
+    let resp;
+    try {
+      resp = await fetch(baseUrl + '/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + cfg.key,
+        },
+        body: JSON.stringify({
+          model: cfg.model || 'deepseek-v4-flash',
+          messages: [{ role: 'user', content: text }],
+          stream: false,
+        }),
+      });
+    } catch (e) {
+      throw new Error('无法连接 AI 服务（' + baseUrl + '）' + (e.message ? '：' + e.message : ''));
+    }
+    if (!resp.ok) {
+      let msg = '直连失败（HTTP ' + resp.status + '）';
+      try {
+        const j = await resp.json();
+        if (j && j.error && j.error.message) msg += '：' + j.error.message;
+      } catch (_) { /* ignore */ }
+      throw new Error(msg);
+    }
+    const data = await resp.json();
+    const reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if (!reply) throw new Error('AI 返回为空');
+    return reply;
+  }
+
+  // 对外 AI 接口
+  window.aiAPI = {
+    // 聊天：后端代理优先，不可用时直连 DeepSeek
+    async chat(text) {
+      const cfg = loadAiCfg();
+      // 1) 后端代理（正式路径）
+      try {
+        const r = await apiPost('/ai/chat', {
+          messages: [{ role: 'user', content: text }],
+          model: cfg.model || 'deepseek-v4-flash',
+          mode: cfg.mode || 'direct',
+        });
+        if (r && typeof r.reply === 'string' && r.reply) return r.reply;
+        if (r && r.ok === false) throw new Error(r.error || 'AI 服务返回错误');
+        // 后端在但格式不符 → 走直连兜底
+      } catch (e) {
+        if (e && e.message && e.message.indexOf('AI 服务') === 0) throw e; // 后端业务错误，不兜底
+      }
+      // 2) 直连兜底（后端未实现 / 未启动）
+      return directChat(text, cfg);
+    },
+    // 测试连接（预留，供配置页后期接入）
+    async testConnection() {
+      const cfg = loadAiCfg();
+      return directChat('你好', cfg);
+    },
+  };
+
 })();
