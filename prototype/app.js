@@ -861,7 +861,7 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
       vip: 'page-vip', types: 'page-types', sync: 'page-backup',
       settings: 'page-setting', export: 'page-vip',
       gesture: 'page-gesture', theme: 'page-theme',
-      about: 'page-about',
+      about: 'page-about', ai: 'page-api-config',
     };
     if (nav === 'export') { toast('Excel 导出功能（演示）'); return; }
     if (nav === 'widget') { $('#widget-sheet').classList.add('show'); return; }
@@ -869,6 +869,75 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
     if (map[nav]) openOverlay(map[nav]);
   });
 });
+
+/* ================= AI 服务配置（直连 DeepSeek / 平台托管） ================= */
+// 配置持久化在 localStorage，供配置页 UI 与 api.js 的 aiAPI 共用。
+// 注意：仓库为公开仓库，Key 不写入代码，仅存本机浏览器。
+window.aiCfg = (function () {
+  const KEY = 'moola.aiConfig';
+  const DEFAULTS = {
+    mode: 'direct',                            // direct | platform
+    baseUrl: 'https://api.deepseek.com/v1',    // OpenAI 兼容地址
+    model: 'deepseek-v4-flash',                // flash 版：响应快
+    key: '',                                   // 直连模式：DeepSeek API Key
+    platformUrl: '',                           // 平台托管：管理平台地址
+    token: '',                                 // 平台托管：管理员分配 Token
+  };
+  function load() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      return Object.assign({}, DEFAULTS, saved);
+    } catch (e) { return Object.assign({}, DEFAULTS); }
+  }
+  function save(cfg) {
+    localStorage.setItem(KEY, JSON.stringify(Object.assign({}, DEFAULTS, cfg)));
+  }
+  function reset() { localStorage.removeItem(KEY); return Object.assign({}, DEFAULTS); }
+  return { KEY, DEFAULTS, load, save, reset };
+})();
+
+(function initAiCfgUI() {
+  const cfg = aiCfg.load();
+  const modeItems = $$('#aicfg-mode .aicfg-mode-item');
+  const panelDirect = $('#aicfg-panel-direct');
+  const panelPlatform = $('#aicfg-panel-platform');
+  const keyInput = $('#aicfg-key');
+  const urlInput = $('#aicfg-platform-url');
+  const tokenInput = $('#aicfg-platform-token');
+  if (!keyInput) return;
+
+  function applyMode(mode) {
+    modeItems.forEach(m => m.classList.toggle('active', m.dataset.mode === mode));
+    panelDirect.hidden = mode !== 'direct';
+    panelPlatform.hidden = mode !== 'platform';
+  }
+
+  // 载入已保存配置
+  applyMode(cfg.mode);
+  keyInput.value = cfg.key || '';
+  urlInput.value = cfg.platformUrl || '';
+  tokenInput.value = cfg.token || '';
+
+  modeItems.forEach(m => m.addEventListener('click', () => applyMode(m.dataset.mode)));
+
+  $('#aicfg-save').addEventListener('click', () => {
+    const activeMode = [...modeItems].find(m => m.classList.contains('active')).dataset.mode;
+    aiCfg.save({
+      mode: activeMode,
+      key: keyInput.value.trim(),
+      platformUrl: urlInput.value.trim(),
+      token: tokenInput.value.trim(),
+    });
+    toast('AI 配置已保存');
+  });
+
+  $('#aicfg-reset').addEventListener('click', () => {
+    aiCfg.reset();
+    keyInput.value = ''; urlInput.value = ''; tokenInput.value = '';
+    applyMode(aiCfg.DEFAULTS.mode);
+    toast('已恢复默认');
+  });
+})();
 
 /* ================= 小部件设置弹窗 ================= */
 $$('#widget-sheet .wr-choice').forEach(c => {
