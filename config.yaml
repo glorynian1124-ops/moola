@@ -60,14 +60,12 @@ server:
   port: 5001
 
 # 经济简讯：预置财经 RSS 源（首次运行 python main.py feeds seed 会写入 feed_sources 表）
-# 注：以下为占位示例源，实际部署时请替换为可稳定访问的公开 RSS/RSSHub 地址
+# 注：以下源来自 RSSHub 国内镜像（rss.injahow.cn），已验证可访问；失效时可替换为其他公开 RSS
 feeds:
   sources:
-    - name: 财新网
-      url: https://rsshub.app/caixin/latest
+    - name: 华尔街见闻
+      url: https://rss.injahow.cn/wallstreetcn/global
     - name: 第一财经
-      url: https://rsshub.app/yicai/briefing
-    - name: 雪球
-      url: https://rsshub.app/xueqiu/hots
-    - name: 知乎日报
-      url: https://rsshub.app/zhihu/daily
+      url: https://rss.injahow.cn/yicai/news
+    - name: 财新网
+      url: https://rss.injahow.cn/caixin/latest
