@@ -58,3 +58,15 @@ def test_delete_source_with_articles(tmp_db):
     arts = models.list_articles()
     assert len(arts) == 1
     assert arts[0]["source_id"] is None
+
+
+def test_build_briefing_prompt_lists_titles():
+    from app.feeds.summarizer import build_briefing_prompt
+    arts = [
+        {"title": "CPI 环比回落", "summary": "居民消费价格涨幅收窄"},
+        {"title": "央行降准", "summary": "释放长期流动性"},
+    ]
+    p = build_briefing_prompt(arts)
+    assert "CPI 环比回落" in p
+    assert "央行降准" in p
+    assert "投资建议" in p or "不涉及" in p
