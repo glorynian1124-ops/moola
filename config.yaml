@@ -58,3 +58,16 @@ default_budget:
 server:
   host: 0.0.0.0        # 手机通过局域网访问
   port: 5001
+
+# 经济简讯：预置财经 RSS 源（首次运行 python main.py feeds seed 会写入 feed_sources 表）
+# 注：以下为占位示例源，实际部署时请替换为可稳定访问的公开 RSS/RSSHub 地址
+feeds:
+  sources:
+    - name: 财新网
+      url: https://rsshub.app/caixin/latest
+    - name: 第一财经
+      url: https://rsshub.app/yicai/briefing
+    - name: 雪球
+      url: https://rsshub.app/xueqiu/hots
+    - name: 知乎日报
+      url: https://rsshub.app/zhihu/daily
