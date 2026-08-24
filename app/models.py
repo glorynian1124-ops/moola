@@ -288,6 +288,8 @@ def list_sources() -> list[dict]:
 def delete_source(source_id: int) -> bool:
     conn = get_conn()
     try:
+        # 先孤立该源的文章（source_id 可空），避免外键约束失败
+        conn.execute("UPDATE articles SET source_id = NULL WHERE source_id = ?", (source_id,))
         cur = conn.execute("DELETE FROM feed_sources WHERE id = ?", (source_id,))
         conn.commit()
         return cur.rowcount > 0
@@ -321,14 +323,33 @@ def add_article(
 
 
 def add_articles(rows: Sequence[dict]) -> tuple[int, int]:
-    """批量插入。返回 (新增数, 重复数)。"""
+    """批量插入。rows: [{source_id, title, url, summary, topic, publish_time}]
+    返回 (新增数, 重复数)。"""
     added = skipped = 0
-    for r in rows:
-        if add_article(**r):
-            added += 1
-        else:
-            skipped += 1
-    return added, skipped
+    conn = get_conn()
+    try:
+        for r in rows:
+            cur = conn.execute(
+                """INSERT OR IGNORE INTO articles
+                   (source_id, title, url, summary, topic, publish_time)
+                   VALUES (?, ?, ?, ?, ?, ?)""",
+                (
+                    r.get("source_id"),
+                    r.get("title", ""),
+                    r.get("url", ""),
+                    r.get("summary", ""),
+                    r.get("topic", ""),
+                    r.get("publish_time", ""),
+                ),
+            )
+            if cur.rowcount > 0:
+                added += 1
+            else:
+                skipped += 1
+        conn.commit()
+        return added, skipped
+    finally:
+        conn.close()
 
 
 def list_articles(date: Optional[str] = None, limit: int = 200) -> list[dict]:

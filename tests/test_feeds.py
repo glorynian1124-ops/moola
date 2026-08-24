@@ -46,3 +46,15 @@ def test_delete_source(tmp_db):
     sid = next(s["id"] for s in models.list_sources() if s["name"] == "财新")
     assert models.delete_source(sid) is True
     assert all(s["id"] != sid for s in models.list_sources())
+
+
+def test_delete_source_with_articles(tmp_db):
+    from app import models
+    models.add_source("源A", "http://rss.a.com")
+    sid = next(s["id"] for s in models.list_sources() if s["name"] == "源A")
+    models.add_article(sid, "文章", "http://a.com/art1", "")
+    assert models.delete_source(sid) is True
+    # 文章保留，source_id 被置空
+    arts = models.list_articles()
+    assert len(arts) == 1
+    assert arts[0]["source_id"] is None
