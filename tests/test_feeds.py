@@ -70,3 +70,17 @@ def test_build_briefing_prompt_lists_titles():
     assert "CPI 环比回落" in p
     assert "央行降准" in p
     assert "投资建议" in p or "不涉及" in p
+
+
+def test_summarize_article_returns_empty_when_limit_exhausted(monkeypatch, tmp_db):
+    from app.feeds import summarizer
+    from app.analyzer import classify
+    monkeypatch.setattr(classify._LIMITER, "_count", 999999)
+    assert summarizer.summarize_article("t", "c") == ""
+
+
+def test_llm_chat_returns_none_without_key(monkeypatch):
+    from app.feeds import summarizer
+    monkeypatch.delenv("MOOLA_API_KEY", raising=False)
+    monkeypatch.setattr(summarizer, "_load_config", lambda: {"llm": {"api_key": ""}})
+    assert summarizer._llm_chat([{"role": "user", "content": "hi"}]) is None

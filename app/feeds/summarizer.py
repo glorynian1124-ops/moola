@@ -33,7 +33,8 @@ def _llm_chat(messages: list[dict], max_tokens: int = 400) -> Optional[str]:
             timeout=30,
         )
         resp.raise_for_status()
-        return resp.json()["choices"][0]["message"]["content"].strip()
+        content = resp.json()["choices"][0]["message"]["content"].strip()
+        return content or None
     except Exception as e:  # noqa: BLE001 —— 失败不阻断主流程
         print(f"  ⚠️ LLM 调用失败：{e}")
         return None
@@ -58,7 +59,7 @@ def build_briefing_prompt(articles: list[dict]) -> str:
     """纯函数：把当天文章组装成简报 prompt。"""
     lines = []
     for i, a in enumerate(articles, 1):
-        lines.append(f"{i}. {a['title']}｜{a.get('summary') or '无摘要'}")
+        lines.append(f"{i}. {a.get('title', '')}｜{a.get('summary') or '无摘要'}")
     joined = "\n".join(lines)
     return (
         "你是财经资讯助手。基于以下今日文章，写一段「今日财经要闻」汇总（150 字以内），"
@@ -72,6 +73,9 @@ def generate_briefing(day: Optional[str] = None) -> Optional[str]:
     day = day or date.today().isoformat()
     articles = models.list_articles(date=day, limit=50)
     if not articles:
+        return None
+    limit = int(_load_config().get("llm", {}).get("max_calls_per_day", 30))
+    if not _LIMITER.acquire(limit):
         return None
     prompt = build_briefing_prompt(articles)
     ans = _llm_chat([{"role": "user", "content": prompt}], max_tokens=400)
