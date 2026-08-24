@@ -285,6 +285,68 @@ def list_sources() -> list[dict]:
         conn.close()
 
 
+def delete_source(source_id: int) -> bool:
+    conn = get_conn()
+    try:
+        cur = conn.execute("DELETE FROM feed_sources WHERE id = ?", (source_id,))
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
+# ---------- 文章 articles（Feedly 模式） ----------
+
+def add_article(
+    source_id: Optional[int],
+    title: str,
+    url: str,
+    summary: str = "",
+    topic: str = "",
+    publish_time: str = "",
+) -> bool:
+    """插入文章；url 唯一索引去重，重复返回 False。"""
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            """INSERT OR IGNORE INTO articles
+               (source_id, title, url, summary, topic, publish_time)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (source_id, title, url, summary, topic, publish_time),
+        )
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
+def add_articles(rows: Sequence[dict]) -> tuple[int, int]:
+    """批量插入。返回 (新增数, 重复数)。"""
+    added = skipped = 0
+    for r in rows:
+        if add_article(**r):
+            added += 1
+        else:
+            skipped += 1
+    return added, skipped
+
+
+def list_articles(date: Optional[str] = None, limit: int = 200) -> list[dict]:
+    """文章列表，按 publish_time 倒序；date='YYYY-MM-DD' 时只看当天。"""
+    sql = "SELECT * FROM articles WHERE 1=1"
+    params: list = []
+    if date:
+        sql += " AND substr(publish_time, 1, 10) = ?"
+        params.append(date)
+    sql += " ORDER BY publish_time DESC, id DESC LIMIT ?"
+    params.append(limit)
+    conn = get_conn()
+    try:
+        return [dict(r) for r in conn.execute(sql, params).fetchall()]
+    finally:
+        conn.close()
+
+
 # ---------- 账单：查询 / 修改 / 删除 / 分组 / 搜索 ----------
 
 def get_transaction(tx_id: int) -> Optional[dict]:
