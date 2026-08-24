@@ -66,12 +66,24 @@
     </div>
   </div>
 
-  <!-- ============ 页面 3：图片凭证（PictureActivity） ============ -->
+  <!-- ============ 页面 3：经济简讯（Feedly 模式） ============ -->
   <div class="page" id="page-pic">
-    <div class="simple-toolbar"><span class="toolbar-title">经济简讯</span></div>
-    <div class="empty-state">
+    <div class="simple-toolbar">
+      <span class="toolbar-title">经济简讯</span>
+      <button class="text-btn dark" id="btn-feeds-refresh">刷新</button>
+    </div>
+    <div class="brief-card" id="brief-card">
+      <div class="brief-head">
+        <span class="brief-title">📬 今日简报</span>
+        <button class="text-btn dark" id="btn-brief-gen">生成</button>
+      </div>
+      <div class="brief-body" id="brief-body">点击「生成」获取今日财经要闻</div>
+    </div>
+    <div class="sec-title" style="margin-top:14px">文章</div>
+    <div class="stat-list" id="feeds-list"></div>
+    <div class="empty-state" id="feeds-empty" hidden>
       <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
-      <div class="empty-text">暂无数据</div>
+      <div class="empty-text">暂无文章，点右上角「刷新」抓取</div>
     </div>
   </div>
 

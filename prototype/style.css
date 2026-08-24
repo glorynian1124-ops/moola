@@ -1304,3 +1304,9 @@ body {
   flex: 1; min-width: 0; border: 1px solid var(--primary); border-radius: 6px;
   padding: 2px 8px; font-size: 15px; color: var(--ink-4); outline: none; background: #fff;
 }
+
+/* 经济简讯 */
+.brief-card { margin: 12px; padding: 12px 14px; border-radius: 10px; background: #eef1ff; }
+.brief-head { display: flex; justify-content: space-between; align-items: center; }
+.brief-title { font-weight: 600; font-size: 15px; }
+.brief-body { margin-top: 8px; font-size: 13px; line-height: 1.6; color: #444; white-space: pre-wrap; }
