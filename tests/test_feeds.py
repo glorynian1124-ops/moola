@@ -84,3 +84,20 @@ def test_llm_chat_returns_none_without_key(monkeypatch):
     monkeypatch.delenv("MOOLA_API_KEY", raising=False)
     monkeypatch.setattr(summarizer, "_load_config", lambda: {"llm": {"api_key": ""}})
     assert summarizer._llm_chat([{"role": "user", "content": "hi"}]) is None
+
+
+def test_entry_to_article_picks_fields():
+    from app.feeds.fetcher import entry_to_article
+
+    class E:
+        title = "标题"
+        link = "http://a.com/x"
+        summary = "简介"
+
+    got = entry_to_article(E(), 7)
+    assert got["source_id"] == 7
+    assert got["title"] == "标题"
+    assert got["url"] == "http://a.com/x"
+    assert got["summary"] == "简介"
+    assert got["topic"] == ""
+    assert "publish_time" in got
