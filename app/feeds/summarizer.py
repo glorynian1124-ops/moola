@@ -11,14 +11,20 @@ from .. import models
 from ..analyzer.classify import _LIMITER, _load_config
 
 
+def _api_key() -> str:
+    """返回已配置的 API key；无则空串。"""
+    api_key = os.environ.get("MOOLA_API_KEY", "")
+    if not api_key:
+        api_key = _load_config().get("llm", {}).get("api_key", "")
+    return api_key or ""
+
+
 def _llm_chat(messages: list[dict], max_tokens: int = 400) -> Optional[str]:
     """通用 LLM 调用，返回文本；失败或无 key 返回 None。"""
-    api_key = os.environ.get("MOOLA_API_KEY", "")
-    cfg = _load_config().get("llm", {})
-    if not api_key:
-        api_key = cfg.get("api_key", "")
+    api_key = _api_key()
     if not api_key:
         return None
+    cfg = _load_config().get("llm", {})
     import requests
     try:
         resp = requests.post(
@@ -42,6 +48,8 @@ def _llm_chat(messages: list[dict], max_tokens: int = 400) -> Optional[str]:
 
 def summarize_article(title: str, content: str) -> str:
     """生成 1-3 句摘要；限流用尽/失败返回空串。"""
+    if not _api_key():
+        return ""
     limit = int(_load_config().get("llm", {}).get("max_calls_per_day", 30))
     if not _LIMITER.acquire(limit):
         return ""
@@ -73,6 +81,8 @@ def generate_briefing(day: Optional[str] = None) -> Optional[str]:
     day = day or date.today().isoformat()
     articles = models.list_articles(date=day, limit=50)
     if not articles:
+        return None
+    if not _api_key():
         return None
     limit = int(_load_config().get("llm", {}).get("max_calls_per_day", 30))
     if not _LIMITER.acquire(limit):
