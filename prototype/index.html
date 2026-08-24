@@ -140,14 +140,12 @@
       <div class="cell" data-nav="sync"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_sync.png)"></i></span><span class="cell-name">云备份与恢复</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
-      <div class="cell" data-nav="types"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">类别管理</span><span class="cell-arrow">›</span></div>
-      <div class="cell" data-nav="settings"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_setting.png)"></i></span><span class="cell-name">选项设置</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="pagemgr"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">页面管理</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
       <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_remind.png)"></i></span><span class="cell-name">记账提醒</span><span class="cell-val">20:00</span><span class="switch on"></span></div>
       <div class="cell" data-nav="export"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_export.png)"></i></span><span class="cell-name">导出Excel</span><span class="cell-arrow">›</span></div>
-      <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_finger.png)"></i></span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
-      <div class="cell" data-nav="gesture"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="security"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">安全设置</span><span class="cell-arrow">›</span></div>
       <div class="cell" data-nav="ai"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_ai.png)"></i></span><span class="cell-name">AI 服务配置</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
@@ -555,6 +553,32 @@
     </div>
   </div>
 
+  <!-- ============ 覆盖页：页面管理（类别管理 / 选项管理 二级入口） ============ -->
+  <div class="page overlay" id="page-pagemgr">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">页面管理</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="types"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">类别管理</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="settings"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_setting.png)"></i></span><span class="cell-name">选项管理</span><span class="cell-arrow">›</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：安全设置（指纹 / 手势密码） ============ -->
+  <div class="page overlay" id="page-security">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">安全设置</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-sec="finger"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_finger.png)"></i></span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
+      <div class="cell" data-sec="gesture"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+    </div>
+  </div>
+
   <!-- ============ 覆盖页：手势密码（GesturePwdActivity） ============ -->
   <div class="page overlay" id="page-gesture">
     <div class="sub-topbar">
@@ -922,8 +946,8 @@
   <nav class="tabbar">
     <div class="tab active" data-page="page-account"><i class="ic ic24" style="--mask:url(assets/icons/tab_list.png)"></i><span class="tab-name">明细</span></div>
     <div class="tab" data-page="page-stat"><i class="ic ic24" style="--mask:url(assets/icons/tab_stat.png)"></i><span class="tab-name">统计</span></div>
-    <div class="tab" data-page="page-ai"><i class="ic ic24" style="--mask:url(assets/icons/tab_ai.png)"></i><span class="tab-name">经济分析</span></div>
-    <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">经济简讯</span></div>
+    <div class="tab" data-page="page-ai"><i class="ic ic24" style="--mask:url(assets/icons/tab_ai.png)"></i><span class="tab-name">分析</span></div>
+    <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">简讯</span></div>
     <div class="tab" data-page="page-profile"><i class="ic ic24" style="--mask:url(assets/icons/tab_profile.png)"></i><span class="tab-name">我的</span></div>
   </nav>
 
