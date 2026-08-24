@@ -23,3 +23,6 @@ Thumbs.db
 data/moola.db
 data/*.bak
 data/llm_usage.json
+
+# Feedly 反向分析资料（与本仓库无关，不入库）
+Feedly-Reverse interpretation/

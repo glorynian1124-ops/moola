@@ -87,7 +87,15 @@ const INITIAL_TX = [
   ]},
 ];
 
-let tx = JSON.parse(JSON.stringify(INITIAL_TX));
+// 账本集合：每个账本拥有独立的账单数据（tx）
+let books = [
+  { name: '默认账本', icon: 'ic_accounts.png', type: '标准账本', tx: JSON.parse(JSON.stringify(INITIAL_TX)) },
+  { name: '旅行账本', icon: 'ic_plane.png', type: '旅行', tx: [] },
+  { name: '家庭账本', icon: 'cate_home.png', type: '家庭', tx: [] },
+];
+let tx = books[0].tx; // 全局 tx 指向当前账本数据
+const BOOK_ICONS = ['ic_accounts.png', 'ic_plane.png', 'cate_home.png', 'cate_salary.png', 'cate_shopping.png', 'cate_moneybag.png'];
+const BOOK_TYPES = ['标准账本', '旅行', '家庭', '生意', '人情', '其他'];
 
 // 状态
 const state = {
@@ -149,6 +157,7 @@ $$('.tabbar .tab').forEach(tab => {
   tab.addEventListener('click', () => {
     $$('.tabbar .tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
+    state.tab = tab.dataset.page; // 记录当前主页面，覆盖页退出时返回上一级
     showPage(tab.dataset.page);
   });
 });
@@ -182,7 +191,7 @@ function renderTxList() {
     const income = g.items.filter(i => i.money > 0).reduce((s, i) => s + i.money, 0);
     const [y, m, d] = g.date.split('-');
     return `
-      <div class="tx-group">
+      <div class="tx-group" data-date="${g.date}">
         <div class="tx-group-head">
           <span>${y}年${+m}月${+d}日 星期${weekDayCN(g.date)}</span>
           <span>支出:${fmt(spend)} 收入:${fmt(income)}</span>
@@ -200,6 +209,7 @@ function renderTxList() {
       </div>`;
   }).join('');
   list.innerHTML = groups || emptyHtml();
+  list.classList.toggle('has-empty', !groups); // 空状态时去掉底部内边距，让"暂无数据"真正居中
   updateOverview();
 }
 
@@ -237,6 +247,11 @@ function updateOverview() {
 /* ================= 统计页 ================= */
 const PIE_COLORS = ['#303f9f', '#ee6c8c', '#d2691e', '#a52a2a', '#8b008b', '#008000', '#303030', '#753c2c', '#4c9aff', '#6c9f3f', '#e0673c', '#8e6cd8'];
 
+// 统计页各栏空状态（与明细页一致：空箱子图标 + 暂无数据）
+function statNoDataHtml() {
+  return '<div class="stat-no-data"><i class="ic ic50" style="--mask:url(assets/icons/ic_empty.png)"></i><div class="empty-text">暂无数据</div></div>';
+}
+
 function statData() {
   const sign = state.statCat === 'expense' ? -1 : 1;
   const items = tx.flatMap(g => g.items.map(it => ({ ...it, date: g.date })))
@@ -247,7 +262,7 @@ function statData() {
 function renderBarChart() {
   const data = statData();
   const box = $('#trend-chart');
-  if (!data.length) return;
+  if (!data.length) { box.innerHTML = statNoDataHtml(); return; }
 
   const period = state.statPeriod; // week / month / year
   const dates = [...new Set(data.map(i => i.date))].sort();
@@ -344,7 +359,13 @@ function pieRotation(container) {
 function renderPie() {
   const data = statData();
   const pie = $('#pie-chart');
-  if (!data.length) return;
+  // 无数据时隐藏旋转提示，有数据时显示
+  $('#pie-hint').style.display = data.length ? '' : 'none';
+  if (!data.length) {
+    pie.innerHTML = statNoDataHtml();
+    $('#stat-list').innerHTML = statNoDataHtml();
+    return;
+  }
 
   // 按类别聚合
   const map = {};
@@ -440,12 +461,12 @@ function renderPie() {
 }
 
 function renderStat() {
+  // 趋势栏标题随收支分类变化：支出→消费趋势，收入→收入趋势
+  $('#stat-title').textContent = state.statCat === 'income' ? '收入趋势' : '消费趋势';
   renderBarChart();
   renderPie();
-  // 空状态切换（原版：无数据才显示「暂无数据」）
-  const hasData = statData().length > 0;
-  $('#stat-empty').hidden = hasData;
-  $('#stat-body').style.display = hasData ? '' : 'none';
+  // 空数据时保持三栏结构（统计/消费结构/明细），各栏内显示「暂无数据」
+  $('#stat-empty').style.display = 'none';
 }
 
 $('#stat-cat-tabs').addEventListener('click', (e) => {
@@ -669,7 +690,7 @@ $('#cal-grid').addEventListener('click', (e) => {
 });
 
 function renderCalList(day) {
-  const dateStr = `2026-08-${String(day).padStart(2, '0')}`;
+  const dateStr = `${state.calYear}-${String(state.calMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const group = tx.find(g => g.date === dateStr);
   const list = $('#cal-list');
   if (!group) { list.innerHTML = emptyHtml(); return; }
@@ -702,15 +723,16 @@ $('#cal-grid').addEventListener('click', (e) => {
   renderCalList(d);
 });
 
-$('#cal-prev').addEventListener('click', () => {
-  state.calMonth--;
-  if (state.calMonth < 1) { state.calMonth = 12; state.calYear--; }
-  renderCalendar();
-});
-$('#cal-next').addEventListener('click', () => {
-  state.calMonth++;
-  if (state.calMonth > 12) { state.calMonth = 1; state.calYear++; }
-  renderCalendar();
+$('#cal-month-btn').addEventListener('click', () => {
+  $('#ym-sheet').classList.add('show');
+  wYear.select(wheelYears.indexOf(state.calYear));
+  wMonth.select(wheelMonths.indexOf(state.calMonth));
+  // 日历：确定后切换到所选年月并刷新
+  ymOnOk = () => {
+    state.calYear = wheelYear;
+    state.calMonth = wheelMonth;
+    renderCalendar();
+  };
 });
 
 $('#cal-today').addEventListener('click', () => {
@@ -792,14 +814,10 @@ function renderYearStat() {
 
 /* ================= 管理账本 ================= */
 function renderBooks() {
-  const books = [
-    { name: '默认账本', desc: '标准账本 · 2026年创建', icon: 'ic_accounts.png' },
-    { name: '旅行账本', desc: '旅行账本 · 2026年创建', icon: 'ic_plane.png' },
-  ];
   $('#book-list').innerHTML = books.map((b, i) => `
     <div class="book-item ${i === state.selectedBook ? 'checked' : ''}" data-i="${i}">
       <div class="book-icon">${icIcon(b.icon, 'ic22')}</div>
-      <div class="book-info"><div class="book-name">${b.name}</div><div class="book-desc">${b.desc}</div></div>
+      <div class="book-info"><div class="book-name">${b.name}</div><div class="book-desc">${b.type} · 2026年创建</div></div>
       <div class="book-check"></div>
     </div>`).join('');
 }
@@ -807,8 +825,7 @@ function renderBooks() {
 $('#book-list').addEventListener('click', (e) => {
   const item = e.target.closest('.book-item');
   if (!item) return;
-  state.selectedBook = Number(item.dataset.i);
-  renderBooks();
+  switchBook(Number(item.dataset.i));
 });
 
 /* ================= 类别管理 ================= */
@@ -844,32 +861,385 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
       vip: 'page-vip', types: 'page-types', sync: 'page-backup',
       settings: 'page-setting', export: 'page-vip',
       gesture: 'page-gesture', theme: 'page-theme',
-      about: 'page-about',
+      about: 'page-about', ai: 'page-api-config',
+      pagemgr: 'page-pagemgr', security: 'page-security',
     };
     if (nav === 'export') { toast('Excel 导出功能（演示）'); return; }
-    if (nav === 'widget') { $('#widget-sheet').classList.add('show'); return; }
     if (nav === 'gesture') { openOverlay('page-gesture'); return; }
     if (map[nav]) openOverlay(map[nav]);
   });
 });
 
-/* ================= 小部件设置弹窗 ================= */
-$$('#widget-sheet .wr-choice').forEach(c => {
-  c.addEventListener('click', () => {
-    $$(`#widget-sheet .wr-choice[data-k="${c.dataset.k}"]`).forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
+/* ================= AI 服务配置（直连 DeepSeek / 平台托管） ================= */
+// 配置持久化在 localStorage，供配置页 UI 与 api.js 的 aiAPI 共用。
+// 注意：仓库为公开仓库，Key 不写入代码，仅存本机浏览器。
+window.aiCfg = (function () {
+  const KEY = 'moola.aiConfig';
+  const DEFAULTS = {
+    mode: 'direct',                            // direct | platform
+    baseUrl: 'https://api.deepseek.com/v1',    // OpenAI 兼容地址
+    model: 'deepseek-v4-flash',                // flash 版：响应快
+    key: '',                                   // 直连模式：DeepSeek API Key
+    platformUrl: '',                           // 平台托管：管理平台地址
+    token: '',                                 // 平台托管：管理员分配 Token
+  };
+  function load() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      return Object.assign({}, DEFAULTS, saved);
+    } catch (e) { return Object.assign({}, DEFAULTS); }
+  }
+  function save(cfg) {
+    localStorage.setItem(KEY, JSON.stringify(Object.assign({}, DEFAULTS, cfg)));
+  }
+  function reset() { localStorage.removeItem(KEY); return Object.assign({}, DEFAULTS); }
+  return { KEY, DEFAULTS, load, save, reset };
+})();
+
+(function initAiCfgUI() {
+  const cfg = aiCfg.load();
+  const modeItems = $$('#aicfg-mode .aicfg-mode-item');
+  const panelDirect = $('#aicfg-panel-direct');
+  const panelPlatform = $('#aicfg-panel-platform');
+  const keyInput = $('#aicfg-key');
+  const urlInput = $('#aicfg-platform-url');
+  const tokenInput = $('#aicfg-platform-token');
+  if (!keyInput) return;
+
+  function applyMode(mode) {
+    modeItems.forEach(m => m.classList.toggle('active', m.dataset.mode === mode));
+    panelDirect.hidden = mode !== 'direct';
+    panelPlatform.hidden = mode !== 'platform';
+  }
+
+  // 载入已保存配置
+  applyMode(cfg.mode);
+  keyInput.value = cfg.key || '';
+  urlInput.value = cfg.platformUrl || '';
+  tokenInput.value = cfg.token || '';
+
+  modeItems.forEach(m => m.addEventListener('click', () => applyMode(m.dataset.mode)));
+
+  $('#aicfg-save').addEventListener('click', () => {
+    const activeMode = [...modeItems].find(m => m.classList.contains('active')).dataset.mode;
+    aiCfg.save({
+      mode: activeMode,
+      key: keyInput.value.trim(),
+      platformUrl: urlInput.value.trim(),
+      token: tokenInput.value.trim(),
+    });
+    toast('AI 配置已保存');
   });
-});
-$('#widget-trans').addEventListener('click', function () { this.classList.toggle('on'); });
-$('#widget-cancel').addEventListener('click', () => $('#widget-sheet').classList.remove('show'));
+
+  $('#aicfg-reset').addEventListener('click', () => {
+    aiCfg.reset();
+    keyInput.value = ''; urlInput.value = ''; tokenInput.value = '';
+    applyMode(aiCfg.DEFAULTS.mode);
+    toast('已恢复默认');
+  });
+})();
+
+/* ================= 经济分析（AI 聊天 + 消费者画像） ================= */
+(function initAIChat() {
+  const msgs = $('#ai-msgs');
+  const input = $('#ai-input');
+  const sendBtn = $('#ai-send');
+  if (!msgs || !input) return;
+  const welcome = $('#ai-welcome');
+
+  /* ---- 会话历史：后端数据库存储（可回溯），localStorage 仅作离线兜底 ---- */
+  const HIST_KEY = 'moola.aiHistory';   // [{_key,id,title,time,messages:[{role,content}]}]
+  function loadHist() {
+    try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveHist(list) { localStorage.setItem(HIST_KEY, JSON.stringify(list)); }
+  let convs = [];
+  let curId = null;                       // 当前会话 _key
+
+  // 会话键：_key 前端唯一标识；id 后端会话 id（null=尚未同步到后端）
+  function keyOf(c) { return c && (c._key || c.id); }
+  function curConv() { return convs.find(c => keyOf(c) === curId); }
+
+  function newConv() {
+    const c = { _key: 'c' + Date.now(), id: null, title: '新对话', time: Date.now(), messages: [] };
+    convs.unshift(c);
+    saveHist(convs);                      // 本地镜像
+    curId = c._key;
+  }
+  function ensureConv() { if (!curConv()) newConv(); }
+
+  // 保存会话到后端数据库（失败回退 localStorage）
+  async function persist(conv) {
+    const ai = window.aiAPI;
+    if (ai && ai.conversations && conv) {
+      try {
+        const payload = { title: conv.title, messages: conv.messages };
+        if (conv.id) payload.id = conv.id;
+        const r = await ai.conversations.save(payload);
+        if (r && typeof r.id === 'number') {
+          if (!conv.id) {                    // 首次落库：回填后端 id
+            conv.id = r.id;
+            const nk = 'b' + r.id;
+            if (curId === conv._key) curId = nk;
+            conv._key = nk;
+          }
+          saveHist(convs);
+          return true;
+        }
+      } catch (e) { /* fallthrough */ }
+    }
+    saveHist(convs);                        // 后端不可用 → 本地兜底
+    return false;
+  }
+
+  // 初始化：后端优先拉会话列表，不可达则本地兜底
+  async function initConvs() {
+    const ai = window.aiAPI;
+    let list = null;
+    if (ai && ai.conversations) {
+      try { list = await ai.conversations.list(); } catch (e) { list = null; }
+    }
+    if (Array.isArray(list)) {
+      convs = list.map(c => ({
+        _key: 'b' + c.id, id: c.id,
+        title: c.title || '新对话',
+        time: Date.parse(c.updated_at || c.created_at) || Date.now(),
+        messages: [],
+      }));
+    } else {
+      // 本地兜底（兼容旧 localStorage 格式）
+      convs = loadHist().map(c => ({
+        _key: c._key || c.id,
+        id: (typeof c.id === 'number') ? c.id : null,
+        title: c.title || '新对话',
+        time: c.time || Date.now(),
+        messages: c.messages || [],
+      }));
+    }
+    if (!convs.length) newConv(); else curId = keyOf(convs[0]);
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g,
+      m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  }
+  function fmtTime(t) {
+    const d = new Date(t);
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getMonth() + 1}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+
+  function addMsg(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'ai-msg ' + role;
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return bubble;
+  }
+
+  // 渲染指定会话的消息到界面
+  function renderMsgs(messages) {
+    $$('#ai-msgs .ai-msg').forEach(m => m.remove());
+    if (!messages || !messages.length) { welcome.hidden = false; return; }
+    welcome.hidden = true;
+    messages.forEach(m => {
+      const b = addMsg(m.role, m.content);
+      if (m.role === 'ai') b.classList.remove('thinking');
+    });
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  // 打开/关闭历史右弹窗（从右侧滑入，点击空白遮罩关闭）
+  function openHistory() {
+    const list = $('#ai-history-list');
+    if (!convs.length) {
+      list.innerHTML = '<div class="ai-history-empty">暂无历史对话</div>';
+    } else {
+      list.innerHTML = convs.map(c => `
+        <div class="ai-history-item" data-id="${keyOf(c)}">
+          <div class="ai-history-main">
+            <span class="ai-history-title">${esc(c.title)}</span>
+            <span class="ai-history-time">${fmtTime(c.time)}</span>
+          </div>
+          <div class="ai-history-ops" hidden>
+            <button class="ai-history-rename">重命名</button>
+            <button class="ai-history-del">删除</button>
+          </div>
+        </div>`).join('');
+    }
+    $('#ai-history-mask').hidden = false;
+    $('#ai-history-panel').classList.add('show');
+  }
+  function closeHistory() {
+    $('#ai-history-mask').hidden = true;
+    $('#ai-history-panel').classList.remove('show');
+  }
+
+  // 快捷提问
+  $$('#ai-sugs .ai-sug').forEach(s => {
+    s.addEventListener('click', () => { input.value = s.dataset.q; doSend(); });
+  });
+
+  // 新对话：先落库当前会话，再开新会话并恢复欢迎语
+  $('#ai-new').addEventListener('click', () => {
+    const cur = curConv();
+    if (cur && cur.messages.length) persist(cur);
+    newConv(); renderMsgs([]);
+  });
+
+  // 历史右弹窗：打开 / ✕ 关闭 / 点击空白（遮罩）关闭
+  $('#ai-history').addEventListener('click', openHistory);
+  $('#ai-history-close').addEventListener('click', closeHistory);
+  $('#ai-history-mask').addEventListener('click', closeHistory);
+
+  // 长按会话项 → 展开操作菜单（重命名 / 删除）
+  let pressTimer = null, suppressClick = false;
+  $('#ai-history-list').addEventListener('pointerdown', (e) => {
+    const item = e.target.closest('.ai-history-item');
+    if (!item || e.target.closest('.ai-history-ops')) return;
+    suppressClick = false;
+    pressTimer = setTimeout(() => {
+      $$('.ai-history-item').forEach(i => {
+        i.classList.remove('menu-open');
+        const ops = i.querySelector('.ai-history-ops');
+        if (ops) ops.hidden = true;
+      });
+      item.classList.add('menu-open');
+      const ops = item.querySelector('.ai-history-ops');
+      if (ops) ops.hidden = false;
+      suppressClick = true;                 // 长按展开菜单后，忽略随后触发的 click
+    }, 500);
+  });
+  $('#ai-history-list').addEventListener('pointerup', () => clearTimeout(pressTimer));
+  $('#ai-history-list').addEventListener('pointerleave', () => clearTimeout(pressTimer));
+
+  // 重命名：内联编辑标题，同步后端 + 本地
+  function startRename(id) {
+    const item = [...$$('.ai-history-item')].find(i => i.dataset.id === id);
+    if (!item) return;
+    const titleEl = item.querySelector('.ai-history-title');
+    const input = document.createElement('input');
+    input.className = 'ai-rename-input';
+    input.value = titleEl.textContent;
+    titleEl.replaceWith(input);
+    input.focus(); input.select();
+    let doneFlag = false;
+    const done = () => {
+      if (doneFlag) return;
+      doneFlag = true;
+      const c = convs.find(x => keyOf(x) === id);
+      if (c) {
+        const name = input.value.trim();
+        if (name) c.title = name;
+        if (c.id) {
+          const ai = window.aiAPI;
+          if (ai && ai.conversations) {
+            ai.conversations.save({ id: c.id, title: c.title, messages: c.messages }).catch(() => {});
+          }
+        }
+        saveHist(convs);
+      }
+      openHistory();
+    };
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.stopPropagation(); e.preventDefault(); done(); }
+    });
+    input.addEventListener('blur', done);
+  }
+
+  // 历史列表点击：加载会话 / 重命名 / 删除（删除同步后端数据库）
+  $('#ai-history-list').addEventListener('click', async (e) => {
+    const item = e.target.closest('.ai-history-item');
+    if (!item) return;
+    const del = e.target.closest('.ai-history-del');
+    const rename = e.target.closest('.ai-history-rename');
+    if (del) {
+      const target = convs.find(x => keyOf(x) === item.dataset.id);
+      if (target && typeof target.id === 'number') {
+        const ai = window.aiAPI;
+        if (ai && ai.conversations) ai.conversations.remove(target.id).catch(() => {});
+      }
+      convs = convs.filter(x => keyOf(x) !== item.dataset.id);
+      if (curId === item.dataset.id) { curId = null; renderMsgs([]); }
+      saveHist(convs);
+      openHistory();
+      return;
+    }
+    if (rename) { startRename(item.dataset.id); return; }
+    if (suppressClick) { suppressClick = false; return; }  // 长按菜单后的点击
+    const c = convs.find(x => keyOf(x) === item.dataset.id);
+    if (!c) return;
+    curId = keyOf(c);
+    // 后端会话消息懒加载（回溯完整对话）
+    if (c.id && (!c.messages || !c.messages.length)) {
+      const ai = window.aiAPI;
+      if (ai && ai.conversations) {
+        const conv = await ai.conversations.get(c.id);
+        if (conv && Array.isArray(conv.messages)) c.messages = conv.messages;
+      }
+    }
+    renderMsgs(c.messages);
+    closeHistory();
+  });
+
+  // 子 Tab：AI 分析 / 消费者画像
+  $$('#page-ai .ai-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      $$('#page-ai .ai-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      $('#ai-chat-pane').hidden = t.dataset.aiTab !== 'chat';
+      $('#ai-profile-pane').hidden = t.dataset.aiTab !== 'profile';
+    });
+  });
+
+  function doSend() {
+    const text = input.value.trim();
+    if (!text) return;
+    ensureConv();
+    welcome.hidden = true;
+    input.value = '';
+    const conv = curConv();
+    if (conv.title === '新对话') conv.title = text.slice(0, 12);
+    addMsg('user', text);
+    conv.messages.push({ role: 'user', content: text });
+    saveHist(convs);                       // 本地镜像
+
+    const aiBubble = addMsg('ai', '思考中…');
+    aiBubble.classList.add('thinking');
+    const ai = window.aiAPI;
+    // 携带 conversation_id：后端 /api/ai/chat 转发并自动落库（可回溯）
+    const p = ai && ai.chat
+      ? ai.chat(text, conv.id)
+      : Promise.reject(new Error('AI 服务未接入'));
+    p.then(async reply => {
+      aiBubble.textContent = reply || '（空回复）';
+      aiBubble.classList.remove('thinking');
+      conv.messages.push({ role: 'ai', content: reply || '（空回复）' });
+      await persist(conv);                 // 全量快照落库（后端优先，本地兜底）
+    }).catch(err => {
+      aiBubble.textContent = '⚠️ ' + (err && err.message ? err.message : 'AI 服务暂不可用');
+      aiBubble.classList.remove('thinking');
+      persist(conv);                       // 失败也保存 user 消息
+    }).then(() => { msgs.scrollTop = msgs.scrollHeight; });
+  }
+
+  sendBtn.addEventListener('click', doSend);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') doSend(); });
+
+  // 初始化：后端拉历史会话；不可达则本地兜底；无会话开新对话
+  initConvs();
+})();
 
 /* ================= 选择主账本弹窗 ================= */
 function renderMainbook() {
-  const books = ['默认账本', '旅行账本', '家庭账本'];
   $('#mainbook-list').innerHTML = books.map((b, i) => `
     <div class="sheet-book-item ${i === 0 ? 'checked' : ''}" data-i="${i}">
-      <span class="cell-icon">${icIcon(['ic_accounts.png', 'ic_plane.png', 'cate_home.png'][i], 'ic20')}</span>
-      <span>${b}</span>
+      <span class="cell-icon">${icIcon(b.icon, 'ic20')}</span>
+      <span>${b.name}</span>
     </div>`).join('');
 }
 $('#btn-merge').addEventListener('click', () => {
@@ -932,12 +1302,11 @@ $('#tx-list').addEventListener('click', (e) => {
   const item = e.target.closest('.tx-item');
   if (!item) return;
   const groupEl = item.closest('.tx-group');
-  const groups = $$('#tx-list .tx-group');
-  const gi = groups.indexOf(groupEl);
-  const items = $$('#tx-list .tx-group')[gi] ? $$('#tx-list .tx-group')[gi].querySelectorAll('.tx-item') : [];
+  const items = groupEl ? groupEl.querySelectorAll('.tx-item') : [];
   const ii = Array.from(items).indexOf(item);
-  const date = tx[gi] && tx[gi].date;
-  if (date !== undefined) openDetail(date, ii);
+  // 直接从 DOM 读日期，不再用 tx[gi] 索引（渲染顺序与数组顺序可能不一致）
+  const date = groupEl && groupEl.dataset.date;
+  if (date) openDetail(date, ii);
 });
 
 /* ================= 主页按钮 ================= */
@@ -954,7 +1323,7 @@ $('#fab-add').addEventListener('click', () => {
 $('#btn-book').addEventListener('click', () => openBookSheet());
 $('#btn-search').addEventListener('click', () => openOverlay('page-search'));
 $('#btn-calendar').addEventListener('click', () => openOverlay('page-calendar'));
-$('#btn-report').addEventListener('click', () => openOverlay('page-yearstat'));
+$('#btn-report').addEventListener('click', () => { renderYearStat(); openOverlay('page-yearstat'); });
 $('#na-back').addEventListener('click', closeOverlay);
 $('#na-manage').addEventListener('click', () => openOverlay('page-types'));
 $('#btn-books-cancel').addEventListener('click', closeOverlay);
@@ -970,7 +1339,7 @@ $('#btn-newtype-save').addEventListener('click', () => {
   renderTypeGrid();
   closeOverlay();
 });
-$('#btn-book-save').addEventListener('click', closeOverlay);
+$('#btn-book-save').addEventListener('click', saveEditBook);
 
 /* ================= 账单详情（res_xv） ================= */
 let detailTx = null;
@@ -1571,6 +1940,22 @@ $$('#page-profile .cell').forEach(c => {
   }
 });
 
+/* 「页面管理」二级菜单：类别管理 / 选项管理 */
+$$('#page-pagemgr .cell').forEach(c => {
+  c.addEventListener('click', () => {
+    const sub = { types: 'page-types', settings: 'page-setting' }[c.dataset.nav];
+    if (sub) openOverlay(sub);
+  });
+});
+
+/* 「安全设置」二级菜单：指纹加密 / 手势密码 */
+$$('#page-security .cell').forEach(c => {
+  c.addEventListener('click', () => {
+    const sub = { finger: 'page-finger', gesture: 'page-gesture' }[c.dataset.sec];
+    if (sub) openOverlay(sub);
+  });
+});
+
 /* ================= Toast ================= */
 let toastEl = null;
 function toast(msg) {
@@ -1669,34 +2054,234 @@ $('#balance-kind-group').addEventListener('click', (e) => {
 
 /* ================= 选择账本弹窗（res_K1） ================= */
 function renderBookSheet() {
-  const books = [
-    { name: '默认账本', icon: 'ic_accounts.png' },
-    { name: '旅行账本', icon: 'ic_plane.png' },
-    { name: '家庭账本', icon: 'cate_home.png' },
-  ];
   $('#book-sheet-list').innerHTML = books.map((b, i) => `
-    <div class="sheet-book-item ${i === state.selectedBook ? 'checked' : ''}" data-i="${i}">
+    <div class="sheet-book-item ${i === state.selectedBook ? 'checked' : ''} ${bookManaging ? 'managing' : ''}" data-i="${i}">
       <span class="cell-icon">${icIcon(b.icon, 'ic20')}</span>
-      <span>${b.name}</span>
+      <span class="book-name">${b.name}</span>
+      <span class="book-manage">
+        <i class="ic ic14 book-manage-del" data-del="${i}" style="--mask:url(assets/icons/ic_close.png)"></i>
+        <i class="ic ic16 book-manage-edit" data-edit="${i}" style="--mask:url(assets/icons/cate_more.png)"></i>
+      </span>
     </div>`).join('');
 }
 
 function openBookSheet() {
+  bookManaging = false;
   renderBookSheet();
   $('#book-sheet').classList.add('show');
 }
 function closeBookSheet() { $('#book-sheet').classList.remove('show'); }
 
+// 上一个月字符串（YYYY-MM）
+function prevMonthStr(m) {
+  const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 2, 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+// 切换账本：切换数据源并刷新各页面（有后端对接层时按账本异步加载）
+async function switchBook(i) {
+  state.selectedBook = i;
+  const b = books[i];
+  tx = b.tx;
+  // 后端对接层可用且该账本有后端 id：异步加载该账本 当前月 + 上月
+  if (window.bookAPI && b.id) {
+    try {
+      const cur = acctYM || (new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0'));
+      const [c, p] = await Promise.all([
+        window.bookAPI.loadLedgerMonth(b.id, cur),
+        window.bookAPI.loadLedgerMonth(b.id, prevMonthStr(cur)),
+      ]);
+      b.tx = c.concat(p);
+      tx = b.tx;
+    } catch (e) { /* 后端不可用保持现状 */ }
+  }
+  renderBookSheet();
+  renderBooks();
+  renderTxList();
+  renderStat();
+  renderCalendar();
+}
+
+// 长按账本 → 进入管理模式（文字抖动 + 显示红叉/三点）
+let bookManaging = false;
+let bookPressTimer = null;
+let suppressBookClick = false;
+$('#book-sheet-list').addEventListener('pointerdown', (e) => {
+  if (bookManaging || !e.target.closest('.sheet-book-item')) return;
+  clearTimeout(bookPressTimer);
+  bookPressTimer = setTimeout(() => {
+    bookManaging = true;
+    suppressBookClick = true;
+    renderBookSheet();
+  }, 600);
+});
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+  document.addEventListener(ev, () => { clearTimeout(bookPressTimer); bookPressTimer = null; }, true));
+
 $('#book-sheet-list').addEventListener('click', (e) => {
+  if (suppressBookClick) { suppressBookClick = false; return; }
+  const delBtn = e.target.closest('.book-manage-del');
+  if (delBtn) { bookManaging = false; confirmDeleteBook(Number(delBtn.dataset.del)); return; }
+  const editBtn = e.target.closest('.book-manage-edit');
+  if (editBtn) { bookManaging = false; closeBookSheet(); openBookEditor(Number(editBtn.dataset.edit), false); return; }
   const item = e.target.closest('.sheet-book-item');
   if (!item) return;
-  state.selectedBook = Number(item.dataset.i);
-  renderBookSheet();
-  toast('已切换到' + item.textContent.trim());
+  if (bookManaging) { bookManaging = false; renderBookSheet(); return; }
+  switchBook(Number(item.dataset.i));
+  toast('已切换到「' + books[state.selectedBook].name + '」');
   setTimeout(closeBookSheet, 500);
 });
-$('#book-sheet-cancel').addEventListener('click', closeBookSheet);
+$('#book-sheet-cancel').addEventListener('click', () => {
+  if (bookManaging) { bookManaging = false; renderBookSheet(); return; }
+  closeBookSheet();
+});
 $('#balance-book-btn').addEventListener('click', openBookSheet);
+
+/* ================= 编辑/新建账本（新建入口 + 长按三点编辑） ================= */
+let editBookMode = 'add';  // add | edit
+let editBookIndex = -1;    // 编辑模式下当前账本索引
+
+function refreshBooks() {
+  renderBookSheet(); renderBooks(); renderMainbook();
+  renderTxList(); renderStat(); renderCalendar();
+}
+
+let editBookOrigin = null; // 打开时的初始值，用于判断是否改动过
+
+// 读取当前表单值
+function bookFormValues() {
+  const iconEl = $('#book-icon-grid .book-icon-opt.selected');
+  return {
+    name: $('#book-name').value.trim(),
+    type: $('#book-type').textContent.replace(' ›', ''),
+    icon: iconEl ? iconEl.dataset.ic : null,
+  };
+}
+
+// 未做修改：只显示"取消"；做了修改：显示"取消 + 保存"
+function updateBookSaveUI() {
+  const cur = bookFormValues();
+  const dirty = !!editBookOrigin && (
+    cur.name !== editBookOrigin.name ||
+    cur.type !== editBookOrigin.type ||
+    (cur.icon !== null && cur.icon !== editBookOrigin.icon)
+  );
+  $('#btn-book-cancel').style.display = 'block';
+  $('#btn-book-save').style.display = dirty ? 'block' : 'none';
+}
+
+// 打开账本编辑器：isNew=true 新建模式，否则编辑 books[idx]
+function openBookEditor(idx, isNew) {
+  editBookMode = isNew ? 'add' : 'edit';
+  editBookIndex = idx;
+  $('#book-editor-title').textContent = isNew ? '新建账本' : '编辑账本';
+  if (isNew) {
+    $('#book-name').value = '';
+    $('#book-type').textContent = '标准账本 ›';
+    renderBookIconGrid('ic_accounts.png');
+    editBookOrigin = { name: '', type: '标准账本', icon: 'ic_accounts.png' };
+  } else {
+    const b = books[idx];
+    $('#book-name').value = b.name;
+    $('#book-type').textContent = (b.type || '标准账本') + ' ›';
+    renderBookIconGrid(b.icon);
+    editBookOrigin = { name: b.name, type: b.type || '标准账本', icon: b.icon };
+  }
+  openOverlay('page-editbook');
+  updateBookSaveUI();
+}
+
+function renderBookIconGrid(sel) {
+  $('#book-icon-grid').innerHTML = BOOK_ICONS.map(ic => `
+    <div class="book-icon-opt ${ic === sel ? 'selected' : ''}" data-ic="${ic}">${icIcon(ic, 'ic22')}</div>`).join('');
+}
+
+// 选择账本弹窗 → "新建账本"入口
+$('#book-sheet-edit').addEventListener('click', () => { closeBookSheet(); openBookEditor(-1, true); });
+
+$('#book-icon-grid').addEventListener('click', (e) => {
+  const o = e.target.closest('.book-icon-opt');
+  if (!o) return;
+  $$('#book-icon-grid .book-icon-opt').forEach(x => x.classList.remove('selected'));
+  o.classList.add('selected');
+  updateBookSaveUI();
+});
+
+// 账本类型选择弹窗
+$('#book-type').addEventListener('click', () => {
+  const cur = $('#book-type').textContent.replace(' ›', '');
+  $('#booktype-list').innerHTML = BOOK_TYPES.map(t => `
+    <div class="sheet-book-item ${t === cur ? 'checked' : ''}" data-t="${t}"><span>${t}</span></div>`).join('');
+  $('#booktype-sheet').classList.add('show');
+});
+$('#booktype-list').addEventListener('click', (e) => {
+  const it = e.target.closest('.sheet-book-item');
+  if (!it) return;
+  $('#book-type').textContent = it.dataset.t + ' ›';
+  $('#booktype-sheet').classList.remove('show');
+  updateBookSaveUI();
+});
+$('#booktype-cancel').addEventListener('click', () => $('#booktype-sheet').classList.remove('show'));
+
+// 顶栏"取消"：放弃本次编辑/新建，直接关闭（返回键 data-back 同样视为取消）
+$('#btn-book-cancel').addEventListener('click', closeOverlay);
+
+// 名称输入变化 → 更新 取消/保存 显示
+$('#book-name').addEventListener('input', updateBookSaveUI);
+
+// 删除账本通用（二次确认弹窗，有后端对接层时走后端级联删除）
+function confirmDeleteBook(i) {
+  const b = books[i];
+  if (!b) return;
+  confirmMsg('删除账本', `确定删除「${b.name}」吗？该账本下的所有账单将一并删除。`, async () => {
+    if (books.length <= 1) { toast('至少保留一个账本'); return; }
+    try {
+      if (window.bookAPI && b.id) await window.bookAPI.deleteLedger(b.id);
+    } catch (e) {
+      toast('后端删除失败：' + ((e && e.message) || '未知错误'));
+      return;
+    }
+    books.splice(i, 1);
+    if (state.selectedBook >= books.length) state.selectedBook = books.length - 1;
+    tx = books[state.selectedBook].tx;
+    refreshBooks();
+    toast('账本已删除');
+  });
+}
+
+// 保存（编辑 / 新建，有后端对接层时走后端持久化）
+async function saveEditBook() {
+  const name = $('#book-name').value.trim();
+  if (!name) { toast('请输入账本名称'); return; }
+  const type = $('#book-type').textContent.replace(' ›', '');
+  const iconEl = $('#book-icon-grid .book-icon-opt.selected');
+  const icon = iconEl ? iconEl.dataset.ic : 'ic_accounts.png';
+  try {
+    if (editBookMode === 'add') {
+      let id;
+      if (window.bookAPI) {
+        const r = await window.bookAPI.createLedger({ name, type, icon });
+        id = r && r.id;
+      }
+      books.push({ id, name, icon, type, tx: [] });
+      state.selectedBook = books.length - 1;
+      tx = books[state.selectedBook].tx;
+      toast('账本「' + name + '」已创建');
+    } else {
+      const b = books[editBookIndex];
+      if (window.bookAPI && b.id) {
+        await window.bookAPI.updateLedger(b.id, { name, type, icon });
+      }
+      b.name = name; b.icon = icon; b.type = type;
+      toast('账本已保存');
+    }
+  } catch (e) {
+    toast('后端操作失败：' + ((e && e.message) || '未知错误'));
+    return;
+  }
+  refreshBooks();
+  closeOverlay();
+}
 
 /* ================= 图片大图查看（res_OH） ================= */
 let picTransform = { rot: 0, flip: false };
@@ -2003,14 +2588,20 @@ $('#btn-month').addEventListener('click', () => {
   $('#ym-sheet').classList.add('show');
   wYear.select(wheelYears.indexOf(wheelYear));
   wMonth.select(wheelMonths.indexOf(wheelMonth));
+  // 明细页：确定后切换到所选年月并过滤账单
+  ymOnOk = () => {
+    acctYM = `${wheelYear}-${String(wheelMonth).padStart(2, '0')}`;
+    $('#month-label').textContent = `${wheelYear}年${wheelMonth}月`;
+    renderTxList();
+  };
 });
+let ymOnOk = null; // 年/月滚轮确定回调（明细页 / 日历共用）
 $('#ym-ok').addEventListener('click', () => {
-  acctYM = `${wheelYear}-${String(wheelMonth).padStart(2, '0')}`;
-  $('#month-label').textContent = `${wheelYear}年${wheelMonth}月`;
+  if (ymOnOk) ymOnOk();
+  ymOnOk = null;
   $('#ym-sheet').classList.remove('show');
-  renderTxList();
 });
-$('#ym-cancel').addEventListener('click', () => $('#ym-sheet').classList.remove('show'));
+$('#ym-cancel').addEventListener('click', () => { ymOnOk = null; $('#ym-sheet').classList.remove('show'); });
 
 /* ================= 图片来源 ================= */
 $$('#pic-sheet .mode-opt').forEach(opt => {

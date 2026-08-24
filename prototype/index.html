@@ -15,7 +15,6 @@
         <button class="icon-btn" id="btn-book" title="账本"><i class="ic ic20" style="--mask:url(assets/icons/ic_book.png)"></i></button>
         <button class="month-btn" id="btn-month"><span id="month-label">2026年8月</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
         <div class="spacer"></div>
-        <button class="icon-btn" id="btn-switch" title="切换账本"><i class="ic ic20" style="--mask:url(assets/icons/ic_switch.png)"></i></button>
         <button class="icon-btn" id="btn-search" title="搜索"><i class="ic ic20" style="--mask:url(assets/icons/ic_search.png)"></i></button>
         <button class="icon-btn" id="btn-calendar" title="日历"><i class="ic ic20" style="--mask:url(assets/icons/ic_calendar.png)"></i></button>
       </div>
@@ -51,11 +50,12 @@
       <span class="period" data-p="year">年</span>
     </div>
     <div class="stat-body" id="stat-body">
+      <div class="sec-title" id="stat-title">统计</div>
       <div class="chart-block" id="trend-chart"></div>
       <div class="sec-title" id="pie-title">消费结构</div>
       <div class="pie-wrap">
         <div class="pie-canvas" id="pie-chart"></div>
-        <div class="pie-hint">支持手指旋转查看，小于2%不会显示</div>
+        <div class="pie-hint" id="pie-hint">支持手指旋转查看，小于2%不会显示</div>
       </div>
       <div class="sec-title" id="list-title">明细</div>
       <div class="stat-list" id="stat-list"></div>
@@ -73,6 +73,53 @@
       <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
       <div class="empty-text">暂无数据</div>
     </div>
+  </div>
+
+  <!-- ============ 页面 5：经济分析（AI 聊天 + 消费者画像） ============ -->
+  <div class="page" id="page-ai">
+    <div class="ai-tabs">
+      <span class="ai-tab" data-ai-tab="profile">消费者画像</span>
+      <span class="ai-tab active" data-ai-tab="chat">AI 分析</span>
+    </div>
+    <div class="ai-pane" id="ai-chat-pane">
+      <div class="ai-chat-tools">
+        <button class="ai-new" id="ai-history">历史</button>
+        <button class="ai-new" id="ai-new">新对话</button>
+      </div>
+      <div class="ai-msgs" id="ai-msgs">
+        <div class="ai-welcome" id="ai-welcome">
+          <i class="ic ic50" style="--mask:url(assets/icons/tab_ai.png);color:var(--primary)"></i>
+          <div class="ai-welcome-title">AI 经济分析师</div>
+          <div class="ai-welcome-sub">我可以帮你分析消费结构、生成消费者画像、给出存钱建议。</div>
+          <div class="ai-sugs" id="ai-sugs">
+            <span class="ai-sug" data-q="分析我最近的消费结构">分析最近的消费结构</span>
+            <span class="ai-sug" data-q="帮我生成消费者画像">生成消费者画像</span>
+            <span class="ai-sug" data-q="给我一些存钱建议">给我存钱建议</span>
+          </div>
+        </div>
+      </div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="ai-input" type="text" placeholder="输入问题…">
+        <button class="ai-send" id="ai-send"><i class="ic ic24" style="--mask:url(assets/icons/ic_chat.png)"></i></button>
+      </div>
+    </div>
+    <div class="ai-pane" id="ai-profile-pane" hidden>
+      <div class="empty-state">
+        <i class="ic ic50" style="--mask:url(assets/icons/ic_empty.png)"></i>
+        <div class="empty-text">消费者画像 · 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 右弹窗：AI 历史对话 ============ -->
+  <div class="ai-history-mask" id="ai-history-mask" hidden></div>
+  <div class="ai-history-panel" id="ai-history-panel">
+    <div class="ai-history-head">
+      <span class="ai-history-head-title">历史对话</span>
+      <button class="ai-history-x" id="ai-history-close">✕</button>
+    </div>
+    <div class="ai-history-list" id="ai-history-list"></div>
+    <div class="ai-history-tip">长按会话可重命名 / 删除</div>
   </div>
 
   <!-- ============ 页面 4：我的（ProfileActivity） ============ -->
@@ -93,15 +140,13 @@
       <div class="cell" data-nav="sync"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_sync.png)"></i></span><span class="cell-name">云备份与恢复</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
-      <div class="cell" data-nav="types"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">类别管理</span><span class="cell-arrow">›</span></div>
-      <div class="cell" data-nav="settings"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_setting.png)"></i></span><span class="cell-name">选项设置</span><span class="cell-arrow">›</span></div>
-      <div class="cell" data-nav="widget"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_widget.png)"></i></span><span class="cell-name">桌面小部件</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="pagemgr"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">页面管理</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
       <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_remind.png)"></i></span><span class="cell-name">记账提醒</span><span class="cell-val">20:00</span><span class="switch on"></span></div>
       <div class="cell" data-nav="export"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_export.png)"></i></span><span class="cell-name">导出Excel</span><span class="cell-arrow">›</span></div>
-      <div class="cell"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_finger.png)"></i></span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
-      <div class="cell" data-nav="gesture"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="security"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">安全设置</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="ai"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_ai.png)"></i></span><span class="cell-name">AI 服务配置</span><span class="cell-arrow">›</span></div>
     </div>
     <div class="group">
       <div class="cell" data-nav="theme"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_theme.png)"></i></span><span class="cell-name">主题设置</span><span class="cell-arrow">›</span></div>
@@ -145,9 +190,7 @@
   <div class="page overlay" id="page-calendar">
     <div class="sub-topbar">
       <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
-      <button class="icon-btn dark" id="cal-prev" title="上一月">‹</button>
       <button class="month-btn dark" id="cal-month-btn"><span id="cal-month-label">2026年8月</span><i class="ic ic10" style="--mask:url(assets/icons/ic_dropdown.png)"></i></button>
-      <button class="icon-btn dark" id="cal-next" title="下一月">›</button>
       <div class="spacer"></div>
       <button class="text-btn dark" id="cal-today">今</button>
       <button class="icon-btn dark" id="cal-add"><i class="ic ic20" style="--mask:url(assets/icons/ic_add.png)"></i></button>
@@ -249,13 +292,15 @@
   <div class="page overlay" id="page-editbook">
     <div class="sub-topbar">
       <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
-      <span class="toolbar-title">编辑账本</span>
+      <span class="toolbar-title" id="book-editor-title">编辑账本</span>
       <div class="spacer"></div>
+      <button class="text-btn dark" id="btn-book-cancel">取消</button>
       <button class="text-btn dark" id="btn-book-save">保存</button>
     </div>
     <div class="form-card">
       <div class="form-row"><span class="form-label">账本名称</span><input class="form-input" id="book-name" placeholder="点此输入..."></div>
       <div class="form-row"><span class="form-label">账本类型</span><span class="form-val" id="book-type">标准账本 ›</span></div>
+      <div class="form-row book-icon-row"><span class="form-label">账本图标</span><div class="book-icon-grid" id="book-icon-grid"></div></div>
     </div>
   </div>
 
@@ -508,6 +553,32 @@
     </div>
   </div>
 
+  <!-- ============ 覆盖页：页面管理（类别管理 / 选项管理 二级入口） ============ -->
+  <div class="page overlay" id="page-pagemgr">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">页面管理</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-nav="types"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/tab_list.png)"></i></span><span class="cell-name">类别管理</span><span class="cell-arrow">›</span></div>
+      <div class="cell" data-nav="settings"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_setting.png)"></i></span><span class="cell-name">选项管理</span><span class="cell-arrow">›</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：安全设置（指纹 / 手势密码） ============ -->
+  <div class="page overlay" id="page-security">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">安全设置</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="group">
+      <div class="cell" data-sec="finger"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_finger.png)"></i></span><span class="cell-name">指纹加密保护</span><span class="switch"></span></div>
+      <div class="cell" data-sec="gesture"><span class="cell-icon"><i class="ic ic22" style="--mask:url(assets/icons/menu_safe.png)"></i></span><span class="cell-name">手势密码保护</span><span class="cell-arrow">›</span></div>
+    </div>
+  </div>
+
   <!-- ============ 覆盖页：手势密码（GesturePwdActivity） ============ -->
   <div class="page overlay" id="page-gesture">
     <div class="sub-topbar">
@@ -520,6 +591,35 @@
       <svg class="gesture-pad" id="gesture-pad" viewBox="0 0 300 300"></svg>
       <button class="btn-primary" id="gesture-reset" style="width:200px">重绘</button>
       <span class="gesture-forgot" id="gesture-forgot">忘记解锁图案？</span>
+    </div>
+  </div>
+
+  <!-- ============ 覆盖页：AI 服务配置（直连 DeepSeek / 平台托管） ============ -->
+  <div class="page overlay" id="page-api-config">
+    <div class="sub-topbar">
+      <button class="icon-btn dark" data-back><i class="ic ic20" style="--mask:url(assets/icons/ic_back.png)"></i></button>
+      <span class="toolbar-title">AI 服务配置</span>
+      <div class="spacer"></div>
+    </div>
+    <div class="aicfg-body">
+      <div class="aicfg-desc">为「经济分析」接入 AI 账单分析。默认直连 DeepSeek（flash 模型），只需填写 API Key 即可使用。</div>
+      <div class="aicfg-mode" id="aicfg-mode">
+        <span class="aicfg-mode-item active" data-mode="direct">直连 DeepSeek</span>
+        <span class="aicfg-mode-item" data-mode="platform">平台托管</span>
+      </div>
+      <div class="aicfg-panel" id="aicfg-panel-direct">
+        <div class="form-row"><span class="form-label">API 地址</span><span class="form-val" id="aicfg-baseurl">https://api.deepseek.com/v1</span></div>
+        <div class="form-row"><span class="form-label">模型</span><span class="form-val" id="aicfg-model">deepseek-v4-flash</span></div>
+        <div class="form-row"><span class="form-label">API Key</span><input class="form-input" id="aicfg-key" type="password" placeholder="粘贴你的 DeepSeek API Key"></div>
+        <div class="aicfg-tip">Key 仅保存在本机浏览器（localStorage），请妥善保管，可随时更换。</div>
+      </div>
+      <div class="aicfg-panel" id="aicfg-panel-platform" hidden>
+        <div class="form-row"><span class="form-label">平台地址</span><input class="form-input" id="aicfg-platform-url" type="text" placeholder="https://admin.example.com"></div>
+        <div class="form-row"><span class="form-label">平台 Token</span><input class="form-input" id="aicfg-platform-token" type="password" placeholder="管理员分配的 Token"></div>
+        <div class="aicfg-tip">平台托管用于后期 VIP/充值计费，后端接口已预留，待管理平台上线后启用。</div>
+      </div>
+      <button class="btn-primary" id="aicfg-save" style="width:100%;margin-top:24px">保存</button>
+      <button class="btn-plain" id="aicfg-reset" style="width:100%;margin-top:10px">恢复默认</button>
     </div>
   </div>
 
@@ -748,7 +848,16 @@
   <div class="sheet" id="book-sheet">
     <div class="sheet-title">选择账本</div>
     <div class="sheet-list" id="book-sheet-list"></div>
+    <div class="book-sheet-edit" id="book-sheet-edit"><i class="ic ic18" style="--mask:url(assets/icons/ic_add.png)"></i><span>新建账本</span></div>
+    <div class="book-sheet-sep"></div>
     <button class="btn-cancel" id="book-sheet-cancel" style="margin:0;border-radius:0;border:none">取消</button>
+  </div>
+
+  <!-- ============ 弹窗：账本类型选择（编辑账本） ============ -->
+  <div class="sheet" id="booktype-sheet">
+    <div class="sheet-title">选择账本类型</div>
+    <div class="sheet-list" id="booktype-list"></div>
+    <button class="btn-cancel" id="booktype-cancel" style="margin:0;border-radius:0;border:none">取消</button>
   </div>
 
   <!-- ============ 覆盖页：注册（LoginActivity 注册流程） ============ -->
@@ -807,18 +916,6 @@
     </div>
   </div>
 
-  <!-- ============ 弹窗：桌面小部件设置（dialog_widget） ============ -->
-  <div class="sheet" id="widget-sheet">
-    <div class="sheet-title">桌面小部件</div>
-    <div class="widget-opts">
-      <div class="widget-row"><span class="wr-label">样式：</span><span class="wr-choice active" data-k="style" data-v="dark">幽暗</span><span class="wr-choice" data-k="style" data-v="light">明亮</span></div>
-      <div class="widget-row"><span class="wr-label">形状：</span><span class="wr-choice active" data-k="shape" data-v="round">圆角</span><span class="wr-choice" data-k="shape" data-v="square">直角</span></div>
-      <div class="widget-row"><span class="wr-label">透明：</span><span class="switch" id="widget-trans"></span></div>
-    </div>
-    <div class="widget-perm">后台弹出界面 权限<br>若点击桌面小部件无响应，请开启此权限</div>
-    <button class="btn-cancel" id="widget-cancel" style="border:none;border-radius:0">取消</button>
-  </div>
-
   <!-- ============ 弹窗：选择主账本（dialog_setmainbook） ============ -->
   <div class="sheet" id="mainbook-sheet">
     <div class="sheet-title">选择主账本</div>
@@ -849,7 +946,8 @@
   <nav class="tabbar">
     <div class="tab active" data-page="page-account"><i class="ic ic24" style="--mask:url(assets/icons/tab_list.png)"></i><span class="tab-name">明细</span></div>
     <div class="tab" data-page="page-stat"><i class="ic ic24" style="--mask:url(assets/icons/tab_stat.png)"></i><span class="tab-name">统计</span></div>
-    <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">经济简讯</span></div>
+    <div class="tab" data-page="page-ai"><i class="ic ic24" style="--mask:url(assets/icons/tab_ai.png)"></i><span class="tab-name">分析</span></div>
+    <div class="tab" data-page="page-pic"><i class="ic ic24" style="--mask:url(assets/icons/tab_pic.png)"></i><span class="tab-name">简讯</span></div>
     <div class="tab" data-page="page-profile"><i class="ic ic24" style="--mask:url(assets/icons/tab_profile.png)"></i><span class="tab-name">我的</span></div>
   </nav>
 
