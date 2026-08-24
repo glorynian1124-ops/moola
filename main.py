@@ -157,6 +157,7 @@ def cmd_web(args) -> None:
 def cmd_feeds_seed(_args) -> None:
     """把 config.yaml 预置源写入 feed_sources。"""
     import yaml
+    db.init_db()  # 幂等建表，避免未 init 时 no such table
     cfg = yaml.safe_load((BASE_DIR / "config.yaml").read_text(encoding="utf-8")) or {}
     sources = cfg.get("feeds", {}).get("sources", [])
     existing = {s["url"] for s in models.list_sources()}
