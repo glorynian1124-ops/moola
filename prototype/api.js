@@ -428,4 +428,63 @@
     },
   };
 
+  /* ---------- 经济简讯：抓取/文章列表/简报 ---------- */
+  async function renderFeeds() {
+    const list = $('#feeds-list');
+    const empty = $('#feeds-empty');
+    if (!list) return;
+    try {
+      const arts = await apiGet('/feeds/articles');
+      list.innerHTML = '';
+      arts.forEach(a => {
+        const item = document.createElement('div');
+        item.className = 'tx-item';
+        item.style.cssText = 'background:#fff;align-items:flex-start';
+        const mid = document.createElement('div');
+        mid.className = 'tx-mid';
+        mid.style.flex = '1';
+        const type = document.createElement('div');
+        type.className = 'tx-type';
+        type.style.whiteSpace = 'normal';
+        type.textContent = a.title || '';
+        const remark = document.createElement('div');
+        remark.className = 'tx-remark';
+        remark.style.cssText = 'white-space:normal;line-height:1.5';
+        remark.textContent = a.summary || '';
+        const time = document.createElement('div');
+        time.className = 'tx-remark';
+        time.style.cssText = 'font-size:11px;color:#999';
+        time.textContent = (a.publish_time || '').slice(0, 16);
+        mid.appendChild(type);
+        mid.appendChild(remark);
+        mid.appendChild(time);
+        item.appendChild(mid);
+        list.appendChild(item);
+      });
+      if (empty) empty.hidden = arts.length > 0;
+    } catch (e) {
+      console.warn('[api.js] 经济简讯加载失败：', e);
+      if (empty) { empty.hidden = false; }
+    }
+  }
+  window.renderFeeds = renderFeeds;
+
+  const btnRefresh = $('#btn-feeds-refresh');
+  if (btnRefresh) btnRefresh.addEventListener('click', async () => {
+    try {
+      const r = await apiPost('/feeds/fetch', {});
+      alert('抓取完成：新增 ' + r.added + ' 篇，跳过 ' + r.skipped + ' 篇');
+      renderFeeds();
+    } catch (e) { alert('抓取失败：' + e.message); }
+  });
+
+  const btnBrief = $('#btn-brief-gen');
+  if (btnBrief) btnBrief.addEventListener('click', async () => {
+    const body = $('#brief-body');
+    try {
+      const r = await apiPost('/feeds/briefing', {});
+      body.textContent = r.briefing;
+    } catch (e) { body.textContent = '生成失败，请先抓取文章，稍后再试'; }
+  });
+
 })();

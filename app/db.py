@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS feed_sources (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     url TEXT NOT NULL UNIQUE,               -- RSS/网页地址
+    category TEXT DEFAULT '',               -- 源分类（财经/科技/生活，可空）
     enabled INTEGER NOT NULL DEFAULT 1,
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
@@ -138,6 +139,8 @@ CREATE TABLE IF NOT EXISTS articles (
     title TEXT NOT NULL,
     url TEXT NOT NULL,
     summary TEXT DEFAULT '',
+    topic TEXT DEFAULT '',                  -- 主题标签（第一版留空，为画像匹配预留）
+    publish_time TEXT DEFAULT '',           -- 文章真实发布时间 ISO 格式
     read INTEGER NOT NULL DEFAULT 0,
     starred INTEGER NOT NULL DEFAULT 0,
     fetched_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
@@ -168,8 +171,15 @@ def init_db() -> None:
         conn.close()
 
 
+def _ensure_column(conn: sqlite3.Connection, table: str, column: str, decl: str) -> None:
+    """若列不存在则补列（SQLite 轻量迁移）。"""
+    cols = [r[1] for r in conn.execute(f"PRAGMA table_info({table})")]
+    if column not in cols:
+        conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
+
+
 def _migrate(conn: sqlite3.Connection) -> None:
-    """轻量迁移：为旧库 ledgers 表补齐 type / icon 列。"""
+    """轻量迁移：为旧库补齐后续新增的列。"""
     cols = {row[1] for row in conn.execute("PRAGMA table_info(ledgers)").fetchall()}
     if "type" not in cols:
         conn.execute(
@@ -179,6 +189,9 @@ def _migrate(conn: sqlite3.Connection) -> None:
         conn.execute(
             "ALTER TABLE ledgers ADD COLUMN icon TEXT NOT NULL DEFAULT 'ic_accounts.png'"
         )
+    _ensure_column(conn, "articles", "topic", "TEXT DEFAULT ''")
+    _ensure_column(conn, "articles", "publish_time", "TEXT DEFAULT ''")
+    _ensure_column(conn, "feed_sources", "category", "TEXT DEFAULT ''")
 
 
 def _seed_ledger(conn: sqlite3.Connection) -> None:

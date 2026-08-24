@@ -150,6 +150,7 @@ function showPage(id) {
   // 覆盖页全屏时隐藏底部导航，避免遮挡内容（如记账键盘的 0/发送键）
   $$('nav.tabbar').forEach(t => { t.style.display = target.classList.contains('overlay') ? 'none' : 'flex'; });
   if (id === 'page-stat') renderStat();
+  if (id === 'page-pic' && window.renderFeeds) window.renderFeeds();
   if (id === 'page-calendar') renderCalendar();
 }
 
@@ -2313,9 +2314,6 @@ $('#viewpic-del').addEventListener('click', () => {
 });
 // 记账页图片按钮 → 大图查看
 $('#btn-pic').addEventListener('click', openViewPic);
-// 图片凭证页空状态点击 → 大图查看
-$('#page-pic .empty-state').addEventListener('click', openViewPic);
-
 /* ================= 注册 / 找回密码 ================= */
 let regCodeSent = false;
 function sendCode(btn) {
