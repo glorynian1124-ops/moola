@@ -40,7 +40,7 @@
 | 日历页 | CalenderActivity (res_7V) | 月历（选中蓝 #108cd4、今天靛蓝）+ 账单绿点标记 + 当日账单列表 |
 | 搜索页 | SearchActivity (res_92) | 账单/类别 Tab + 搜索框 + 搜索按钮 + 按时间/按金额排序 |
 | 年度统计 | MonthStatisticActivity (res_4E) | 年度结余/收入/支出卡片 + 月份收支列表 |
-| 我的 | ProfileActivity + res_tZ | 头像 + 昵称/会员状态 + 开通会员/云备份/类别管理/选项设置/记账提醒/导出/指纹/手势/主题/关于 |
+| 我的 | ProfileActivity + res_tZ | 头像 + 昵称/会员状态 + 开通会员/云备份/页面管理(类别/选项)/记账提醒/导出/安全设置(指纹/手势)/主题/关于 |
 | 管理账本 | ManageBooksActivity (res_0Y) | 账本列表（可勾选）+ 合并/取消 |
 | 编辑账本 | EditBookActivity (res_Ms) | 账本名称/账本类型表单 + 保存 |
 | 类别管理 | ManageAccountTypesActivity (res_sJ) | 支出/收入 Tab + 类别列表 + 导入/新增类别 |

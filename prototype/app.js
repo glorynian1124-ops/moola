@@ -862,6 +862,7 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
       settings: 'page-setting', export: 'page-vip',
       gesture: 'page-gesture', theme: 'page-theme',
       about: 'page-about', ai: 'page-api-config',
+      pagemgr: 'page-pagemgr', security: 'page-security',
     };
     if (nav === 'export') { toast('Excel 导出功能（演示）'); return; }
     if (nav === 'gesture') { openOverlay('page-gesture'); return; }
@@ -1937,6 +1938,22 @@ $$('#page-profile .cell').forEach(c => {
   if (c.querySelector('[style*="menu_finger"]')) {
     c.addEventListener('click', () => openOverlay('page-finger'));
   }
+});
+
+/* 「页面管理」二级菜单：类别管理 / 选项管理 */
+$$('#page-pagemgr .cell').forEach(c => {
+  c.addEventListener('click', () => {
+    const sub = { types: 'page-types', settings: 'page-setting' }[c.dataset.nav];
+    if (sub) openOverlay(sub);
+  });
+});
+
+/* 「安全设置」二级菜单：指纹加密 / 手势密码 */
+$$('#page-security .cell').forEach(c => {
+  c.addEventListener('click', () => {
+    const sub = { finger: 'page-finger', gesture: 'page-gesture' }[c.dataset.sec];
+    if (sub) openOverlay(sub);
+  });
 });
 
 /* ================= Toast ================= */
