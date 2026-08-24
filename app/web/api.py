@@ -468,3 +468,54 @@ def ai_chat():
             pass
 
     return jsonify({"ok": True, "reply": reply})
+
+
+# ---------- 经济简讯（Feedly 模式） ----------
+
+@api.get("/feeds/sources")
+def list_feed_sources():
+    return jsonify(models.list_sources())
+
+
+@api.post("/feeds/sources")
+def add_feed_source():
+    data = request.get_json(force=True)
+    name = data.get("name", "").strip()
+    url = data.get("url", "").strip()
+    if not name or not url:
+        return jsonify({"ok": False, "error": "name 和 url 必填"}), 400
+    ok = models.add_source(name, url)
+    return jsonify({"ok": ok})
+
+
+@api.delete("/feeds/sources/<int:source_id>")
+def delete_feed_source(source_id: int):
+    return jsonify({"ok": models.delete_source(source_id)})
+
+
+@api.post("/feeds/fetch")
+def fetch_feeds():
+    from ..feeds.fetcher import fetch_all
+    return jsonify(fetch_all())
+
+
+@api.get("/feeds/articles")
+def list_feed_articles():
+    date = request.args.get("date", "") or None
+    return jsonify(models.list_articles(date=date, limit=int(request.args.get("limit", 200))))
+
+
+@api.post("/feeds/briefing")
+def make_briefing():
+    from ..feeds.summarizer import generate_briefing
+    text = generate_briefing()
+    if text is None:
+        return jsonify({"ok": False, "error": "今天没有文章"}), 404
+    return jsonify({"ok": True, "briefing": text})
+
+
+@api.get("/feeds/briefing")
+def get_briefing():
+    from ..feeds.summarizer import latest_briefing
+    row = latest_briefing()
+    return jsonify(row) if row else (jsonify({"ok": False}), 404)
