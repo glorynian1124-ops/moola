@@ -938,13 +938,40 @@ window.aiCfg = (function () {
   });
 })();
 
-/* ================= 经济分析（AI 聊天） ================= */
+/* ================= 经济分析（AI 聊天 + 消费者画像） ================= */
 (function initAIChat() {
   const msgs = $('#ai-msgs');
   const input = $('#ai-input');
   const sendBtn = $('#ai-send');
   if (!msgs || !input) return;
   const welcome = $('#ai-welcome');
+
+  /* ---- 会话历史（localStorage；后端接口已预留 window.aiAPI.conversations，待对接） ---- */
+  const HIST_KEY = 'moola.aiHistory';   // [{id,title,time,messages:[{role,content}]}]
+  function loadHist() {
+    try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveHist(list) { localStorage.setItem(HIST_KEY, JSON.stringify(list)); }
+  let convs = loadHist();
+  let curId = null;                       // 当前会话 id
+
+  function curConv() { return convs.find(c => c.id === curId); }
+  function newConv() {
+    convs.unshift({ id: 'c' + Date.now(), title: '新对话', time: Date.now(), messages: [] });
+    saveHist(convs);
+    curId = convs[0].id;
+  }
+  function ensureConv() { if (!curConv()) newConv(); }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g,
+      m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  }
+  function fmtTime(t) {
+    const d = new Date(t);
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getMonth() + 1}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
 
   function addMsg(role, text) {
     const wrap = document.createElement('div');
@@ -958,23 +985,87 @@ window.aiCfg = (function () {
     return bubble;
   }
 
+  // 渲染指定会话的消息到界面
+  function renderMsgs(messages) {
+    $$('#ai-msgs .ai-msg').forEach(m => m.remove());
+    if (!messages || !messages.length) { welcome.hidden = false; return; }
+    welcome.hidden = true;
+    messages.forEach(m => {
+      const b = addMsg(m.role, m.content);
+      if (m.role === 'ai') b.classList.remove('thinking');
+    });
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  // 打开历史列表
+  function openHistory() {
+    const list = $('#ai-history-list');
+    if (!convs.length) {
+      list.innerHTML = '<div class="ai-history-empty">暂无历史对话</div>';
+    } else {
+      list.innerHTML = convs.map(c => `
+        <div class="ai-history-item" data-id="${c.id}">
+          <span class="ai-history-title">${esc(c.title)}</span>
+          <span class="ai-history-time">${fmtTime(c.time)}</span>
+          <button class="ai-history-del" data-id="${c.id}">✕</button>
+        </div>`).join('');
+    }
+    $('#ai-history-sheet').classList.add('show');
+  }
+
   // 快捷提问
   $$('#ai-sugs .ai-sug').forEach(s => {
     s.addEventListener('click', () => { input.value = s.dataset.q; doSend(); });
   });
 
-  // 新对话：清空消息并恢复欢迎语
-  $('#ai-new').addEventListener('click', () => {
-    $$('#ai-msgs .ai-msg').forEach(m => m.remove());
-    welcome.hidden = false;
+  // 新对话：保存当前会话，开新会话并恢复欢迎语
+  $('#ai-new').addEventListener('click', () => { newConv(); renderMsgs([]); });
+
+  // 历史记录窗口
+  $('#ai-history').addEventListener('click', openHistory);
+  $('#ai-history-close').addEventListener('click', () => $('#ai-history-sheet').classList.remove('show'));
+
+  // 历史列表：点击加载会话 / 点 ✕ 删除
+  $('#ai-history-list').addEventListener('click', (e) => {
+    const item = e.target.closest('.ai-history-item');
+    if (!item) return;
+    const del = e.target.closest('.ai-history-del');
+    if (del) {
+      convs = convs.filter(c => c.id !== del.dataset.id);
+      if (curId === del.dataset.id) { curId = null; renderMsgs([]); }
+      saveHist(convs);
+      openHistory();
+      return;
+    }
+    const c = convs.find(x => x.id === item.dataset.id);
+    if (!c) return;
+    curId = c.id;
+    renderMsgs(c.messages);
+    $('#ai-history-sheet').classList.remove('show');
+  });
+
+  // 子 Tab：AI 分析 / 消费者画像
+  $$('#page-ai .ai-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      $$('#page-ai .ai-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      $('#ai-chat-pane').hidden = t.dataset.aiTab !== 'chat';
+      $('#ai-profile-pane').hidden = t.dataset.aiTab !== 'profile';
+    });
   });
 
   function doSend() {
     const text = input.value.trim();
     if (!text) return;
+    ensureConv();
     welcome.hidden = true;
     input.value = '';
+    const conv = curConv();
+    if (conv.title === '新对话') conv.title = text.slice(0, 12);
     addMsg('user', text);
+    conv.messages.push({ role: 'user', content: text });
+    saveHist(convs);
+
     const aiBubble = addMsg('ai', '思考中…');
     aiBubble.classList.add('thinking');
     const ai = window.aiAPI;
@@ -982,6 +1073,8 @@ window.aiCfg = (function () {
     p.then(reply => {
       aiBubble.textContent = reply || '（空回复）';
       aiBubble.classList.remove('thinking');
+      conv.messages.push({ role: 'ai', content: reply || '（空回复）' });
+      saveHist(convs);
     }).catch(err => {
       aiBubble.textContent = '⚠️ ' + (err && err.message ? err.message : 'AI 服务暂不可用');
       aiBubble.classList.remove('thinking');
@@ -990,6 +1083,9 @@ window.aiCfg = (function () {
 
   sendBtn.addEventListener('click', doSend);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') doSend(); });
+
+  // 初始化：无历史则开新会话，否则进入最近会话
+  if (!convs.length) newConv(); else curId = convs[0].id;
 })();
 
 /* ================= 选择主账本弹窗 ================= */

@@ -400,6 +400,29 @@
       const cfg = loadAiCfg();
       return directChat('你好', cfg);
     },
+    /* 会话历史接口（后端待实现；当前前端用 localStorage，对接时切换）
+     * 契约：
+     *   GET    /api/ai/conversations           -> {conversations:[{id,title,updated_at}]}
+     *   GET    /api/ai/conversations/<id>      -> {conversation:{id,title,messages:[{role,content}]}}
+     *   POST   /api/ai/conversations           -> 保存/创建会话
+     *   DELETE /api/ai/conversations/<id>      -> 删除会话
+     * 均失败时返回 null，前端回退 localStorage。 */
+    conversations: {
+      async list() {
+        try { const r = await apiGet('/ai/conversations'); return (r && r.conversations) || null; }
+        catch (e) { return null; }
+      },
+      async get(id) {
+        try { const r = await apiGet('/ai/conversations/' + id); return (r && r.conversation) || null; }
+        catch (e) { return null; }
+      },
+      async save(conv) {
+        try { return await apiPost('/ai/conversations', conv); } catch (e) { return null; }
+      },
+      async remove(id) {
+        try { return await apiDelete('/ai/conversations/' + id); } catch (e) { return null; }
+      },
+    },
   };
 
 })();
