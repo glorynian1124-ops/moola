@@ -1052,7 +1052,7 @@ window.aiCfg = (function () {
     msgs.scrollTop = msgs.scrollHeight;
   }
 
-  // 打开历史列表
+  // 打开/关闭历史右弹窗（从右侧滑入，点击空白遮罩关闭）
   function openHistory() {
     const list = $('#ai-history-list');
     if (!convs.length) {
@@ -1060,12 +1060,22 @@ window.aiCfg = (function () {
     } else {
       list.innerHTML = convs.map(c => `
         <div class="ai-history-item" data-id="${keyOf(c)}">
-          <span class="ai-history-title">${esc(c.title)}</span>
-          <span class="ai-history-time">${fmtTime(c.time)}</span>
-          <button class="ai-history-del" data-id="${keyOf(c)}">✕</button>
+          <div class="ai-history-main">
+            <span class="ai-history-title">${esc(c.title)}</span>
+            <span class="ai-history-time">${fmtTime(c.time)}</span>
+          </div>
+          <div class="ai-history-ops" hidden>
+            <button class="ai-history-rename">重命名</button>
+            <button class="ai-history-del">删除</button>
+          </div>
         </div>`).join('');
     }
-    $('#ai-history-sheet').classList.add('show');
+    $('#ai-history-mask').hidden = false;
+    $('#ai-history-panel').classList.add('show');
+  }
+  function closeHistory() {
+    $('#ai-history-mask').hidden = true;
+    $('#ai-history-panel').classList.remove('show');
   }
 
   // 快捷提问
@@ -1080,27 +1090,86 @@ window.aiCfg = (function () {
     newConv(); renderMsgs([]);
   });
 
-  // 历史记录窗口
+  // 历史右弹窗：打开 / ✕ 关闭 / 点击空白（遮罩）关闭
   $('#ai-history').addEventListener('click', openHistory);
-  $('#ai-history-close').addEventListener('click', () => $('#ai-history-sheet').classList.remove('show'));
+  $('#ai-history-close').addEventListener('click', closeHistory);
+  $('#ai-history-mask').addEventListener('click', closeHistory);
 
-  // 历史列表：点击加载会话 / 点 ✕ 删除（删除同步后端数据库）
+  // 长按会话项 → 展开操作菜单（重命名 / 删除）
+  let pressTimer = null, suppressClick = false;
+  $('#ai-history-list').addEventListener('pointerdown', (e) => {
+    const item = e.target.closest('.ai-history-item');
+    if (!item || e.target.closest('.ai-history-ops')) return;
+    suppressClick = false;
+    pressTimer = setTimeout(() => {
+      $$('.ai-history-item').forEach(i => {
+        i.classList.remove('menu-open');
+        const ops = i.querySelector('.ai-history-ops');
+        if (ops) ops.hidden = true;
+      });
+      item.classList.add('menu-open');
+      const ops = item.querySelector('.ai-history-ops');
+      if (ops) ops.hidden = false;
+      suppressClick = true;                 // 长按展开菜单后，忽略随后触发的 click
+    }, 500);
+  });
+  $('#ai-history-list').addEventListener('pointerup', () => clearTimeout(pressTimer));
+  $('#ai-history-list').addEventListener('pointerleave', () => clearTimeout(pressTimer));
+
+  // 重命名：内联编辑标题，同步后端 + 本地
+  function startRename(id) {
+    const item = [...$$('.ai-history-item')].find(i => i.dataset.id === id);
+    if (!item) return;
+    const titleEl = item.querySelector('.ai-history-title');
+    const input = document.createElement('input');
+    input.className = 'ai-rename-input';
+    input.value = titleEl.textContent;
+    titleEl.replaceWith(input);
+    input.focus(); input.select();
+    let doneFlag = false;
+    const done = () => {
+      if (doneFlag) return;
+      doneFlag = true;
+      const c = convs.find(x => keyOf(x) === id);
+      if (c) {
+        const name = input.value.trim();
+        if (name) c.title = name;
+        if (c.id) {
+          const ai = window.aiAPI;
+          if (ai && ai.conversations) {
+            ai.conversations.save({ id: c.id, title: c.title, messages: c.messages }).catch(() => {});
+          }
+        }
+        saveHist(convs);
+      }
+      openHistory();
+    };
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.stopPropagation(); e.preventDefault(); done(); }
+    });
+    input.addEventListener('blur', done);
+  }
+
+  // 历史列表点击：加载会话 / 重命名 / 删除（删除同步后端数据库）
   $('#ai-history-list').addEventListener('click', async (e) => {
     const item = e.target.closest('.ai-history-item');
     if (!item) return;
     const del = e.target.closest('.ai-history-del');
+    const rename = e.target.closest('.ai-history-rename');
     if (del) {
-      const target = convs.find(x => keyOf(x) === del.dataset.id);
+      const target = convs.find(x => keyOf(x) === item.dataset.id);
       if (target && typeof target.id === 'number') {
         const ai = window.aiAPI;
         if (ai && ai.conversations) ai.conversations.remove(target.id).catch(() => {});
       }
-      convs = convs.filter(x => keyOf(x) !== del.dataset.id);
-      if (curId === del.dataset.id) { curId = null; renderMsgs([]); }
+      convs = convs.filter(x => keyOf(x) !== item.dataset.id);
+      if (curId === item.dataset.id) { curId = null; renderMsgs([]); }
       saveHist(convs);
       openHistory();
       return;
     }
+    if (rename) { startRename(item.dataset.id); return; }
+    if (suppressClick) { suppressClick = false; return; }  // 长按菜单后的点击
     const c = convs.find(x => keyOf(x) === item.dataset.id);
     if (!c) return;
     curId = keyOf(c);
@@ -1113,7 +1182,7 @@ window.aiCfg = (function () {
       }
     }
     renderMsgs(c.messages);
-    $('#ai-history-sheet').classList.remove('show');
+    closeHistory();
   });
 
   // 子 Tab：AI 分析 / 消费者画像

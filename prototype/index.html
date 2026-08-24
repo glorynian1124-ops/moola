@@ -77,18 +77,15 @@
 
   <!-- ============ 页面 5：经济分析（AI 聊天 + 消费者画像） ============ -->
   <div class="page" id="page-ai">
-    <div class="ai-topbar">
-      <span class="toolbar-title">经济分析</span>
-      <div class="ai-topbtns">
+    <div class="ai-tabs">
+      <span class="ai-tab" data-ai-tab="profile">消费者画像</span>
+      <span class="ai-tab active" data-ai-tab="chat">AI 分析</span>
+    </div>
+    <div class="ai-pane" id="ai-chat-pane">
+      <div class="ai-chat-tools">
         <button class="ai-new" id="ai-history">历史</button>
         <button class="ai-new" id="ai-new">新对话</button>
       </div>
-    </div>
-    <div class="ai-tabs">
-      <span class="ai-tab active" data-ai-tab="chat">AI 分析</span>
-      <span class="ai-tab" data-ai-tab="profile">消费者画像</span>
-    </div>
-    <div class="ai-pane" id="ai-chat-pane">
       <div class="ai-msgs" id="ai-msgs">
         <div class="ai-welcome" id="ai-welcome">
           <i class="ic ic50" style="--mask:url(assets/icons/tab_ai.png);color:var(--primary)"></i>
@@ -114,11 +111,15 @@
     </div>
   </div>
 
-  <!-- ============ 弹窗：AI 历史对话 ============ -->
-  <div class="sheet" id="ai-history-sheet">
-    <div class="sheet-title">历史对话</div>
+  <!-- ============ 右弹窗：AI 历史对话 ============ -->
+  <div class="ai-history-mask" id="ai-history-mask" hidden></div>
+  <div class="ai-history-panel" id="ai-history-panel">
+    <div class="ai-history-head">
+      <span class="ai-history-head-title">历史对话</span>
+      <button class="ai-history-x" id="ai-history-close">✕</button>
+    </div>
     <div class="ai-history-list" id="ai-history-list"></div>
-    <button class="btn-cancel" id="ai-history-close" style="border:none;border-radius:0">关闭</button>
+    <div class="ai-history-tip">长按会话可重命名 / 删除</div>
   </div>
 
   <!-- ============ 页面 4：我的（ProfileActivity） ============ -->
