@@ -480,8 +480,10 @@ def list_feed_sources():
 @api.post("/feeds/sources")
 def add_feed_source():
     data = request.get_json(force=True)
-    name = data.get("name", "").strip()
-    url = data.get("url", "").strip()
+    if not isinstance(data, dict):
+        return jsonify({"ok": False, "error": "请求体必须为 JSON 对象"}), 400
+    name = str(data.get("name") or "").strip()
+    url = str(data.get("url") or "").strip()
     if not name or not url:
         return jsonify({"ok": False, "error": "name 和 url 必填"}), 400
     ok = models.add_source(name, url)
@@ -507,10 +509,14 @@ def list_feed_articles():
 
 @api.post("/feeds/briefing")
 def make_briefing():
+    from datetime import date
     from ..feeds.summarizer import generate_briefing
-    text = generate_briefing()
-    if text is None:
+    day = date.today().isoformat()
+    if not models.list_articles(date=day, limit=1):
         return jsonify({"ok": False, "error": "今天没有文章"}), 404
+    text = generate_briefing(day)
+    if text is None:
+        return jsonify({"ok": False, "error": "简报生成失败（LLM 未配置或已达限流）"}), 502
     return jsonify({"ok": True, "briefing": text})
 
 
