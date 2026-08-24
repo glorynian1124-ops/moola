@@ -2314,7 +2314,6 @@ $('#viewpic-del').addEventListener('click', () => {
 });
 // 记账页图片按钮 → 大图查看
 $('#btn-pic').addEventListener('click', openViewPic);
-// 图片凭证页空状态点击 → 大图查看
 /* ================= 注册 / 找回密码 ================= */
 let regCodeSent = false;
 function sendCode(btn) {

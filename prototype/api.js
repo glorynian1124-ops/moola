@@ -435,17 +435,36 @@
     if (!list) return;
     try {
       const arts = await apiGet('/feeds/articles');
-      list.innerHTML = arts.length ? arts.map(a => `
-        <div class="tx-item" style="background:#fff;align-items:flex-start">
-          <div class="tx-mid" style="flex:1">
-            <div class="tx-type" style="white-space:normal">${a.title || ''}</div>
-            <div class="tx-remark" style="white-space:normal;line-height:1.5">${a.summary || ''}</div>
-            <div class="tx-remark" style="font-size:11px;color:#999">${(a.publish_time || '').slice(0, 16)}</div>
-          </div>
-        </div>`).join('') : '';
+      list.innerHTML = '';
+      arts.forEach(a => {
+        const item = document.createElement('div');
+        item.className = 'tx-item';
+        item.style.cssText = 'background:#fff;align-items:flex-start';
+        const mid = document.createElement('div');
+        mid.className = 'tx-mid';
+        mid.style.flex = '1';
+        const type = document.createElement('div');
+        type.className = 'tx-type';
+        type.style.whiteSpace = 'normal';
+        type.textContent = a.title || '';
+        const remark = document.createElement('div');
+        remark.className = 'tx-remark';
+        remark.style.cssText = 'white-space:normal;line-height:1.5';
+        remark.textContent = a.summary || '';
+        const time = document.createElement('div');
+        time.className = 'tx-remark';
+        time.style.cssText = 'font-size:11px;color:#999';
+        time.textContent = (a.publish_time || '').slice(0, 16);
+        mid.appendChild(type);
+        mid.appendChild(remark);
+        mid.appendChild(time);
+        item.appendChild(mid);
+        list.appendChild(item);
+      });
       if (empty) empty.hidden = arts.length > 0;
     } catch (e) {
       console.warn('[api.js] 经济简讯加载失败：', e);
+      if (empty) { empty.hidden = false; }
     }
   }
   window.renderFeeds = renderFeeds;
