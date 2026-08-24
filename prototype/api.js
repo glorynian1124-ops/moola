@@ -377,15 +377,18 @@
   // 对外 AI 接口
   window.aiAPI = {
     // 聊天：后端代理优先，不可用时直连 DeepSeek
-    async chat(text) {
+    // conversationId：后端 /api/ai/chat 会把本轮问答自动落库（可回溯）
+    async chat(text, conversationId) {
       const cfg = loadAiCfg();
       // 1) 后端代理（正式路径）
       try {
-        const r = await apiPost('/ai/chat', {
+        const body = {
           messages: [{ role: 'user', content: text }],
           model: cfg.model || 'deepseek-v4-flash',
           mode: cfg.mode || 'direct',
-        });
+        };
+        if (conversationId) body.conversation_id = conversationId;
+        const r = await apiPost('/ai/chat', body);
         if (r && typeof r.reply === 'string' && r.reply) return r.reply;
         if (r && r.ok === false) throw new Error(r.error || 'AI 服务返回错误');
         // 后端在但格式不符 → 走直连兜底

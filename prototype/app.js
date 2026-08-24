@@ -946,22 +946,77 @@ window.aiCfg = (function () {
   if (!msgs || !input) return;
   const welcome = $('#ai-welcome');
 
-  /* ---- 会话历史（localStorage；后端接口已预留 window.aiAPI.conversations，待对接） ---- */
-  const HIST_KEY = 'moola.aiHistory';   // [{id,title,time,messages:[{role,content}]}]
+  /* ---- 会话历史：后端数据库存储（可回溯），localStorage 仅作离线兜底 ---- */
+  const HIST_KEY = 'moola.aiHistory';   // [{_key,id,title,time,messages:[{role,content}]}]
   function loadHist() {
     try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch (e) { return []; }
   }
   function saveHist(list) { localStorage.setItem(HIST_KEY, JSON.stringify(list)); }
-  let convs = loadHist();
-  let curId = null;                       // 当前会话 id
+  let convs = [];
+  let curId = null;                       // 当前会话 _key
 
-  function curConv() { return convs.find(c => c.id === curId); }
+  // 会话键：_key 前端唯一标识；id 后端会话 id（null=尚未同步到后端）
+  function keyOf(c) { return c && (c._key || c.id); }
+  function curConv() { return convs.find(c => keyOf(c) === curId); }
+
   function newConv() {
-    convs.unshift({ id: 'c' + Date.now(), title: '新对话', time: Date.now(), messages: [] });
-    saveHist(convs);
-    curId = convs[0].id;
+    const c = { _key: 'c' + Date.now(), id: null, title: '新对话', time: Date.now(), messages: [] };
+    convs.unshift(c);
+    saveHist(convs);                      // 本地镜像
+    curId = c._key;
   }
   function ensureConv() { if (!curConv()) newConv(); }
+
+  // 保存会话到后端数据库（失败回退 localStorage）
+  async function persist(conv) {
+    const ai = window.aiAPI;
+    if (ai && ai.conversations && conv) {
+      try {
+        const payload = { title: conv.title, messages: conv.messages };
+        if (conv.id) payload.id = conv.id;
+        const r = await ai.conversations.save(payload);
+        if (r && typeof r.id === 'number') {
+          if (!conv.id) {                    // 首次落库：回填后端 id
+            conv.id = r.id;
+            const nk = 'b' + r.id;
+            if (curId === conv._key) curId = nk;
+            conv._key = nk;
+          }
+          saveHist(convs);
+          return true;
+        }
+      } catch (e) { /* fallthrough */ }
+    }
+    saveHist(convs);                        // 后端不可用 → 本地兜底
+    return false;
+  }
+
+  // 初始化：后端优先拉会话列表，不可达则本地兜底
+  async function initConvs() {
+    const ai = window.aiAPI;
+    let list = null;
+    if (ai && ai.conversations) {
+      try { list = await ai.conversations.list(); } catch (e) { list = null; }
+    }
+    if (Array.isArray(list)) {
+      convs = list.map(c => ({
+        _key: 'b' + c.id, id: c.id,
+        title: c.title || '新对话',
+        time: Date.parse(c.updated_at || c.created_at) || Date.now(),
+        messages: [],
+      }));
+    } else {
+      // 本地兜底（兼容旧 localStorage 格式）
+      convs = loadHist().map(c => ({
+        _key: c._key || c.id,
+        id: (typeof c.id === 'number') ? c.id : null,
+        title: c.title || '新对话',
+        time: c.time || Date.now(),
+        messages: c.messages || [],
+      }));
+    }
+    if (!convs.length) newConv(); else curId = keyOf(convs[0]);
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g,
@@ -1004,10 +1059,10 @@ window.aiCfg = (function () {
       list.innerHTML = '<div class="ai-history-empty">暂无历史对话</div>';
     } else {
       list.innerHTML = convs.map(c => `
-        <div class="ai-history-item" data-id="${c.id}">
+        <div class="ai-history-item" data-id="${keyOf(c)}">
           <span class="ai-history-title">${esc(c.title)}</span>
           <span class="ai-history-time">${fmtTime(c.time)}</span>
-          <button class="ai-history-del" data-id="${c.id}">✕</button>
+          <button class="ai-history-del" data-id="${keyOf(c)}">✕</button>
         </div>`).join('');
     }
     $('#ai-history-sheet').classList.add('show');
@@ -1018,28 +1073,45 @@ window.aiCfg = (function () {
     s.addEventListener('click', () => { input.value = s.dataset.q; doSend(); });
   });
 
-  // 新对话：保存当前会话，开新会话并恢复欢迎语
-  $('#ai-new').addEventListener('click', () => { newConv(); renderMsgs([]); });
+  // 新对话：先落库当前会话，再开新会话并恢复欢迎语
+  $('#ai-new').addEventListener('click', () => {
+    const cur = curConv();
+    if (cur && cur.messages.length) persist(cur);
+    newConv(); renderMsgs([]);
+  });
 
   // 历史记录窗口
   $('#ai-history').addEventListener('click', openHistory);
   $('#ai-history-close').addEventListener('click', () => $('#ai-history-sheet').classList.remove('show'));
 
-  // 历史列表：点击加载会话 / 点 ✕ 删除
-  $('#ai-history-list').addEventListener('click', (e) => {
+  // 历史列表：点击加载会话 / 点 ✕ 删除（删除同步后端数据库）
+  $('#ai-history-list').addEventListener('click', async (e) => {
     const item = e.target.closest('.ai-history-item');
     if (!item) return;
     const del = e.target.closest('.ai-history-del');
     if (del) {
-      convs = convs.filter(c => c.id !== del.dataset.id);
+      const target = convs.find(x => keyOf(x) === del.dataset.id);
+      if (target && typeof target.id === 'number') {
+        const ai = window.aiAPI;
+        if (ai && ai.conversations) ai.conversations.remove(target.id).catch(() => {});
+      }
+      convs = convs.filter(x => keyOf(x) !== del.dataset.id);
       if (curId === del.dataset.id) { curId = null; renderMsgs([]); }
       saveHist(convs);
       openHistory();
       return;
     }
-    const c = convs.find(x => x.id === item.dataset.id);
+    const c = convs.find(x => keyOf(x) === item.dataset.id);
     if (!c) return;
-    curId = c.id;
+    curId = keyOf(c);
+    // 后端会话消息懒加载（回溯完整对话）
+    if (c.id && (!c.messages || !c.messages.length)) {
+      const ai = window.aiAPI;
+      if (ai && ai.conversations) {
+        const conv = await ai.conversations.get(c.id);
+        if (conv && Array.isArray(conv.messages)) c.messages = conv.messages;
+      }
+    }
     renderMsgs(c.messages);
     $('#ai-history-sheet').classList.remove('show');
   });
@@ -1064,28 +1136,32 @@ window.aiCfg = (function () {
     if (conv.title === '新对话') conv.title = text.slice(0, 12);
     addMsg('user', text);
     conv.messages.push({ role: 'user', content: text });
-    saveHist(convs);
+    saveHist(convs);                       // 本地镜像
 
     const aiBubble = addMsg('ai', '思考中…');
     aiBubble.classList.add('thinking');
     const ai = window.aiAPI;
-    const p = ai && ai.chat ? ai.chat(text) : Promise.reject(new Error('AI 服务未接入'));
-    p.then(reply => {
+    // 携带 conversation_id：后端 /api/ai/chat 转发并自动落库（可回溯）
+    const p = ai && ai.chat
+      ? ai.chat(text, conv.id)
+      : Promise.reject(new Error('AI 服务未接入'));
+    p.then(async reply => {
       aiBubble.textContent = reply || '（空回复）';
       aiBubble.classList.remove('thinking');
       conv.messages.push({ role: 'ai', content: reply || '（空回复）' });
-      saveHist(convs);
+      await persist(conv);                 // 全量快照落库（后端优先，本地兜底）
     }).catch(err => {
       aiBubble.textContent = '⚠️ ' + (err && err.message ? err.message : 'AI 服务暂不可用');
       aiBubble.classList.remove('thinking');
+      persist(conv);                       // 失败也保存 user 消息
     }).then(() => { msgs.scrollTop = msgs.scrollHeight; });
   }
 
   sendBtn.addEventListener('click', doSend);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') doSend(); });
 
-  // 初始化：无历史则开新会话，否则进入最近会话
-  if (!convs.length) newConv(); else curId = convs[0].id;
+  // 初始化：后端拉历史会话；不可达则本地兜底；无会话开新对话
+  initConvs();
 })();
 
 /* ================= 选择主账本弹窗 ================= */
