@@ -864,7 +864,6 @@ $$('#page-profile .cell[data-nav]').forEach(cell => {
       about: 'page-about', ai: 'page-api-config',
     };
     if (nav === 'export') { toast('Excel 导出功能（演示）'); return; }
-    if (nav === 'widget') { $('#widget-sheet').classList.add('show'); return; }
     if (nav === 'gesture') { openOverlay('page-gesture'); return; }
     if (map[nav]) openOverlay(map[nav]);
   });
@@ -992,16 +991,6 @@ window.aiCfg = (function () {
   sendBtn.addEventListener('click', doSend);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') doSend(); });
 })();
-
-/* ================= 小部件设置弹窗 ================= */
-$$('#widget-sheet .wr-choice').forEach(c => {
-  c.addEventListener('click', () => {
-    $$(`#widget-sheet .wr-choice[data-k="${c.dataset.k}"]`).forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-  });
-});
-$('#widget-trans').addEventListener('click', function () { this.classList.toggle('on'); });
-$('#widget-cancel').addEventListener('click', () => $('#widget-sheet').classList.remove('show'));
 
 /* ================= 选择主账本弹窗 ================= */
 function renderMainbook() {

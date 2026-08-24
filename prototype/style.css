@@ -1092,23 +1092,6 @@ body {
 }
 .year-month-card.active { background: var(--primary); color: #fff; }
 
-/* ============ 小部件设置弹窗 ============ */
-.widget-opts { padding: 5px 20px 0; }
-.widget-row {
-  display: flex; align-items: center; gap: 10px;
-  min-height: 50px; font-size: 16px; color: var(--ink-4);
-  border-bottom: 1px solid var(--sep);
-}
-.wr-choice {
-  padding: 4px 16px; border-radius: 13px; font-size: 14px;
-  background: #e2e2e2; color: var(--ink-4); cursor: pointer;
-}
-.wr-choice.active { background: var(--primary); color: #fff; }
-.widget-perm {
-  padding: 12px 20px 14px; font-size: 13px; color: var(--ink-9);
-  line-height: 1.6; text-align: center;
-}
-
 /* ============ 主账本弹窗 ============ */
 .mainbook-tip {
   text-align: center; font-size: 13px; color: var(--ink-9);
