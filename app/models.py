@@ -656,3 +656,104 @@ def delete_ai_key(key_id: int) -> bool:
         return cur.rowcount > 0
     finally:
         conn.close()
+
+
+# ---------- AI 聊天会话 ai_conversations / ai_messages（经济分析 · 可回溯） ----------
+
+def list_ai_conversations(limit: int = 100) -> list[dict]:
+    """会话列表（不含消息体）：id / title / created_at / updated_at，按最近更新倒序。"""
+    conn = get_conn()
+    try:
+        return [dict(r) for r in conn.execute(
+            "SELECT id, title, created_at, updated_at FROM ai_conversations "
+            "ORDER BY updated_at DESC, id DESC LIMIT ?", (limit,)
+        ).fetchall()]
+    finally:
+        conn.close()
+
+
+def get_ai_conversation(conv_id: int) -> Optional[dict]:
+    """会话详情：{id, title, created_at, updated_at, messages:[{role, content}]}。"""
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            "SELECT id, title, created_at, updated_at FROM ai_conversations "
+            "WHERE id = ?", (conv_id,),
+        ).fetchone()
+        if not row:
+            return None
+        conv = dict(row)
+        msgs = conn.execute(
+            "SELECT role, content FROM ai_messages "
+            "WHERE conversation_id = ? ORDER BY id", (conv_id,)
+        ).fetchall()
+        conv["messages"] = [dict(m) for m in msgs]
+        return conv
+    finally:
+        conn.close()
+
+
+def save_ai_conversation(
+    conv_id: Optional[int] = None,
+    title: Optional[str] = None,
+    messages: Optional[list] = None,
+) -> Optional[int]:
+    """保存会话快照：
+    - conv_id=None → 新建会话，返回新 id
+    - conv_id 存在 → 更新 title（提供时）并按 messages 重建消息（快照替换）
+    - conv_id 不存在 → 返回 None
+    """
+    conn = get_conn()
+    try:
+        if conv_id is None:
+            cur = conn.execute(
+                "INSERT INTO ai_conversations(title) VALUES(?)", (title or "新对话",)
+            )
+            conv_id = cur.lastrowid
+        else:
+            if not conn.execute(
+                "SELECT id FROM ai_conversations WHERE id = ?", (conv_id,)
+            ).fetchone():
+                return None
+            if title:
+                conn.execute(
+                    "UPDATE ai_conversations SET title = ?, "
+                    "updated_at = datetime('now', 'localtime') WHERE id = ?",
+                    (title, conv_id),
+                )
+        if messages is not None:
+            conn.execute(
+                "DELETE FROM ai_messages WHERE conversation_id = ?", (conv_id,)
+            )
+            for m in messages:
+                role = str((m or {}).get("role") or "user").strip()
+                content = str((m or {}).get("content") or "").strip()
+                if role in ("user", "ai") and content:
+                    conn.execute(
+                        "INSERT INTO ai_messages(conversation_id, role, content) "
+                        "VALUES(?, ?, ?)", (conv_id, role, content),
+                    )
+            conn.execute(
+                "UPDATE ai_conversations SET updated_at = datetime('now', 'localtime') "
+                "WHERE id = ?", (conv_id,)
+            )
+        conn.commit()
+        return conv_id
+    finally:
+        conn.close()
+
+
+def delete_ai_conversation(conv_id: int) -> bool:
+    """删除会话及其全部消息（显式级联，不依赖外键开关）。"""
+    conn = get_conn()
+    try:
+        if not conn.execute(
+            "SELECT id FROM ai_conversations WHERE id = ?", (conv_id,)
+        ).fetchone():
+            return False
+        conn.execute("DELETE FROM ai_messages WHERE conversation_id = ?", (conv_id,))
+        cur = conn.execute("DELETE FROM ai_conversations WHERE id = ?", (conv_id,))
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()

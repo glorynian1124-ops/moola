@@ -104,6 +104,24 @@ CREATE TABLE IF NOT EXISTS ai_keys (
     updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
+-- AI 聊天会话（经济分析 · 可回溯存储）
+CREATE TABLE IF NOT EXISTS ai_conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL DEFAULT '新对话',
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+);
+
+-- AI 聊天消息（会话内逐条）
+CREATE TABLE IF NOT EXISTS ai_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id INTEGER NOT NULL REFERENCES ai_conversations(id) ON DELETE CASCADE,
+    role TEXT NOT NULL,                     -- user | ai
+    content TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+);
+CREATE INDEX IF NOT EXISTS idx_ai_msg_conv ON ai_messages(conversation_id);
+
 -- 订阅源（Feedly 模式，Phase 4）
 CREATE TABLE IF NOT EXISTS feed_sources (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

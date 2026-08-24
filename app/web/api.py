@@ -2,6 +2,7 @@
 
 前缀 /api。所有金额 amount：负=支出，正=收入；时间 trans_time: YYYY-MM-DD HH:MM:SS。
 """
+import os
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -353,3 +354,117 @@ def delete_ai_key(key_id: int):
     ok = models.delete_ai_key(key_id)
     return (jsonify({"ok": True}) if ok
             else (jsonify({"ok": False, "error": "Key 不存在"}), 404))
+
+
+# ---------- AI 聊天会话（经济分析 · 可回溯存储） ----------
+
+@api.get("/ai/conversations")
+def list_ai_conversations():
+    """会话列表：{conversations:[{id,title,created_at,updated_at}]}。"""
+    return jsonify({"conversations": models.list_ai_conversations()})
+
+
+@api.get("/ai/conversations/<int:conv_id>")
+def get_ai_conversation(conv_id: int):
+    """会话详情：{conversation:{id,title,created_at,updated_at,messages:[{role,content}]}}。"""
+    row = models.get_ai_conversation(conv_id)
+    if not row:
+        return jsonify({"ok": False, "error": "会话不存在"}), 404
+    return jsonify({"conversation": row})
+
+
+@api.post("/ai/conversations")
+def save_ai_conversation():
+    """创建/保存会话快照。body: {id?, title?, messages?:[{role,content}]}
+    - 无 id → 新建会话；有 id → 更新 title 并按 messages 重建消息（快照替换）。"""
+    data = request.get_json(force=True)
+    conv_id = data.get("id")
+    if conv_id is not None:
+        try:
+            conv_id = int(conv_id)
+        except (TypeError, ValueError):
+            return jsonify({"ok": False, "error": "id 必须为整数"}), 400
+    messages = data.get("messages")
+    if messages is not None and not isinstance(messages, list):
+        return jsonify({"ok": False, "error": "messages 必须为数组"}), 400
+    new_id = models.save_ai_conversation(
+        conv_id=conv_id, title=data.get("title"), messages=messages)
+    if new_id is None:
+        return jsonify({"ok": False, "error": "会话不存在"}), 404
+    return jsonify({
+        "ok": True, "id": new_id,
+        "conversation": models.get_ai_conversation(new_id),
+    }), 201
+
+
+@api.delete("/ai/conversations/<int:conv_id>")
+def delete_ai_conversation(conv_id: int):
+    ok = models.delete_ai_conversation(conv_id)
+    return (jsonify({"ok": True}) if ok
+            else (jsonify({"ok": False, "error": "会话不存在"}), 404))
+
+
+# ---------- AI 聊天代理（后端转发 DeepSeek + 自动落库） ----------
+
+@api.post("/ai/chat")
+def ai_chat():
+    """后端代理：统一转发到 DeepSeek（Key 不出现在前端）。
+    body: {messages:[{role,content}], model?, conversation_id?}
+    - 带 conversation_id 且会话存在时，自动把 user 提问 + AI 回复追加落库（可回溯）。
+    返回 {ok:true, reply}。"""
+    import requests  # noqa: E402
+
+    data = request.get_json(force=True)
+    messages = data.get("messages")
+    if not isinstance(messages, list) or not messages:
+        return jsonify({"ok": False, "error": "messages 必填且为非空数组"}), 400
+    user_msgs = [m for m in messages if (m or {}).get("role") == "user"]
+    if not user_msgs:
+        return jsonify({"ok": False, "error": "至少需要一条 user 消息"}), 400
+    prompt = str(user_msgs[-1].get("content") or "").strip()
+    if not prompt:
+        return jsonify({"ok": False, "error": "消息内容为空"}), 400
+
+    # 取 Key：ai_keys 表（启用）→ 环境变量 MOOLA_API_KEY → config.yaml
+    key_row = models.get_active_ai_key("deepseek")
+    api_key = key_row["api_key"] if key_row else ""
+    base_url = (key_row["base_url"] if key_row else "https://api.deepseek.com/v1").rstrip("/")
+    model = str(data.get("model") or (key_row["model"] if key_row else "deepseek-v4-flash"))
+    if not api_key:
+        api_key = os.environ.get("MOOLA_API_KEY", "")
+    if not api_key:
+        from ..analyzer.classify import _load_config
+        api_key = str((_load_config().get("llm") or {}).get("api_key") or "")
+    if not api_key:
+        return jsonify({"ok": False, "error": "未配置 API Key（请设 MOOLA_API_KEY 或在 ai_keys 表配置）"}), 400
+
+    try:
+        resp = requests.post(
+            base_url + "/chat/completions",
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={"model": model, "messages": messages, "stream": False},
+            timeout=60,
+        )
+        resp.raise_for_status()
+        reply = resp.json()["choices"][0]["message"]["content"]
+    except Exception as e:  # noqa: BLE001
+        return jsonify({"ok": False, "error": f"AI 服务调用失败：{e}"}), 502
+
+    # 自动落库：带 conversation_id 且存在 → 追加 user 提问 + AI 回复
+    conv_id = data.get("conversation_id")
+    if conv_id is not None:
+        try:
+            conv_id = int(conv_id)
+            conv = models.get_ai_conversation(conv_id)
+            if conv:
+                models.save_ai_conversation(
+                    conv_id=conv_id,
+                    messages=conv["messages"] + [
+                        {"role": "user", "content": prompt},
+                        {"role": "ai", "content": reply},
+                    ],
+                )
+        except Exception:  # noqa: BLE001 —— 落库失败不影响回复
+            pass
+
+    return jsonify({"ok": True, "reply": reply})
