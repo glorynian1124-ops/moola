@@ -101,3 +101,26 @@ def test_entry_to_article_picks_fields():
     assert got["summary"] == "简介"
     assert got["topic"] == ""
     assert "publish_time" in got
+
+
+def test_entry_to_article_fallbacks():
+    from app.feeds.fetcher import entry_to_article
+
+    class E:
+        id = "http://a.com/only-id"
+        description = "只有描述"
+
+    got = entry_to_article(E(), 1)
+    assert got["url"] == "http://a.com/only-id"
+    assert got["summary"] == "只有描述"
+    assert got["title"] == ""
+
+
+def test_entry_to_article_no_url():
+    from app.feeds.fetcher import entry_to_article
+
+    class E:
+        title = "无链接"
+
+    got = entry_to_article(E(), 1)
+    assert got["url"] == ""

@@ -16,8 +16,8 @@ def entry_to_article(entry, source_id: int) -> dict:
     published = ""
     if getattr(entry, "published_parsed", None):
         published = time.strftime("%Y-%m-%d %H:%M:%S", entry.published_parsed)
-    else:
-        published = getattr(entry, "published", "") or ""
+    elif getattr(entry, "updated_parsed", None):
+        published = time.strftime("%Y-%m-%d %H:%M:%S", entry.updated_parsed)
     return {
         "source_id": source_id,
         "title": title,
@@ -34,6 +34,9 @@ def fetch_source(source: dict) -> tuple[int, int]:
         parsed = feedparser.parse(source["url"])
     except Exception as e:  # noqa: BLE001 —— 单个源失败不阻断
         print(f"  ⚠️ 源「{source['name']}」抓取失败：{e}")
+        return 0, 0
+    if parsed.get("bozo"):
+        print(f"  ⚠️ 源「{source['name']}」解析异常：{parsed.get('bozo_exception')}")
         return 0, 0
     added = skipped = 0
     for entry in parsed.entries:
