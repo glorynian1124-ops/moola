@@ -1253,11 +1253,17 @@ body {
 }
 .ai-history-panel {
   position: absolute; top: 0; right: 0; bottom: 0; width: 84%; max-width: 340px;
-  background: #fff; z-index: 160; display: flex; flex-direction: column;
-  transform: translateX(100%); transition: transform 0.25s ease;
+  background: #fff; z-index: 160; display: none; flex-direction: column;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
 }
-.ai-history-panel.show { transform: translateX(0); }
+.ai-history-panel.show {
+  display: flex;
+  animation: aiSlideIn 0.25s ease;
+}
+@keyframes aiSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
 .ai-history-head {
   height: var(--topbar-h); display: flex; align-items: center;
   padding: 0 12px 0 16px; border-bottom: 1px solid var(--sep);
