@@ -77,16 +77,23 @@ def build_briefing_prompt(articles: list[dict]) -> str:
 
 
 def generate_briefing(day: Optional[str] = None) -> Optional[str]:
-    """生成某天简报并存入 analysis_reports；返回汇总文本，失败返回 None。"""
+    """生成某天简报并存入 analysis_reports；返回汇总文本，失败返回 None。
+
+    若指定日无文章，自动回退到「最近有文章的那天」，避免当天源未更新时生成失败。
+    """
     day = day or date.today().isoformat()
     articles = models.list_articles(date=day, limit=50)
+    if not articles:
+        latest = models.list_articles(limit=1)
+        if not latest or not latest[0].get("publish_time"):
+            return None
+        day = latest[0]["publish_time"][:10]
+        articles = models.list_articles(date=day, limit=50)
     if not articles:
         return None
     if not _api_key():
         return None
-    limit = int(_load_config().get("llm", {}).get("max_calls_per_day", 30))
-    if not _LIMITER.acquire(limit):
-        return None
+    # 简报是用户手动触发的低频操作，不占用「AI 摘要」的每日配额
     prompt = build_briefing_prompt(articles)
     ans = _llm_chat([{"role": "user", "content": prompt}], max_tokens=400)
     if ans:

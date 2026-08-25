@@ -509,13 +509,11 @@ def list_feed_articles():
 
 @api.post("/feeds/briefing")
 def make_briefing():
-    from datetime import date
     from ..feeds.summarizer import generate_briefing
-    day = date.today().isoformat()
-    if not models.list_articles(date=day, limit=1):
-        return jsonify({"ok": False, "error": "今天没有文章"}), 404
-    text = generate_briefing(day)
+    text = generate_briefing()
     if text is None:
+        if not models.list_articles(limit=1):
+            return jsonify({"ok": False, "error": "还没有任何文章，请先抓取"}), 404
         return jsonify({"ok": False, "error": "简报生成失败（LLM 未配置或已达限流）"}), 502
     return jsonify({"ok": True, "briefing": text})
 

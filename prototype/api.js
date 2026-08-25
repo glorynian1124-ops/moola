@@ -429,6 +429,13 @@
   };
 
   /* ---------- 经济简讯：抓取/文章列表/简报 ---------- */
+  function stripHtml(html) {
+    if (!html) return '';
+    const div = document.createElement('div');
+    div.innerHTML = html; // 仅解析提取纯文本，不插入文档，无执行风险
+    return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+  }
+
   async function renderFeeds() {
     const list = $('#feeds-list');
     const empty = $('#feeds-empty');
@@ -450,7 +457,7 @@
         const remark = document.createElement('div');
         remark.className = 'tx-remark';
         remark.style.cssText = 'white-space:normal;line-height:1.5';
-        remark.textContent = a.summary || '';
+        remark.textContent = stripHtml(a.summary || '');
         const time = document.createElement('div');
         time.className = 'tx-remark';
         time.style.cssText = 'font-size:11px;color:#999';
