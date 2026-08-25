@@ -504,7 +504,12 @@ def fetch_feeds():
 @api.get("/feeds/articles")
 def list_feed_articles():
     date = request.args.get("date", "") or None
-    return jsonify(models.list_articles(date=date, limit=int(request.args.get("limit", 200))))
+    topic = request.args.get("topic", "") or None
+    followed = request.args.get("followed", "") == "1"
+    return jsonify(models.list_articles(
+        date=date, topic=topic, followed_only=followed,
+        limit=int(request.args.get("limit", 200)),
+    ))
 
 
 @api.post("/feeds/briefing")
@@ -523,3 +528,37 @@ def get_briefing():
     from ..feeds.summarizer import latest_briefing
     row = latest_briefing()
     return jsonify(row) if row else (jsonify({"ok": False}), 404)
+
+
+@api.get("/feeds/topics")
+def list_feed_topics():
+    from ..feeds.classifier import list_topics
+    return jsonify(list_topics())
+
+
+@api.get("/feeds/follows")
+def list_follows():
+    return jsonify(models.list_follows())
+
+
+@api.post("/feeds/follows")
+def add_follow():
+    data = request.get_json(force=True)
+    if not isinstance(data, dict):
+        return jsonify({"ok": False, "error": "请求体必须为 JSON 对象"}), 400
+    kind = str(data.get("kind") or "").strip()
+    target = str(data.get("target") or "").strip()
+    if kind not in ("topic", "source") or not target:
+        return jsonify({"ok": False, "error": "kind 必须为 topic/source，target 必填"}), 400
+    return jsonify({"ok": models.add_follow(kind, target)})
+
+
+@api.delete("/feeds/follows/<int:follow_id>")
+def delete_follow(follow_id: int):
+    return jsonify({"ok": models.delete_follow(follow_id)})
+
+
+@api.post("/feeds/classify")
+def classify_feeds():
+    from ..feeds.classifier import classify_unclassified
+    return jsonify({"classified": classify_unclassified()})

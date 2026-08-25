@@ -69,3 +69,5 @@ feeds:
       url: https://rss.injahow.cn/yicai/news
     - name: 财新网
       url: https://rss.injahow.cn/caixin/latest
+  # 财经主题分类（文章 AI 自动打标签，前端分类 tab 使用）
+  topics: [宏观, 股市, 公司, 黄金, 债券, 政策, 科技, 房地产]

@@ -428,7 +428,7 @@
     },
   };
 
-  /* ---------- 经济简讯：抓取/文章列表/简报 ---------- */
+  /* ---------- 经济简讯：抓取/文章列表/简报/分类/关注 ---------- */
   function stripHtml(html) {
     if (!html) return '';
     const div = document.createElement('div');
@@ -436,38 +436,94 @@
     return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
   }
 
+  function renderArticleList(container, arts) {
+    container.innerHTML = '';
+    arts.forEach(a => {
+      const item = document.createElement('div');
+      item.className = 'tx-item';
+      item.style.cssText = 'background:#fff;align-items:flex-start';
+      const mid = document.createElement('div');
+      mid.className = 'tx-mid';
+      mid.style.flex = '1';
+      const type = document.createElement('div');
+      type.className = 'tx-type';
+      type.style.whiteSpace = 'normal';
+      type.textContent = (a.topic ? '[' + a.topic + '] ' : '') + (a.title || '');
+      const remark = document.createElement('div');
+      remark.className = 'tx-remark';
+      remark.style.cssText = 'white-space:normal;line-height:1.5';
+      remark.textContent = stripHtml(a.summary || '');
+      const time = document.createElement('div');
+      time.className = 'tx-remark';
+      time.style.cssText = 'font-size:11px;color:#999';
+      time.textContent = (a.publish_time || '').slice(0, 16);
+      mid.appendChild(type);
+      mid.appendChild(remark);
+      mid.appendChild(time);
+      item.appendChild(mid);
+      container.appendChild(item);
+    });
+  }
+
+  const feedsState = { topic: '', search: '', followedTopics: [] };
+
+  async function renderTopics() {
+    const box = $('#feeds-topics');
+    if (!box) return;
+    try {
+      const topics = await apiGet('/feeds/topics');
+      const follows = await apiGet('/feeds/follows');
+      feedsState.followedTopics = follows.filter(f => f.kind === 'topic').map(f => f.target);
+      const chips = ['全部'].concat(topics).map(t => {
+        const followed = t !== '全部' && feedsState.followedTopics.includes(t);
+        const active = feedsState.topic === t || (t === '全部' && !feedsState.topic);
+        return `<span class="feeds-topic ${active ? 'active' : ''}" data-topic="${t}">${t}${followed ? ' ★' : ''}</span>`;
+      }).join('');
+      box.innerHTML = chips;
+      box.querySelectorAll('.feeds-topic').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const t = chip.dataset.topic;
+          feedsState.topic = (t === '全部') ? '' : t;
+          renderTopics();
+          renderFeeds();
+        });
+        chip.addEventListener('dblclick', () => {
+          const t = chip.dataset.topic;
+          if (t === '全部') return;
+          toggleFollowTopic(t);
+        });
+      });
+    } catch (e) { console.warn('加载主题失败', e); }
+  }
+
+  async function toggleFollowTopic(topic) {
+    try {
+      const follows = await apiGet('/feeds/follows');
+      const existing = follows.find(f => f.kind === 'topic' && f.target === topic);
+      if (existing) {
+        await apiDelete('/feeds/follows/' + existing.id);
+      } else {
+        await apiPost('/feeds/follows', { kind: 'topic', target: topic });
+      }
+      renderTopics();
+    } catch (e) { console.warn('关注操作失败', e); }
+  }
+
   async function renderFeeds() {
     const list = $('#feeds-list');
     const empty = $('#feeds-empty');
     if (!list) return;
+    renderTopics();
     try {
-      const arts = await apiGet('/feeds/articles');
-      list.innerHTML = '';
-      arts.forEach(a => {
-        const item = document.createElement('div');
-        item.className = 'tx-item';
-        item.style.cssText = 'background:#fff;align-items:flex-start';
-        const mid = document.createElement('div');
-        mid.className = 'tx-mid';
-        mid.style.flex = '1';
-        const type = document.createElement('div');
-        type.className = 'tx-type';
-        type.style.whiteSpace = 'normal';
-        type.textContent = a.title || '';
-        const remark = document.createElement('div');
-        remark.className = 'tx-remark';
-        remark.style.cssText = 'white-space:normal;line-height:1.5';
-        remark.textContent = stripHtml(a.summary || '');
-        const time = document.createElement('div');
-        time.className = 'tx-remark';
-        time.style.cssText = 'font-size:11px;color:#999';
-        time.textContent = (a.publish_time || '').slice(0, 16);
-        mid.appendChild(type);
-        mid.appendChild(remark);
-        mid.appendChild(time);
-        item.appendChild(mid);
-        list.appendChild(item);
-      });
+      let arts = await apiGet('/feeds/articles?limit=200');
+      if (feedsState.topic) {
+        arts = arts.filter(a => a.topic === feedsState.topic);
+      }
+      const q = feedsState.search.trim();
+      if (q) {
+        arts = arts.filter(a => (a.title || '').includes(q) || stripHtml(a.summary || '').includes(q));
+      }
+      renderArticleList(list, arts);
       if (empty) empty.hidden = arts.length > 0;
     } catch (e) {
       console.warn('[api.js] 经济简讯加载失败：', e);
@@ -475,6 +531,40 @@
     }
   }
   window.renderFeeds = renderFeeds;
+
+  async function renderFollowedFeeds() {
+    const list = $('#feeds-followed-list');
+    const empty = $('#feeds-followed-empty');
+    if (!list) return;
+    try {
+      const arts = await apiGet('/feeds/articles?followed=1&limit=200');
+      renderArticleList(list, arts);
+      if (empty) empty.hidden = arts.length > 0;
+    } catch (e) {
+      console.warn('[api.js] 订阅流加载失败：', e);
+      if (empty) { empty.hidden = false; }
+    }
+  }
+
+  $$('.feeds-subtab').forEach(t => {
+    t.addEventListener('click', () => {
+      $$('.feeds-subtab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const isFollowed = t.dataset.feedsTab === 'followed';
+      $('#feeds-panel-discover').hidden = isFollowed;
+      $('#feeds-panel-followed').hidden = !isFollowed;
+      if (isFollowed) renderFollowedFeeds();
+    });
+  });
+
+  const searchInput = $('#feeds-search-input');
+  if (searchInput) {
+    let timer;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { feedsState.search = searchInput.value; renderFeeds(); }, 300);
+    });
+  }
 
   const btnRefresh = $('#btn-feeds-refresh');
   if (btnRefresh) btnRefresh.addEventListener('click', async () => {

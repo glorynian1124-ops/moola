@@ -146,6 +146,15 @@ CREATE TABLE IF NOT EXISTS articles (
     fetched_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_articles_url ON articles(url);
+
+-- 用户关注（关注主题 topic 或单个源 source）
+CREATE TABLE IF NOT EXISTS user_follows (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    kind TEXT NOT NULL,                      -- topic | source
+    target TEXT NOT NULL,                    -- 主题名，或源的 id（字符串）
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    UNIQUE(kind, target)
+);
 """
 
 

@@ -72,18 +72,38 @@
       <span class="toolbar-title">经济简讯</span>
       <button class="text-btn dark" id="btn-feeds-refresh">刷新</button>
     </div>
-    <div class="brief-card" id="brief-card">
-      <div class="brief-head">
-        <span class="brief-title">📬 今日简报</span>
-        <button class="text-btn dark" id="btn-brief-gen">生成</button>
-      </div>
-      <div class="brief-body" id="brief-body">点击「生成」获取今日财经要闻</div>
+    <div class="feeds-subtabs">
+      <span class="feeds-subtab active" data-feeds-tab="discover">发现</span>
+      <span class="feeds-subtab" data-feeds-tab="followed">订阅</span>
     </div>
-    <div class="sec-title" style="margin-top:14px">文章</div>
-    <div class="stat-list" id="feeds-list"></div>
-    <div class="empty-state" id="feeds-empty" hidden>
-      <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
-      <div class="empty-text">暂无文章，点右上角「刷新」抓取</div>
+    <!-- 发现子页 -->
+    <div id="feeds-panel-discover">
+      <div class="feeds-search">
+        <input id="feeds-search-input" type="text" placeholder="搜索关键词，如：降息 / 黄金 / 财报">
+      </div>
+      <div class="feeds-topics" id="feeds-topics"></div>
+      <div class="brief-card" id="brief-card">
+        <div class="brief-head">
+          <span class="brief-title">📬 今日简报</span>
+          <button class="text-btn dark" id="btn-brief-gen">生成</button>
+        </div>
+        <div class="brief-body" id="brief-body">点击「生成」获取今日财经要闻</div>
+      </div>
+      <div class="sec-title" style="margin-top:14px">文章</div>
+      <div class="stat-list" id="feeds-list"></div>
+      <div class="empty-state" id="feeds-empty" hidden>
+        <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
+        <div class="empty-text">暂无文章，点右上角「刷新」抓取</div>
+      </div>
+    </div>
+    <!-- 订阅子页 -->
+    <div id="feeds-panel-followed" hidden>
+      <div class="sec-title" style="margin-top:14px">已关注的文章</div>
+      <div class="stat-list" id="feeds-followed-list"></div>
+      <div class="empty-state" id="feeds-followed-empty" hidden>
+        <i class="ic ic50" style="--mask:url(assets/icons/ic_photo.png)"></i>
+        <div class="empty-text">还没有关注任何主题或源</div>
+      </div>
     </div>
   </div>
 
