@@ -135,6 +135,7 @@ CREATE TABLE IF NOT EXISTS feed_sources (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     url TEXT NOT NULL UNIQUE,               -- RSS/网页地址
+    category TEXT DEFAULT '',               -- 源分类（财经/科技/生活，可空）
     enabled INTEGER NOT NULL DEFAULT 1,
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
@@ -146,6 +147,8 @@ CREATE TABLE IF NOT EXISTS articles (
     title TEXT NOT NULL,
     url TEXT NOT NULL,
     summary TEXT DEFAULT '',
+    topic TEXT DEFAULT '',                  -- 主题标签（第一版留空，为画像匹配预留）
+    publish_time TEXT DEFAULT '',           -- 文章真实发布时间 ISO 格式
     read INTEGER NOT NULL DEFAULT 0,
     starred INTEGER NOT NULL DEFAULT 0,
     fetched_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))

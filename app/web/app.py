@@ -1,7 +1,9 @@
 """Flask Web 界面（MVP：首页记账 + 统计页）。"""
 from datetime import date
 
-from flask import Flask, jsonify, render_template, request
+from pathlib import Path
+
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 from .. import models
 from ..analyzer.report import monthly_report
@@ -53,6 +55,17 @@ def create_app() -> Flask:
         )
 
     app.register_blueprint(api)
+
+    # 托管前端原型（经济简讯等新界面），同源访问避免跨域
+    PROTOTYPE_DIR = Path(__file__).resolve().parent.parent.parent / "prototype"
+
+    @app.route("/proto/")
+    def proto_index():
+        return send_from_directory(PROTOTYPE_DIR, "index.html")
+
+    @app.route("/proto/<path:filename>")
+    def proto_static(filename):
+        return send_from_directory(PROTOTYPE_DIR, filename)
 
     @app.route("/api/<path:_path>", methods=["OPTIONS"])
     def cors_preflight(_path):

@@ -154,6 +154,37 @@ def cmd_web(args) -> None:
     app.run(host=host, port=port, debug=args.debug)
 
 
+def cmd_feeds_seed(_args) -> None:
+    """把 config.yaml 预置源写入 feed_sources。"""
+    import yaml
+    db.init_db()  # 幂等建表，避免未 init 时 no such table
+    cfg = yaml.safe_load((BASE_DIR / "config.yaml").read_text(encoding="utf-8")) or {}
+    sources = cfg.get("feeds", {}).get("sources", [])
+    existing = {s["url"] for s in models.list_sources()}
+    n = 0
+    for s in sources:
+        if s["url"] not in existing:
+            models.add_source(s["name"], s["url"])
+            n += 1
+    print(f"✅ 已写入 {n} 个订阅源（重复自动跳过）")
+
+
+def cmd_feeds_fetch(_args) -> None:
+    from app.feeds.fetcher import fetch_all
+    result = fetch_all()
+    print(f"✅ 抓取完成：新增 {result['added']} 篇，跳过重复 {result['skipped']} 篇")
+
+
+def cmd_feeds_brief(_args) -> None:
+    from app.feeds.summarizer import generate_briefing
+    text = generate_briefing()
+    if text is None:
+        print("今天没有文章，无法生成简报")
+        return
+    print("📬 今日财经要闻\n")
+    print(text)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Moola — AI 记账 + 个人财务管家")
     sub = parser.add_subparsers(dest="cmd")
@@ -190,7 +221,26 @@ def main() -> None:
     p_web.add_argument("--debug", action="store_true")
     p_web.set_defaults(fn=cmd_web)
 
+    p_feeds = sub.add_parser("feeds", help="经济简讯：seed/fetch/brief 子命令")
+    f_sub = p_feeds.add_subparsers(dest="feeds_cmd")
+
+    f_seed = f_sub.add_parser("seed", help="把 config.yaml 的预置源写入 feed_sources")
+    f_seed.set_defaults(fn=cmd_feeds_seed)
+
+    f_fetch = f_sub.add_parser("fetch", help="抓取所有订阅源")
+    f_fetch.set_defaults(fn=cmd_feeds_fetch)
+
+    f_brief = f_sub.add_parser("brief", help="生成今日简报")
+    f_brief.set_defaults(fn=cmd_feeds_brief)
+
     args = parser.parse_args()
+    if getattr(args, "cmd", None) == "feeds":
+        fn = {"seed": cmd_feeds_seed, "fetch": cmd_feeds_fetch, "brief": cmd_feeds_brief}
+        if args.feeds_cmd in fn:
+            fn[args.feeds_cmd](args)
+        else:
+            parser.print_help()
+        sys.exit(0)
     if not getattr(args, "cmd", None):
         parser.print_help()
         sys.exit(0)

@@ -285,6 +285,150 @@ def list_sources() -> list[dict]:
         conn.close()
 
 
+def delete_source(source_id: int) -> bool:
+    conn = get_conn()
+    try:
+        # 先孤立该源的文章（source_id 可空），避免外键约束失败
+        conn.execute("UPDATE articles SET source_id = NULL WHERE source_id = ?", (source_id,))
+        cur = conn.execute("DELETE FROM feed_sources WHERE id = ?", (source_id,))
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
+# ---------- 文章 articles（Feedly 模式） ----------
+
+def add_article(
+    source_id: Optional[int],
+    title: str,
+    url: str,
+    summary: str = "",
+    topic: str = "",
+    publish_time: str = "",
+) -> bool:
+    """插入文章；url 唯一索引去重，重复返回 False。"""
+    conn = get_conn()
+    try:
+        cur = conn.execute(
+            """INSERT OR IGNORE INTO articles
+               (source_id, title, url, summary, topic, publish_time)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (source_id, title, url, summary, topic, publish_time),
+        )
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
+def add_articles(rows: Sequence[dict]) -> tuple[int, int]:
+    """批量插入。rows: [{source_id, title, url, summary, topic, publish_time}]
+    返回 (新增数, 重复数)。"""
+    added = skipped = 0
+    conn = get_conn()
+    try:
+        for r in rows:
+            cur = conn.execute(
+                """INSERT OR IGNORE INTO articles
+                   (source_id, title, url, summary, topic, publish_time)
+                   VALUES (?, ?, ?, ?, ?, ?)""",
+                (
+                    r.get("source_id"),
+                    r.get("title", ""),
+                    r.get("url", ""),
+                    r.get("summary", ""),
+                    r.get("topic", ""),
+                    r.get("publish_time", ""),
+                ),
+            )
+            if cur.rowcount > 0:
+                added += 1
+            else:
+                skipped += 1
+        conn.commit()
+        return added, skipped
+    finally:
+        conn.close()
+
+
+def list_articles(
+    date: Optional[str] = None,
+    topic: Optional[str] = None,
+    followed_only: bool = False,
+    limit: int = 200,
+) -> list[dict]:
+    """文章列表，按 publish_time 倒序。
+
+    date='YYYY-MM-DD' 只看当天；topic 只看该主题；followed_only 只看关注的主题+源。
+    """
+    sql = "SELECT * FROM articles WHERE 1=1"
+    params: list = []
+    if date:
+        sql += " AND substr(publish_time, 1, 10) = ?"
+        params.append(date)
+    if topic:
+        sql += " AND topic = ?"
+        params.append(topic)
+    if followed_only:
+        follows = list_follows()
+        topics = [f["target"] for f in follows if f["kind"] == "topic"]
+        sources = [f["target"] for f in follows if f["kind"] == "source"]
+        conds: list[str] = []
+        if topics:
+            conds.append("topic IN ({})".format(",".join("?" * len(topics))))
+            params.extend(topics)
+        if sources:
+            conds.append("source_id IN ({})".format(",".join("?" * len(sources))))
+            params.extend(sources)
+        if conds:
+            sql += " AND (" + " OR ".join(conds) + ")"
+        else:
+            return []
+    sql += " ORDER BY publish_time DESC, id DESC LIMIT ?"
+    params.append(limit)
+    conn = get_conn()
+    try:
+        return [dict(r) for r in conn.execute(sql, params).fetchall()]
+    finally:
+        conn.close()
+
+
+# ---------- 关注 user_follows（topic 主题 / source 源） ----------
+
+def add_follow(kind: str, target: str) -> bool:
+    """关注一个主题或一个源。kind: topic | source；target: 主题名或源的 id 字符串。"""
+    conn = get_conn()
+    try:
+        conn.execute(
+            "INSERT OR IGNORE INTO user_follows(kind, target) VALUES(?, ?)",
+            (kind, target),
+        )
+        conn.commit()
+        return True
+    finally:
+        conn.close()
+
+
+def list_follows() -> list[dict]:
+    conn = get_conn()
+    try:
+        return [dict(r) for r in conn.execute(
+            "SELECT * FROM user_follows ORDER BY id").fetchall()]
+    finally:
+        conn.close()
+
+
+def delete_follow(follow_id: int) -> bool:
+    conn = get_conn()
+    try:
+        cur = conn.execute("DELETE FROM user_follows WHERE id = ?", (follow_id,))
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        conn.close()
+
+
 # ---------- 账单：查询 / 修改 / 删除 / 分组 / 搜索 ----------
 
 def get_transaction(tx_id: int) -> Optional[dict]:
