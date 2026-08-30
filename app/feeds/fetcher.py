@@ -1,4 +1,6 @@
 """RSS 抓取：遍历订阅源 → feedparser 解析 → 去重入库 → 生成摘要。"""
+import html
+import re
 import time
 from typing import Optional
 
@@ -8,11 +10,21 @@ from .. import models
 from . import summarizer
 
 
+def strip_html(text: str) -> str:
+    """去掉 HTML 标签与实体，压缩空白，返回纯文本。"""
+    if not text:
+        return ""
+    text = re.sub(r"<(script|style).*?</\1>", "", text, flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", "", text)
+    text = html.unescape(text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def entry_to_article(entry, source_id: int) -> dict:
     """从 feedparser entry 提取字段（纯函数，便于测试）。"""
     title = getattr(entry, "title", "") or ""
     url = getattr(entry, "link", "") or getattr(entry, "id", "") or ""
-    summary = getattr(entry, "summary", "") or getattr(entry, "description", "") or ""
+    summary = strip_html(getattr(entry, "summary", "") or getattr(entry, "description", "") or "")
     published = ""
     if getattr(entry, "published_parsed", None):
         published = time.strftime("%Y-%m-%d %H:%M:%S", entry.published_parsed)
